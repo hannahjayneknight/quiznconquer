@@ -1,5 +1,6 @@
-import List from "./list.js";
-import Board from "./board2048.js";
+import F from "./usefulfunctions.js";
+import Board from "./boardNuttyTilez.js";
+import dictionary from "./dictionary.js";
 
 /*
 LABELS FOR TILES ON THE TILEBOARD
@@ -13,23 +14,38 @@ LABELS FOR TILES ON THE TILEBOARD
 ]
 */
 
+
 const ui = Object.create(null);
 const el = (id) => document.getElementById(id);
 let board = Board.startBoard();
 const tileBoard = el("tileBoard");
-const cellList = [];
 
 ui.init = function () {
-    List.sequence(6).forEach(function (element) {
-        const tr = document.createElement("tr"); // makes a new table row
-        tr.setAttribute("id", element);
-        List.sequence(6).forEach(function (element) {
-            const td = document.createElement("td"); // for each row makes a
-            // new element
-            td.setAttribute("id", element);
-            cellList.push(td); // NB: push() is not pure
-            tr.appendChild(td); // note the differences from .append()
-        });
-        tileBoard.appendChild(tr); // note the differences from .append()
+    F.sequence(36).forEach(function (element) {
+        const tile = document.createElement("div"); // makes a div element
+        tile.setAttribute("id", "tile" + element);
+        tile.setAttribute("class", "tile");
+        tileBoard.appendChild(tile); // note the differences from .append()
+    });
+
+    const submitAnswer = function () {
+
+    };
+
+    // if key button is pressed, it will submit the answer
+    document.addEventListener("keyup", function (event) {
+        //Check if modal is visible and key code
+        if (event.keyCode === 13) {
+            submitAnswer();
+        }
     });
 };
+
+const pickRandomWord = function () {
+};
+
+const pickLevel = function (level) {
+    return dictionary.level;
+};
+
+export default Object.freeze(ui);

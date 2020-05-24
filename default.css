@@ -1,0 +1,90 @@
+:root
+{
+    --blue: blue;
+    --red: red;
+    --yellow: yellow;
+    --green: green;
+    --black: black;
+    --screenheight: 100vh;
+    --screenwidth: 100vw;
+}
+
+body
+{
+    margin:0;
+}
+
+
+#tileBoard
+{
+    background-color: var(--red);
+    width: 50vh;
+    margin: 0;
+    height: 50vh;
+    /* Both these properties centre the element*/
+    position: absolute;
+    left:37.5vw;
+    top:25vh;
+    display: flex;
+    flex-wrap: wrap;
+    /* position: sticky; 
+    this will make the tileboard move down the screen as you scroll down*/
+}
+
+#tileBoard>* {
+    flex: 1 1 68.83px;
+}
+
+#player1
+{
+    background-color: var(--blue);
+    width: 37.5vw;
+    height:25vh;
+    position: absolute;
+    left:0vw;
+    top:25vh;
+}
+
+#player2
+{
+    background-color: var(--yellow);
+    width: 37.5vw;
+    height:25vh;
+    position: absolute;
+    left:0vw;
+    top:50vh;
+}
+
+#player3
+{
+    background-color: var(--green);
+    width: calc(100vw - 37.5vw - 50vh);
+    height:25vh;
+    position: absolute;
+    right:0vw;
+    top:25vh;
+}
+
+#player4
+{
+    background-color: var(--black);
+    width: calc(100vw - 37.5vw - 50vh);
+    height:25vh;
+    position: absolute;
+    right:0vw;
+    top:50vh;
+}
+
+#answer-pane
+{
+    resize: none;
+    top:50vh;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+textarea:invalid {
+    border: 2px dashed red;
+  }

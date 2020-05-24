@@ -1,12 +1,11 @@
 <!doctype html>
 <meta charset="utf-8">
 <html lang="en-gb"></html>
-
+<script type="module" src="./main.js"></script>
+<link rel="stylesheet" href="./default.css">
 
 
 <head>
-    <script type="module" src=".js"></script>
-    <link rel="stylesheet" href="default.css">
     <title>Nutty Tilez</title>
 </head>
 
@@ -16,7 +15,12 @@
     <header>Nutty Tilez.</header>
     <main>
         <div>Score: <span id="score"></span></div>
-        <div class="tileBoard"></div>
+        <label><textarea id="answer-pane" class="answer" name="Type answer here" tabindex="0" aria-label="Type answer here" rows="1" cols="100" maxlength="100"></textarea></label>
+        <div id ="tileBoard"></div>
+        <div id ="player1"></div>
+        <div id ="player2"></div>
+        <div id ="player3"></div>
+        <div id ="player4"></div>
 
     </main>
 
