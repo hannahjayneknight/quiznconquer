@@ -12,15 +12,22 @@
 
 
 <body>
-    <header>Nutty Tilez.</header>
+    <div id="levelBeingPlayed" class="level">Beginner</div>
+
     <main>
-        <div>Score: <span id="score"></span></div>
-        <label><textarea id="answer-pane" class="answer" name="Type answer here" tabindex="0" aria-label="Type answer here" rows="1" cols="100" maxlength="100"></textarea></label>
-        <div id ="tileBoard"></div>
-        <div id ="player1"></div>
-        <div id ="player2"></div>
-        <div id ="player3"></div>
-        <div id ="player4"></div>
+
+    <div id="testingWord">Please wait...</div>
+
+    <label><button id="exit-button" class="exit" type="button" name="exit-button" tabindex="0" aria-label="Exit game here">Exit</button></label>
+    
+    
+    <label><textarea id="answer-pane" class="answer" name="Type answer here" tabindex="0" aria-label="Type answer here" rows="1" cols="100" maxlength="100"></textarea></label>
+    
+    <div id ="tileBoard" ></div>
+    <div id ="player1"></div>
+    <div id ="player2"></div>
+    <div id ="player3"></div>
+    <div id ="player4"></div>
 
     </main>
 

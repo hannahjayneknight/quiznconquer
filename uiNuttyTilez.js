@@ -21,6 +21,7 @@ let board = Board.startBoard();
 const tileBoard = el("tileBoard");
 
 ui.init = function () {
+    el("answer-pane").value = "";
     F.sequence(36).forEach(function (element) {
         const tile = document.createElement("div"); // makes a div element
         tile.setAttribute("id", "tile" + element);
@@ -28,20 +29,25 @@ ui.init = function () {
         tileBoard.appendChild(tile); // note the differences from .append()
     });
 
-    const submitAnswer = function () {
-
+    const checkAnswer = function () {
+    /* A function that returns true if the answer is correct, otherwise false,
+    and clears the text area */
+        el("answer-pane").value = "";
     };
 
     // if key button is pressed, it will submit the answer
     document.addEventListener("keyup", function (event) {
         //Check if modal is visible and key code
         if (event.keyCode === 13) {
-            submitAnswer();
+            checkAnswer();
         }
     });
+
+    pickRandomWord();
 };
 
 const pickRandomWord = function () {
+    el("testingWord").textContent = "ham";
 };
 
 const pickLevel = function (level) {

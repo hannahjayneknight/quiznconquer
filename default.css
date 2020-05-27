@@ -14,6 +14,31 @@ body
     margin:0;
 }
 
+.level
+{
+    position: absolute;
+    left: 5vw;
+    top:5vh;
+    font-size: 1.25rem;
+}
+
+.exit
+{
+    position: absolute;
+    top: 5vh;
+    right: 5vw;
+}
+
+#testingWord
+{
+    top: 5vh;
+    position: absolute;
+    width: 50vh;
+    left:37.5vw;
+    font-size: 1.75rem;
+    text-align: center;
+}
+
 
 #tileBoard
 {
@@ -27,8 +52,6 @@ body
     top:25vh;
     display: flex;
     flex-wrap: wrap;
-    /* position: sticky; 
-    this will make the tileboard move down the screen as you scroll down*/
 }
 
 #tileBoard>* {
@@ -78,11 +101,15 @@ body
 #answer-pane
 {
     resize: none;
-    top:50vh;
+    position: absolute;
+    top:15vh;
+    left:37.5vw;
+    width: 50vh;
+    height: 2rem;
     border-radius: 5px;
     border: 1px solid #ccc;
-    font-size: 1.25rem;
-    margin-bottom: 10px;
+    font-size: 1.75rem;
+    text-align: center;
 }
 
 textarea:invalid {
