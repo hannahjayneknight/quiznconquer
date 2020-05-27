@@ -20,6 +20,10 @@ const playerColours = {
     black: 3
 };
 
+const loopThroughPlayersTiles = function (player) {
+    
+}
+/*
 // Finds a tile close the ones currently owned by the player who won the point
 // which will be the tile to change colour when they win the next point
 
@@ -35,7 +39,7 @@ const findTile = function (colour) {
 
     tiles.forEach(
         // finds if the colour of the tile matches the player's colour
-        if (colour === )
+        // if (colour === )
     )
 };
 
@@ -63,6 +67,7 @@ Board.changeTileColour = function (tile, colour) {
 Board.setStartBoard = function () {
 
 };
+*/
 
 // when a player gets a correct answer, a tile will change to their colour
 // on the board

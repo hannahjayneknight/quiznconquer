@@ -19,13 +19,16 @@ const ui = Object.create(null);
 const el = (id) => document.getElementById(id);
 let board = Board.startBoard();
 const tileBoard = el("tileBoard");
+const playerclasses = [[ "player1", "player2"],
+                        ["player3", "player4" ]];
 
 ui.init = function () {
     el("answer-pane").value = "";
     F.sequence(36).forEach(function (element) {
+        let ourclass = playerclasses[ Math.floor(element / 18)][ Math.floor((element/3)%2)];
         const tile = document.createElement("div"); // makes a div element
         tile.setAttribute("id", "tile" + element);
-        tile.setAttribute("class", "tile");
+        tile.setAttribute("class", ourclass + "tile");
         tileBoard.appendChild(tile); // note the differences from .append()
     });
 

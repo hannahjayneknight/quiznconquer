@@ -55,7 +55,7 @@ body
 }
 
 #tileBoard>* {
-    flex: 1 1 68.83px;
+    flex: 1 1 8.3vh;
 }
 
 #player1
@@ -70,22 +70,22 @@ body
 
 #player2
 {
-    background-color: var(--yellow);
-    width: 37.5vw;
-    height:25vh;
-    position: absolute;
-    left:0vw;
-    top:50vh;
-}
-
-#player3
-{
     background-color: var(--green);
     width: calc(100vw - 37.5vw - 50vh);
     height:25vh;
     position: absolute;
     right:0vw;
     top:25vh;
+}
+
+#player3
+{
+    background-color: var(--yellow);
+    width: 37.5vw;
+    height:25vh;
+    position: absolute;
+    left:0vw;
+    top:50vh;
 }
 
 #player4
