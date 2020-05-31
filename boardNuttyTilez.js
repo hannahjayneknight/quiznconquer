@@ -3,78 +3,60 @@ import F from "./usefulfunctions.js";
 const Board = Object.create(null);
 
 const el = (id) => document.getElementById(id);
+const claN = (className) => document.getElementsByClassName(className);
+const playerColours = ["blue", "green", "yellow", "black"];
 
 Board.startBoard = () => [
-    [0, 0, 0, 1, 1, 1],
-    [0, 0, 0, 1, 1, 1],
-    [0, 0, 0, 1, 1, 1],
-    [2, 2, 2, 3, 3, 3],
-    [2, 2, 2, 3, 3, 3],
-    [2, 2, 2, 3, 3, 3]
+    [1, 1, 1, 2, 2, 2],
+    [1, 1, 1, 2, 2, 2],
+    [1, 1, 1, 2, 2, 2],
+    [3, 3, 3, 4, 4, 4],
+    [3, 3, 3, 4, 4, 4],
+    [3, 3, 3, 4, 4, 4]
 ];
 
-const playerColours = {
-    blue: 0,
-    green: 1,
-    yellow: 2,
-    black: 3
+// function that finds all the surrounding tiles of a tile
+// takes in the id of the tile you are considering
+const surroundingTiles = function (element) {
+    const surroundingTilesArray = [
+        parseInt(element.id) + 5,
+        parseInt(element.id) - 5,
+        parseInt(element.id) + 7,
+        parseInt(element.id) - 7,
+        parseInt(element.id) + 6,
+        parseInt(element.id) - 6,
+        parseInt(element.id) + 1,
+        parseInt(element.id) - 1
+    ];
+    return surroundingTilesArray;
 };
-
-const loopThroughPlayersTiles = function (player) {
-    
-}
-/*
-// Finds a tile close the ones currently owned by the player who won the point
-// which will be the tile to change colour when they win the next point
-
-// takes in the player's colour
-const findTile = function (colour) {
-// iterate through each div element that makes up the board, when it finds one
-// that has a tile around it that is a different colour, it will change that
-// colour
-    const tiles = [];
-    F.sequence(36).forEach(function (element) {
-        tiles.push("tile" + element);
+// takes in the freetile and the winning player
+const changeTile = function (freetile, winningplayer) {
+    // sets the free tile to that player's colour
+    el(freetile.toString()).style.backgroundColor = playerColours[winningplayer - 1];
+    // changes the id of the free tile to the player that won the point
+    el(freetile.toString()).className = "player" + winningplayer + "tile";
+};
+// when the player has a correct answer, it will change the
+// colour of another player's tile to their colour
+Board.correctAnswer = function (playerNumber) {
+    const classWinner = claN("player" + playerNumber + "tile");
+    const winnersTiles = Array.from(classWinner);
+    const freeTiles = [];
+    winnersTiles.forEach(function (element) {
+        // makes an array with all the free tiles surrounding
+        // the element
+        const a = surroundingTiles(element).filter(
+            (el) => el.className !== classWinner
+        );
+        // adds all the elements in this array to freeTiles
+        freeTiles.push.apply(freeTiles, a);
     });
-
-    tiles.forEach(
-        // finds if the colour of the tile matches the player's colour
-        // if (colour === )
-    )
+    const freeTilesNew = freeTiles.filter((element) => element>0);
+    const randomNumber = F.getRandomInt(0, freeTilesNew.length - 1);
+    const randomTile = freeTilesNew[randomNumber];
+    // changes the colour and id of random free tile
+    changeTile(randomTile, playerNumber);
 };
-
-// finds the colour of the player that won the point
-const chooseColour = function (player) {
-    if (player === "player1") {
-        return "blue";
-    } else if (player === "player2") {
-        return "yellow";
-    } else if (player === "player3") {
-        return "green";
-    } else {
-        return "black";
-    }
-};
-
-// Changes the tile colour to the colour of the player that just got a correct
-// answer. Takes in the id of the tile to change the colour of and the colour
-// to change it to
-Board.changeTileColour = function (tile, colour) {
-    el(tile).style.backgroundColor = colour;
-};
-
-// returns the start board
-Board.setStartBoard = function () {
-
-};
-*/
-
-// when a player gets a correct answer, a tile will change to their colour
-// on the board
-
-// 1. recognise that they got the answer correct
-// 2. find a tile that is their colour at the moment
-// 3. find a tile next to it that isn't their colour
-// 4. change this tile's colour
 
 export default Object.freeze(Board);
