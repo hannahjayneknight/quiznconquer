@@ -52,11 +52,19 @@ ui.init = function () {
         tileBoard.appendChild(tile); // note the differences from .append()
     });
 
+    /*
+    let score1 = Board.countScore(1);
+    let score2 = Board.countScore(2);
+    let score3 = Board.countScore(3);
+    let score4 = Board.countScore(4);
+    */
+
     // if key button is pressed, it will submit the answer
     document.addEventListener("keyup", function (event) {
         //Check if modal is visible and key code
         if (event.keyCode === 13) {
-            submitAnswer(dictionary.beginner);
+            Board.correctAnswer(1);
+            // submitAnswer(dictionary.beginner);
             generateWord(dictionary.beginner);
         }
     });

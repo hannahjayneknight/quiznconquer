@@ -15,6 +15,12 @@ Board.startBoard = () => [
     [3, 3, 3, 4, 4, 4]
 ];
 
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+
 // function that finds all the surrounding tiles of a tile
 // takes in the id of the tile you are considering
 const surroundingTiles = function (element) {
@@ -37,26 +43,59 @@ const changeTile = function (freetile, winningplayer) {
     // changes the id of the free tile to the player that won the point
     el(freetile.toString()).className = "player" + winningplayer + "tile";
 };
+
+const playersTiles = function (playerNumber) {
+        // finds all the tiles that belong to the winner
+        const classPlayer = claN("player" + playerNumber + "tile");
+        // makes an array from this
+        return Array.from(classPlayer);
+};
 // when the player has a correct answer, it will change the
 // colour of another player's tile to their colour
 Board.correctAnswer = function (playerNumber) {
-    const classWinner = claN("player" + playerNumber + "tile");
-    const winnersTiles = Array.from(classWinner);
-    const freeTiles = [];
+    const winnersTiles = playersTiles(playerNumber);
+    let surrounding = [];
+    // loops through all the tiles currently owned by the player
     winnersTiles.forEach(function (element) {
-        // makes an array with all the free tiles surrounding
-        // the element
-        const a = surroundingTiles(element).filter(
-            (el) => el.className !== classWinner
-        );
-        // adds all the elements in this array to freeTiles
-        freeTiles.push.apply(freeTiles, a);
+        // adds all the surrounding tiles to surrounding
+        surrounding.push.apply(surrounding, surroundingTiles(element));
     });
-    const freeTilesNew = freeTiles.filter((element) => element>0);
-    const randomNumber = F.getRandomInt(0, freeTilesNew.length - 1);
-    const randomTile = freeTilesNew[randomNumber];
-    // changes the colour and id of random free tile
-    changeTile(randomTile, playerNumber);
+    // removes negative tiles which do not exist
+    const ofDifferentClass = (element) =>
+        el(element).className !== ("player" + playerNumber + "tile");
+    const outOfRange = (element) =>
+        (0<parseInt(element) && parseInt(element) < 36);
+    const freeTiles = surrounding.filter(outOfRange).filter(ofDifferentClass);
+    const randomNumber = F.getRandomInt(0, freeTiles.length - 1);
+    const randomTile = freeTiles[randomNumber];
+    if (randomTile === undefined) {
+        console.log("This has worked");
+        // *** put a function that creates a pop-up when someone has won ***
+    } else {
+        // changes the colour and id of random free tile
+        changeTile(randomTile, playerNumber);
+    }
 };
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+Board.countScore = function (playerNumber) {
+    const score = playersTiles(playerNumber).length;
+};
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+Board.computerPlayer = function (playerNumber) {
+
+};
+
+
 
 export default Object.freeze(Board);

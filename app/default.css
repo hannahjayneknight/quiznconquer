@@ -42,7 +42,6 @@ body
 
 #tileBoard
 {
-    background-color: var(--red);
     width: 50vh;
     margin: 0;
     height: 50vh;
@@ -58,9 +57,27 @@ body
     flex: 1 1 8.3vh;
 }
 
+.player1tile {
+    background-color: blue;
+}
+
+.player2tile {
+    background-color: green;
+}
+
+.player3tile {
+    background-color: yellow;
+}
+
+.player4tile {
+    background-color: black;
+}
+
 #player1
 {
-    background-color: var(--blue);
+    background-color: white;
+    outline: solid;
+    outline-color: blue;
     width: 37.5vw;
     height:25vh;
     position: absolute;
@@ -70,7 +87,9 @@ body
 
 #player2
 {
-    background-color: var(--green);
+    background-color: white;
+    outline: solid;
+    outline-color: green;
     width: calc(100vw - 37.5vw - 50vh);
     height:25vh;
     position: absolute;
@@ -80,7 +99,9 @@ body
 
 #player3
 {
-    background-color: var(--yellow);
+    background-color: white;
+    outline: solid;
+    outline-color: yellow;
     width: 37.5vw;
     height:25vh;
     position: absolute;
@@ -90,7 +111,9 @@ body
 
 #player4
 {
-    background-color: var(--black);
+    background-color: white;
+    outline: solid;
+    outline-color: black;
     width: calc(100vw - 37.5vw - 50vh);
     height:25vh;
     position: absolute;

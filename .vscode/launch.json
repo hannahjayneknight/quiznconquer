@@ -5,16 +5,28 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Firefox Debugger 2",
+            "type": "firefox",
+            "request": "launch",
+            "reAttach": true,
+            "webRoot": "${workspaceFolder}/app",
+            "url": "http://localhost:80/index.html",
+            "pathMappings": [
+                {
+                    "url": "http://localhost:80/index.html",
+                    "path": "${workspaceFolder}/app"
+                },
+            ]
+        },
+        {
             "name": "Node server",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceFolder}/app/server.js",
+            "program": "${workspaceFolder}/server.js",
             "skipFiles": [
                 "<node_internals>/**"
             ]
         },
-
-
         {
             "name": "Firefox Debugger",
             "type": "firefox",
@@ -22,12 +34,10 @@
             "reAttach": true,
             "reloadOnAttach": true,
             "file": "${workspaceFolder}/app/index.html",
-            "url": "http://localhost:8080",
             "preferences": {
                 "security.fileuri.strict_origin_policy": false
-              }
+            }
         },
-
         {
             "name": "Mocha Tests",
             "type": "firefox",
@@ -37,10 +47,9 @@
             "file": "${workspaceFolder}/test.html",
             "preferences": {
                 "security.fileuri.strict_origin_policy": false
-              },
+            },
             "clearConsoleOnReload": true
         }
-
     ]
 
     
