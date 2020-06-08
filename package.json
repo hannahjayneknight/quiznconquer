@@ -20,6 +20,7 @@
   "homepage": "https://github.com/hannahjayneknight/SubmissionPrep#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "express-ws": "^4.0.0",
     "sqlite3": "^4.2.0"
   }
 }
