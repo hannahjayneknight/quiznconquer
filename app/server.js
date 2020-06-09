@@ -33,11 +33,12 @@ app.get("/", function (req, res, next) {
 
 
 
-
 // let openWs = [];
 // this is the server that interacts with the user (ie the web socket)
 app.ws("/", function (ws, req) {
-    /* let player = openWs.length;
+    /* THIS WILL BE USED TO ADD OTHER PLAYERS
+
+    let player = openWs.length;
     // player1 = 0 etc
     ws.myprivatedata = {}
     openWs.push({ "ws": ws, "playerNumber": player, "players": openWs } );
@@ -45,6 +46,32 @@ app.ws("/", function (ws, req) {
     {
         openWs = [];
     } */
+
+    // the timer
+    const mins = 0.5;
+    const now = Date.now();
+    const deadline = mins * 60 * 1000 + now;
+
+    // why use var here?
+    var timerID = setInterval(function () {
+        var currentTime = Date.now();
+        var distance = deadline - currentTime;
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        if (parseInt(seconds) === 0) {
+            clearInterval(timerID);
+            ws.send(JSON.stringify({
+                "timer": seconds,
+                "gameStatus": "gameOver"
+            }));
+            // send message that timer has run out here
+        } else {
+            ws.send(JSON.stringify({
+                "timer": seconds,
+                "gameStatus": "playing"
+            }));
+        }
+    }, 500);
+
     // generates a testing word and sends it to the client to be
     // displayed on the DOM
     let word = generateWord(dictionary.beginner);
@@ -57,7 +84,7 @@ app.ws("/", function (ws, req) {
         // this.myprivatedata
 
         // if the message is an answer...
-        if ("answer" in clientObj) {
+        if (clientObj.answer !== undefined) {
             // it will check if it is correct
             // and send the player number that won
             if (clientObj.answer === word[1]) {
@@ -72,8 +99,8 @@ app.ws("/", function (ws, req) {
 
         // if the message is the tile number to be won, it will send
         // the tile number to be changed and the player that won it
-        } else if ("winningTile" in clientObj) {
-            let tileStolen = {
+        } else if (clientObj.winningTile !== undefined) {
+            var tileStolen = {
                 "tileStolen": {"winner": 1, "tileNumber": clientObj.winningTile}
             };
             ws.send(JSON.stringify(tileStolen));
