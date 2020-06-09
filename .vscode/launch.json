@@ -10,10 +10,10 @@
             "request": "launch",
             "reAttach": true,
             "webRoot": "${workspaceFolder}/app",
-            "url": "http://localhost:80/index.html",
+            "url": "http://localhost:8080/index.html",
             "pathMappings": [
                 {
-                    "url": "http://localhost:80/index.html",
+                    "url": "http://localhost:8080/index.html",
                     "path": "${workspaceFolder}/app"
                 },
             ]
@@ -22,7 +22,7 @@
             "name": "Node server",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceFolder}/server.js",
+            "program": "${workspaceFolder}/app/server.js",
             "skipFiles": [
                 "<node_internals>/**"
             ]

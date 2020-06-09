@@ -43,7 +43,6 @@ const playerclasses = [[ "player1", "player2"],
 
 ui.init = function () {
     el("answer-pane").value = "";
-    generateWord(dictionary.beginner);
     F.sequence(36).forEach(function (element) {
         let ourclass = playerclasses[ Math.floor(element / 18)][ Math.floor((element/3)%2)];
         const tile = document.createElement("div"); // makes a div element
@@ -52,20 +51,35 @@ ui.init = function () {
         tileBoard.appendChild(tile); // note the differences from .append()
     });
 
-    /*
-    let score1 = Board.countScore(1);
-    let score2 = Board.countScore(2);
-    let score3 = Board.countScore(3);
-    let score4 = Board.countScore(4);
-    */
+    // this is the client side of the server
+    const ws = new WebSocket("ws://localhost:8080");
+
+    // when it receives a message from the server...
+    ws.onmessage = function ( e ) {
+        console.log(e);
+        const requestObj = JSON.parse(e.data);
+        // if the message contains the word to be testing on,
+        // it will change this in the DOM
+        console.log(requestObj);
+        if ("word" in requestObj) { // MAKE SO DOESN'T USE 'IN'
+        el("testingWord").textContent = requestObj.word;
+        } else if ("tileStolen" in requestObj) {
+            // if the message contains a tile to be changed
+            // change tile of player number tileStolen.tileStolen.winner
+            // change tile number tileStolen.tileStolen.tileNumber
+            
+        }
+    };
 
     // if key button is pressed, it will submit the answer
+    // and send it to the server
     document.addEventListener("keyup", function (event) {
         //Check if modal is visible and key code
         if (event.keyCode === 13) {
-            Board.correctAnswer(1);
-            // submitAnswer(dictionary.beginner);
-            generateWord(dictionary.beginner);
+            const answer = JSON.stringify(
+                { "answer": el("answer-pane").value.trim() });
+            ws.send(answer);
+            el("answer-pane").value = "";
         }
     });
 
@@ -99,5 +113,12 @@ const submitAnswer = function (dictionary) {
             console.log(el("testingWord").textContent);
         }
 };
+
+    /*
+    let score1 = Board.countScore(1);
+    let score2 = Board.countScore(2);
+    let score3 = Board.countScore(3);
+    let score4 = Board.countScore(4);
+    */
 
 export default Object.freeze(ui);

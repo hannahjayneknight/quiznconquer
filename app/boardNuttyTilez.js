@@ -72,8 +72,8 @@ Board.correctAnswer = function (playerNumber) {
         console.log("This has worked");
         // *** put a function that creates a pop-up when someone has won ***
     } else {
-        // changes the colour and id of random free tile
-        changeTile(randomTile, playerNumber);
+        // returns the tile to be changed.
+        return randomTile;
     }
 };
 
