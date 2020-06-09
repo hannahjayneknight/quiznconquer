@@ -18,14 +18,12 @@ function ignorparam() {}
 // THESE ARE FOR THE DYNAMIC SERVER
 app.use(function (req, res, next) {
     ignorparam(res);
-    console.log("middleware");
     req.testing = "testing";
     return next();
 });
 
 app.get("/", function (req, res, next) {
-    ignorparam(next);
-    console.log("get route", req.testing);
+    ignorparam(next); // better way of ignoring a parameter?
     res.end();
 });
 
@@ -36,9 +34,17 @@ app.get("/", function (req, res, next) {
 
 
 
-
+// let openWs = [];
 // this is the server that interacts with the user (ie the web socket)
 app.ws("/", function (ws, req) {
+    /* let player = openWs.length;
+    // player1 = 0 etc
+    ws.myprivatedata = {}
+    openWs.push({ "ws": ws, "playerNumber": player, "players": openWs } );
+    if( openWs.length === 4 )
+    {
+        openWs = [];
+    } */
     // generates a testing word and sends it to the client to be
     // displayed on the DOM
     let word = generateWord(dictionary.beginner);
@@ -48,6 +54,7 @@ app.ws("/", function (ws, req) {
     ws.on("message", function (msg) {
         // de-stringifies the message
         let clientObj = JSON.parse(msg);
+        // this.myprivatedata
 
         // if the message is an answer...
         if ("answer" in clientObj) {
@@ -73,7 +80,6 @@ app.ws("/", function (ws, req) {
         }
 
     });
-    console.log("socket", req.testing);
 });
 
 // THIS IS FOR BOTH SERVERS

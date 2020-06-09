@@ -59,11 +59,12 @@ Board.findTile = function (playerNumber) {
         // adds all the surrounding tiles to surrounding
         surrounding.push.apply(surrounding, surroundingTiles(element));
     });
-    // removes negative tiles which do not exist
     const ofDifferentClass = (element) =>
         el(element).className !== ("player" + playerNumber + "tile");
     const outOfRange = (element) =>
         (0<parseInt(element) && parseInt(element) < 36);
+    // removes negative tiles which do not exist and
+    // tiles that belong to the winner
     const freeTiles = surrounding.filter(outOfRange).filter(ofDifferentClass);
     const randomNumber = F.getRandomInt(0, freeTiles.length - 1);
     const randomTile = freeTiles[randomNumber];
