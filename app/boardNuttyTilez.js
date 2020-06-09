@@ -37,7 +37,7 @@ const surroundingTiles = function (element) {
     return surroundingTilesArray;
 };
 // takes in the freetile and the winning player
-const changeTile = function (freetile, winningplayer) {
+Board.changeTile = function (freetile, winningplayer) {
     // sets the free tile to that player's colour
     el(freetile.toString()).style.backgroundColor = playerColours[winningplayer - 1];
     // changes the id of the free tile to the player that won the point
@@ -50,9 +50,8 @@ const playersTiles = function (playerNumber) {
         // makes an array from this
         return Array.from(classPlayer);
 };
-// when the player has a correct answer, it will change the
-// colour of another player's tile to their colour
-Board.correctAnswer = function (playerNumber) {
+// finds a free tile to change the colour of
+Board.findTile = function (playerNumber) {
     const winnersTiles = playersTiles(playerNumber);
     let surrounding = [];
     // loops through all the tiles currently owned by the player
@@ -68,8 +67,10 @@ Board.correctAnswer = function (playerNumber) {
     const freeTiles = surrounding.filter(outOfRange).filter(ofDifferentClass);
     const randomNumber = F.getRandomInt(0, freeTiles.length - 1);
     const randomTile = freeTiles[randomNumber];
+    // NB: randomTile will be undefined when the board is full
+    // ie a player has won
     if (randomTile === undefined) {
-        console.log("This has worked");
+        console.log("Board is full");
         // *** put a function that creates a pop-up when someone has won ***
     } else {
         // returns the tile to be changed.

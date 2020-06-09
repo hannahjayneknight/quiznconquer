@@ -54,20 +54,31 @@ ui.init = function () {
     // this is the client side of the server
     const ws = new WebSocket("ws://localhost:8080");
 
-    // when it receives a message from the server...
+    // when it receives a message (e) from the server...
     ws.onmessage = function ( e ) {
-        console.log(e);
+
+        // parses the message received
         const requestObj = JSON.parse(e.data);
+
         // if the message contains the word to be testing on,
         // it will change this in the DOM
-        console.log(requestObj);
-        if ("word" in requestObj) { // MAKE SO DOESN'T USE 'IN'
-        el("testingWord").textContent = requestObj.word;
+        if ("word" in requestObj) {
+            el("testingWord").textContent = requestObj.word;
+
+        // if the message says that a player has won...
+        // it will return the tile to be won by the player
+        } else if ("playerWon" in requestObj) {
+            let winningTileObj = JSON.stringify({
+                "winningTile": Board.findTile(1)
+            });
+            ws.send(winningTileObj);
+
+        // if the message contains a tile to be changed...
+        // it will change the colour of that tile
         } else if ("tileStolen" in requestObj) {
-            // if the message contains a tile to be changed
-            // change tile of player number tileStolen.tileStolen.winner
-            // change tile number tileStolen.tileStolen.tileNumber
-            
+            Board.changeTile(
+                requestObj.tileStolen.tileNumber, requestObj.tileStolen.winner
+                );
         }
     };
 

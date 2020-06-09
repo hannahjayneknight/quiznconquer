@@ -43,15 +43,33 @@ app.ws("/", function (ws, req) {
     // displayed on the DOM
     let word = generateWord(dictionary.beginner);
     ws.send(JSON.stringify( { "word": word[0] } ) );
+
     // when receiving a message from the client...
     ws.on("message", function (msg) {
+        // de-stringifies the message
         let clientObj = JSON.parse(msg);
-        console.log(msg); // CLEAN THIS UP LATER
-        // if the message is a word, it will check if it is correct
-        if (clientObj.answer === word[1]) {
-            ws.send(JSON.stringify({
-                "tileStolen": {"winner": 1, "tileNumber": 4}
-            }));
+
+        // if the message is an answer...
+        if ("answer" in clientObj) {
+            // it will check if it is correct
+            // and send the player number that won
+            if (clientObj.answer === word[1]) {
+                ws.send(JSON.stringify({
+                    "playerWon": 1
+                }));
+            }
+            // it will generate a new word for questioning
+            word = generateWord(dictionary.beginner);
+            ws.send(JSON.stringify( { "word": word[0] } ) );
+
+
+        // if the message is the tile number to be won, it will send
+        // the tile number to be changed and the player that won it
+        } else if ("winningTile" in clientObj) {
+            let tileStolen = {
+                "tileStolen": {"winner": 1, "tileNumber": clientObj.winningTile}
+            };
+            ws.send(JSON.stringify(tileStolen));
         }
 
     });
