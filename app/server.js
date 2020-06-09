@@ -33,49 +33,58 @@ app.get("/", function (req, res, next) {
 
 
 
-// let openWs = [];
+let numWS = [];
 // this is the server that interacts with the user (ie the web socket)
 app.ws("/", function (ws, req) {
-    /* THIS WILL BE USED TO ADD OTHER PLAYERS
 
-    let player = openWs.length;
-    // player1 = 0 etc
-    ws.myprivatedata = {}
-    openWs.push({ "ws": ws, "playerNumber": player, "players": openWs } );
-    if( openWs.length === 4 )
-    {
-        openWs = [];
-    } */
+    // THE TIMER
+    function startTimer() {
+        const mins = 0.5;
+        const now = Date.now();
+        const deadline = mins * 60 * 1000 + now;
 
-    // the timer
-    const mins = 0.5;
-    const now = Date.now();
-    const deadline = mins * 60 * 1000 + now;
+        var timerID = setInterval(function () {
+            var currentTime = Date.now();
+            var distance = deadline - currentTime;
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            if (parseInt(seconds) === 0) {
+                clearInterval(timerID);
+                ws.send(JSON.stringify({
+                    "timer": seconds,
+                    "gameStatus": "gameOver"
+                }));
+            } else {
+                ws.send(JSON.stringify({
+                    "timer": seconds,
+                    "gameStatus": "playing"
+                }));
+            }
+        // rather than change html, the server will send
+        // JSON.stringify({"timer": seconds})
+        }, 500);
+        ws.send(JSON.stringify({
+            "timer": 30,
+            "gameStatus": "playing"
+        }));
+    }
 
-    // why use var here?
-    var timerID = setInterval(function () {
-        var currentTime = Date.now();
-        var distance = deadline - currentTime;
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        if (parseInt(seconds) === 0) {
-            clearInterval(timerID);
-            ws.send(JSON.stringify({
-                "timer": seconds,
-                "gameStatus": "gameOver"
-            }));
-            // send message that timer has run out here
-        } else {
-            ws.send(JSON.stringify({
-                "timer": seconds,
-                "gameStatus": "playing"
-            }));
-        }
-    }, 500);
+    // This ensure that it waits for 4 players to join
+    let playerNum = numWS.length;
+    // eg player1 = 0 etc
+    // this is an object
+    ws.myprivatedata = { "playerNumber": numWS.length, "players": numWS };
+    // numWS contains all the ws socket objects
+    numWS.push( ws );
+    if ( numWS.length === 4 ) {
+        numWS = [];
+        ws.myprivatedata.players.forEach( () => startTimer());
+    }
 
     // generates a testing word and sends it to the client to be
     // displayed on the DOM
     let word = generateWord(dictionary.beginner);
-    ws.send(JSON.stringify( { "word": word[0] } ) );
+    ws.myprivatedata.players.forEach( () =>
+        ws.send(JSON.stringify( { "word": word[0] } ) ));
 
     // when receiving a message from the client...
     ws.on("message", function (msg) {
@@ -93,6 +102,7 @@ app.ws("/", function (ws, req) {
                 }));
             }
             // it will generate a new word for questioning
+            // ONLY for the player that won the tile
             word = generateWord(dictionary.beginner);
             ws.send(JSON.stringify( { "word": word[0] } ) );
 
