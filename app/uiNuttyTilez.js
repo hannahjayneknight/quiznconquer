@@ -62,12 +62,12 @@ ui.init = function () {
 
         // if the message contains the word to be testing on,
         // it will change this in the DOM
-        if ("word" in requestObj) {
+        if (requestObj.word !== undefined) {
             el("testingWord").textContent = requestObj.word;
 
         // if the message says that a player has won...
         // it will return the tile to be won by the player
-        } else if ("playerWon" in requestObj) {
+        } else if (requestObj.playerWon !== undefined) {
             let winningTileObj = JSON.stringify({
                 "winningTile": Board.findTile(1)
             });
@@ -75,10 +75,16 @@ ui.init = function () {
 
         // if the message contains a tile to be changed...
         // it will change the colour of that tile
-        } else if ("tileStolen" in requestObj) {
+        } else if (requestObj.tileStolen !== undefined) {
             Board.changeTile(
                 requestObj.tileStolen.tileNumber, requestObj.tileStolen.winner
                 );
+        } else if (requestObj.timer !== undefined) {
+            if (requestObj.gameStatus === "playing") {
+                el("timer").innerHTML = requestObj.timer;
+            } else {
+                el("timer").innerHTML = "Game Over!";
+            }
         }
     };
 
