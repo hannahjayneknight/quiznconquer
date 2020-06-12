@@ -51,6 +51,8 @@ ui.init = function () {
         tileBoard.appendChild(tile); // note the differences from .append()
     });
 
+    // el("help-button").onclick = ;
+
     // this is the client side of the server
     const ws = new WebSocket("ws://localhost:8080");
 

@@ -1,12 +1,12 @@
 :root
 {
-    --blue: blue;
-    --red: red;
-    --yellow: yellow;
-    --green: green;
-    --black: black;
+    --grey: #dad8db;
+    --lightGreen: #97Bc62ff;
+    --green: #2c5f2d;
+    --nearBlack: #101820;
     --screenheight: 100vh;
     --screenwidth: 100vw;
+    --font: "Clear Sans", "Helvetica Neue", Arial, sans-serif;;
 }
 
 body
@@ -22,11 +22,16 @@ body
     font-size: 1.25rem;
 }
 
-.exit
+.help
 {
     position: absolute;
     top: 5vh;
     right: 5vw;
+    width: 15vh;
+    height: 5vh;
+    font-family: var(--font);
+    font-weight: 600;
+
 }
 
 #testingWord
@@ -36,7 +41,10 @@ body
     width: 50vh;
     left:37.5vw;
     font-size: 1.75rem;
+    font-weight: 900;
     text-align: center;
+    font-family: var(--font);
+    color: var(--green);
 }
 
 
@@ -54,23 +62,39 @@ body
 }
 
 #tileBoard>* {
-    flex: 1 1 8.3vh;
+    flex: 1 1 8vh;
 }
 
 .player1tile {
-    background-color: blue;
+    background-color: var(--grey);
+    border-radius: 10%;
+    border-width: 0.05vh; 
+    border-style: solid; 
+    border-color: white;
 }
 
 .player2tile {
-    background-color: green;
+    background-color: var(--lightGreen);
+    border-radius: 10%;
+    border-width: 0.05vh; 
+    border-style: solid; 
+    border-color: white;
 }
 
 .player3tile {
-    background-color: yellow;
+    background-color: var(--green);
+    border-radius: 10%;
+    border-width: 0.05vh; 
+    border-style: solid; 
+    border-color: white;
 }
 
 .player4tile {
-    background-color: black;
+    background-color: var(--nearBlack);
+    border-radius: 10%;
+    border-width: 0.05vh; 
+    border-style: solid; 
+    border-color: white;
 }
 
 #answer-pane
@@ -85,6 +109,7 @@ body
     border: 1px solid #ccc;
     font-size: 1.75rem;
     text-align: center;
+    font-family: var(--font);
 }
 
 #timer
@@ -95,6 +120,7 @@ body
     width: 50vh;
     text-align: center;
     font-size: 1.25rem;
+    font-family: var(--font);
 }
 
 textarea:invalid {
