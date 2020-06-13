@@ -43,7 +43,7 @@ app.ws("/", function (ws, req) {
     // This is used for ensuring all players on the same game
     // get the same timer and updated board
     ws.myprivatedata = {
-        "playerNumber": numWS.length,
+        "playerNumber": numWS.length + 1,
         "players": numWS,
         "currentBoard": currentBoard
     };
@@ -76,16 +76,25 @@ app.ws("/", function (ws, req) {
             if (clientObj.answer === ws.myprivatedata.word[1]) {
                 // and send the player number that won along with
                 // the free tile to change
-                const tileStolen = H.freeTile(1, currentBoard);
+                const tileStolen = H.freeTile(
+                    ws.myprivatedata.playerNumber,
+                    currentBoard
+                );
                 ws.myprivatedata.players.forEach(function (thisws) {
                     thisws.send(JSON.stringify({
-                        "tileStolen":
-                        {"winner": 1, "tileNumber": tileStolen}
+                        "tileStolen": {
+                            "winner": ws.myprivatedata.playerNumber,
+                            "tileNumber": tileStolen
+                        }
                     }));
                 });
                 // and update the server's array of the current board
                 // CHANGE 1 TO THE PLAYER THAT WINS
-                H.changeTile(tileStolen, currentBoard, 1);
+                H.changeTile(
+                    tileStolen,
+                    currentBoard,
+                    ws.myprivatedata.playerNumber
+                );
             }
             // it will generate a new word for questioning
             // ONLY for the player that won the tile

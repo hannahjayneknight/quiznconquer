@@ -40,7 +40,6 @@ H.divNumbers =
   30, 31, 32, 33, 34, 35
 ]
 */
-H.divNumbers = F.sequence(36);
 
 // takes in the dictionary to be used and returns an array with the word
 // as the first value and the translation as the second
@@ -132,6 +131,69 @@ const surroundingTiles = function (element) {
     ];
     return surroundingTilesArray;
 };
+
+/*
+Div-numbers of the tileboard, laid out in a multidimensional array.
+This is used for the surroundingTiles() function.
+
+MAKE A FUNCTION THAT CAN MAKE THIS ARRAY, WITHOUT YOU NEEDING TO TYPE IT
+OUT. THIS MEANS YOU COULD MAKE A MULTIDIMENSIONAL ARRAY OF ANY SIZE.
+*/
+const divNums = [
+    [0, 1, 2, 3, 4, 5],
+    [6, 7, 8, 9, 10, 11],
+    [12, 13, 14, 15, 16, 17],
+    [18, 19, 20, 21, 22, 23],
+    [24, 25, 26, 27, 28, 29],
+    [30, 31, 32, 33, 34, 35]
+];
+
+const surroundingTiles2 = function (matrix, element) {
+    const directions = [
+        {x: -1, y:-1},
+        {x:-1, y:0},
+        {x: -1, y:1},
+        {x: 0, y:1},
+        {x:1, y:1},
+        {x:1, y:0},
+        {x:1, y: -1},
+        {x:0, y: -1}
+    ];
+    const res = [];
+    const xy = getIndexOfK2(matrix, element);
+    // for each of the options for directions,
+    // we add the x and y index that was parsed in
+    directions.forEach( function (element) {
+        const cx = xy[0] + element.x;
+        const cy = xy[1] + element.y;
+        if (cy >=0 && cy < matrix.length) {
+            if(cx >= 0 && cx < matrix[cy].length) {
+                res.push(matrix[cy][cx]);
+            }
+        }
+    });
+    return res;
+};
+
+const getIndexOfK2 = function (arr, k) {
+    const sequence = (n) => Array.from(new Array(n).keys()); // CHANGE THIS
+    const xy = [];
+    // loops through each row of the array
+    sequence(arr.length).forEach( function (i) {
+        // finds the index of k within that row
+        // NB: index = -1 if it is not there
+        let index = arr[i].indexOf(k);
+        if (index > -1) {
+            xy.push(i, index);
+        }
+    });
+    return xy;
+};
+
+
+
+
+
 
 H.changeTile = function (tileStolen, currentBoard, playerwon) {
     currentBoard.splice(tileStolen, 1, "player" + playerwon);
