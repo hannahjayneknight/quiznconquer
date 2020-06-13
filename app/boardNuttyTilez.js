@@ -1,5 +1,6 @@
 import F from "./usefulfunctions.js";
 
+// NB: this object is only used on the client side
 const Board = Object.create(null);
 
 const el = (id) => document.getElementById(id);
@@ -22,25 +23,11 @@ Board.startBoard = () => [
 
 
 
-// function that finds all the surrounding tiles of a tile
-// takes in the id of the tile you are considering
-Board.surroundingTiles = function (element) {
-    const surroundingTilesArray = [
-        parseInt(element.id) + 5,
-        parseInt(element.id) - 5,
-        parseInt(element.id) + 7,
-        parseInt(element.id) - 7,
-        parseInt(element.id) + 6,
-        parseInt(element.id) - 6,
-        parseInt(element.id) + 1,
-        parseInt(element.id) - 1
-    ];
-    return surroundingTilesArray;
-};
 // takes in the freetile and the winning player
 Board.changeTile = function (freetile, winningplayer) {
     // sets the free tile to that player's colour
-    el(freetile.toString()).style.backgroundColor = playerColours[winningplayer - 1];
+    el(freetile.toString()).style.backgroundColor =
+        playerColours[winningplayer - 1];
     // changes the id of the free tile to the player that won the point
     el(freetile.toString()).className = "player" + winningplayer + "tile";
 };
@@ -50,34 +37,6 @@ const playersTiles = function (playerNumber) {
         const classPlayer = claN("player" + playerNumber + "tile");
         // makes an array from this
         return Array.from(classPlayer);
-};
-// finds a free tile to change the colour of
-Board.findTile = function (playerNumber) {
-    const winnersTiles = playersTiles(playerNumber);
-    let surrounding = [];
-    // loops through all the tiles currently owned by the player
-    winnersTiles.forEach(function (element) {
-        // adds all the surrounding tiles to surrounding
-        surrounding.push.apply(surrounding, Board.surroundingTiles(element));
-    });
-    const ofDifferentClass = (element) =>
-        el(element).className !== ("player" + playerNumber + "tile");
-    const outOfRange = (element) =>
-        (0<parseInt(element) && parseInt(element) < 36);
-    // removes negative tiles which do not exist and
-    // tiles that belong to the winner
-    const freeTiles = surrounding.filter(outOfRange).filter(ofDifferentClass);
-    const randomNumber = F.getRandomInt(0, freeTiles.length - 1);
-    const randomTile = freeTiles[randomNumber];
-    // NB: randomTile will be undefined when the board is full
-    // ie a player has won
-    if (randomTile === undefined) {
-        console.log("Board is full");
-        // *** put a function that creates a pop-up when someone has won ***
-    } else {
-        // returns the tile to be changed.
-        return randomTile;
-    }
 };
 
 const divNumberArray = F.sequence(36);

@@ -1,6 +1,6 @@
 import F from "./usefulfunctions.js";
-import Board from "./boardNuttyTilez.js";
 
+// NB: this object is only used on the server side
 const H = Object.create(null);
 
 const playerclasses = [[ "player1", "player2"],
@@ -84,10 +84,11 @@ H.startTimer = function (wsarr) {
 // a function that finds a free tile to change the colour of
 // ensures that the tile is not the winning player's own tile
 // and that it is close to the tiles they currently own
-H.freeTile = function (playerNumber) {
+H.freeTile = function (playerNumber, currentBoard) {
     // firstly finds all the tiles currently owned by the winning player
     const winnersTiles = [];
-    H.startBoard().forEach( function (element, index) {
+    currentBoard.forEach( function (element, index) {
+        // CHANGE THIS TO JUST NUMBERS?
         if (element === ("player" + playerNumber)) {
             winnersTiles.push(index);
         }
@@ -130,6 +131,10 @@ const surroundingTiles = function (element) {
         element - 1
     ];
     return surroundingTilesArray;
+};
+
+H.changeTile = function (tileStolen, currentBoard, playerwon) {
+    currentBoard.splice(tileStolen, 1, "player" + playerwon);
 };
 
 export default Object.freeze(H);

@@ -1,7 +1,6 @@
 
 import express from "express";
 import expressWS from "express-ws";
-import Board from "./boardNuttyTilez.js";
 import dictionary from "./dictionary.js";
 import H from "./handler.js";
 function ignorparam() {}
@@ -34,15 +33,21 @@ app.get("/", function (req, res, next) {
 
 
 let numWS = [];
-let board = H.startBoard;
+
 // this is the server that interacts with the user (ie the web socket)
 app.ws("/", function (ws, req) {
     ignorparam(req);
+    // creates a shallow copy of the starting array
+    let currentBoard = Array.from(H.startBoard());
 
     // This ensure that it waits for 4 players to join
     // eg player1 = 0 etc
     // this is an object
-    ws.myprivatedata = {"playerNumber": numWS.length, "players": numWS};
+    ws.myprivatedata = {
+        "playerNumber": numWS.length,
+        "players": numWS,
+        "currentBoard": currentBoard
+    };
     // numWS contains all the ws socket objects
     numWS.push(ws);
     if (numWS.length === 4) {
@@ -71,24 +76,20 @@ app.ws("/", function (ws, req) {
             if (clientObj.answer === ws.myprivatedata.word[1]) {
                 // and send the player number that won along with
                 // the free tile to change
+                const tileStolen = H.freeTile(1, currentBoard);
                 ws.send(JSON.stringify({
-                    "playerWon": 1,
-                    "tileS": H.freeTile(1)
+                    "tileStolen":
+                    {"winner": 1, "tileNumber": tileStolen}
                 }));
+                // and update the server's array of the current board
+                // CHANGE 1 TO THE PLAYER THAT WINS
+                H.changeTile(tileStolen, currentBoard, 1);
             }
             // it will generate a new word for questioning
             // ONLY for the player that won the tile
             ws.myprivatedata.word = H.generateWord(dictionary.beginner);
             ws.send(JSON.stringify({"word": ws.myprivatedata.word[0]}));
 
-
-        // if the message is the tile number to be won, it will send
-        // the tile number to be changed and the player that won it
-        } else if (clientObj.winningTile !== undefined) {
-            let tileStolen = {
-                "tileStolen": {"winner": 1, "tileNumber": clientObj.winningTile}
-            };
-            ws.send(JSON.stringify(tileStolen));
         }
 
     });
@@ -102,30 +103,3 @@ app.listen(port, function () {
 
 
 /////////////////////////////////////////////////////////
-
-/*
-OLD VERSION OF CHANGING TILE
-        // if the message is an answer...
-        if (clientObj.answer !== undefined) {
-            // it will check if it is correct
-            // and send the player number that won
-            if (clientObj.answer === ws.myprivatedata.word[1]) {
-                ws.send(JSON.stringify({
-                    "playerWon": 1
-                }));
-            }
-            // it will generate a new word for questioning
-            // ONLY for the player that won the tile
-            ws.myprivatedata.word = H.generateWord(dictionary.beginner);
-            ws.send(JSON.stringify({"word": ws.myprivatedata.word[0]}));
-
-
-        // if the message is the tile number to be won, it will send
-        // the tile number to be changed and the player that won it
-        } else if (clientObj.winningTile !== undefined) {
-            let tileStolen = {
-                "tileStolen": {"winner": 1, "tileNumber": clientObj.winningTile}
-            };
-            ws.send(JSON.stringify(tileStolen));
-        }
-*/

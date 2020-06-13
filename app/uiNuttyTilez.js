@@ -45,7 +45,6 @@ ui.init = function () {
     el("answer-pane").value = "";
     F.sequence(36).forEach(function (element) {
         let ourclass = playerclasses[ Math.floor(element / 18)][ Math.floor((element/3)%2)];
-        
         const tile = document.createElement("div"); // makes a div element
         tile.setAttribute("id", element);
         tile.setAttribute("class", ourclass + "tile");
@@ -68,23 +67,20 @@ ui.init = function () {
         if (requestObj.word !== undefined) {
             el("testingWord").textContent = requestObj.word;
 
-        // if the message says that a player has won...
-        // it will return the tile to be won by the player
-        } else if (requestObj.playerWon !== undefined) {
-            let winningTileObj = JSON.stringify({
-                "winningTile": Board.findTile(1)
-            });
-            ws.send(winningTileObj);
-
-        // if the message contains a tile to be changed...
-        // it will change the colour of that tile
+        // if the message says that a tile has been stolen...
         } else if (requestObj.tileStolen !== undefined) {
+                // it will change the tile to the colour of the player
+                // that won
             Board.changeTile(
                 requestObj.tileStolen.tileNumber, requestObj.tileStolen.winner
                 );
+
+        // if the message contains the status of the timer...
         } else if (requestObj.timer !== undefined) {
+            // it will update the timer if the game is still playing
             if (requestObj.gameStatus === "playing") {
                 el("timer").innerHTML = requestObj.timer;
+            // otherwise the game is over
             } else {
                 el("timer").innerHTML = "Game Over!";
             }
