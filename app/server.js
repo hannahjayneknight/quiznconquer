@@ -40,15 +40,15 @@ app.ws("/", function (ws, req) {
     // creates a shallow copy of the starting array
     let currentBoard = Array.from(H.startBoard());
 
-    // This ensure that it waits for 4 players to join
-    // eg player1 = 0 etc
-    // this is an object
+    // This is used for ensuring all players on the same game
+    // get the same timer and updated board
     ws.myprivatedata = {
         "playerNumber": numWS.length,
         "players": numWS,
         "currentBoard": currentBoard
     };
     // numWS contains all the ws socket objects
+    // This ensure that it waits for 4 players to join
     numWS.push(ws);
     if (numWS.length === 4) {
         numWS = [];
@@ -77,10 +77,12 @@ app.ws("/", function (ws, req) {
                 // and send the player number that won along with
                 // the free tile to change
                 const tileStolen = H.freeTile(1, currentBoard);
-                ws.send(JSON.stringify({
-                    "tileStolen":
-                    {"winner": 1, "tileNumber": tileStolen}
-                }));
+                ws.myprivatedata.players.forEach(function (thisws) {
+                    thisws.send(JSON.stringify({
+                        "tileStolen":
+                        {"winner": 1, "tileNumber": tileStolen}
+                    }));
+                });
                 // and update the server's array of the current board
                 // CHANGE 1 TO THE PLAYER THAT WINS
                 H.changeTile(tileStolen, currentBoard, 1);
