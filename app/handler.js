@@ -96,48 +96,27 @@ H.freeTile = function (playerNumber, currentBoard) {
     // and adds all the surrounding tiles to surrounding
     let surrounding = [];
     winnersTiles.forEach(function (element) {
-        surrounding.push.apply(surrounding, surroundingTiles(element));
+        surrounding.push.apply(surrounding, surroundingTiles(divNums, element));
     });
     // removes negative tiles which do not exist and
     // tiles that belong to the winner
     const outOfRange = (element) =>
-        (0<parseInt(element) && parseInt(element) < 36);
+        (-1<parseInt(element) && parseInt(element) < 36);
     const freeTiles = F.diff(surrounding, winnersTiles).filter(outOfRange);
     const randomNumber = F.getRandomInt(0, freeTiles.length - 1);
     // finds a random tile out of the ones that are free
     const randomTile = freeTiles[randomNumber];
     // NB: randomTile will be undefined when the board is full
-    // ie a player has won
-    if (randomTile === undefined) {
-        console.log("Board is full");
-        // *** put a function that creates a pop-up when someone has won ***
-    } else {
-        // returns the tile to be changed.
-        return randomTile;
-    }
+    // ie a player has won. This is handled by the server
+    return randomTile;
 };
 
-
-const surroundingTiles = function (element) {
-    const surroundingTilesArray = [
-        element + 5,
-        element - 5,
-        element + 7,
-        element - 7,
-        element + 6,
-        element - 6,
-        element + 1,
-        element - 1
-    ];
-    return surroundingTilesArray;
-};
 
 /*
 Div-numbers of the tileboard, laid out in a multidimensional array.
 This is used for the surroundingTiles() function.
 
-MAKE A FUNCTION THAT CAN MAKE THIS ARRAY, WITHOUT YOU NEEDING TO TYPE IT
-OUT. THIS MEANS YOU COULD MAKE A MULTIDIMENSIONAL ARRAY OF ANY SIZE.
+MAKE A FUNCTION THAT CAN MAKE THIS ARRAY???
 */
 const divNums = [
     [0, 1, 2, 3, 4, 5],
@@ -148,7 +127,7 @@ const divNums = [
     [30, 31, 32, 33, 34, 35]
 ];
 
-const surroundingTiles2 = function (matrix, element) {
+const surroundingTiles = function (matrix, element) {
     const directions = [
         {x: -1, y:-1},
         {x:-1, y:0},
@@ -175,16 +154,18 @@ const surroundingTiles2 = function (matrix, element) {
     return res;
 };
 
+// this function takes the tile number of any tile and
+// returns the index of it on divNums so that it can be
+// used in the surroundingTiles() function
 const getIndexOfK2 = function (arr, k) {
-    const sequence = (n) => Array.from(new Array(n).keys()); // CHANGE THIS
     const xy = [];
     // loops through each row of the array
-    sequence(arr.length).forEach( function (i) {
+    F.sequence(arr.length).forEach( function (i) {
         // finds the index of k within that row
         // NB: index = -1 if it is not there
         let index = arr[i].indexOf(k);
         if (index > -1) {
-            xy.push(i, index);
+            xy.push(index, i);
         }
     });
     return xy;

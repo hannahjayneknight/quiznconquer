@@ -80,16 +80,17 @@ app.ws("/", function (ws, req) {
                     ws.myprivatedata.playerNumber,
                     currentBoard
                 );
-                ws.myprivatedata.players.forEach(function (thisws) {
-                    thisws.send(JSON.stringify({
-                        "tileStolen": {
-                            "winner": ws.myprivatedata.playerNumber,
-                            "tileNumber": tileStolen
-                        }
-                    }));
-                });
+                if (tileStolen !== undefined) {
+                    ws.myprivatedata.players.forEach(function (thisws) {
+                        thisws.send(JSON.stringify({
+                            "tileStolen": {
+                                "winner": ws.myprivatedata.playerNumber,
+                                "tileNumber": tileStolen
+                            }
+                        }));
+                    });
+                } // ELSE GOES HERE - FOR WHEN THE BOARD IS FULL
                 // and update the server's array of the current board
-                // CHANGE 1 TO THE PLAYER THAT WINS
                 H.changeTile(
                     tileStolen,
                     currentBoard,
