@@ -45,6 +45,7 @@ ui.init = function () {
     el("answer-pane").value = "";
     F.sequence(36).forEach(function (element) {
         let ourclass = playerclasses[ Math.floor(element / 18)][ Math.floor((element/3)%2)];
+        
         const tile = document.createElement("div"); // makes a div element
         tile.setAttribute("id", element);
         tile.setAttribute("class", ourclass + "tile");

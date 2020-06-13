@@ -4,7 +4,8 @@ const Board = Object.create(null);
 
 const el = (id) => document.getElementById(id);
 const claN = (className) => document.getElementsByClassName(className);
-const playerColours = ["blue", "green", "yellow", "black"];
+// change this to an object with key as the player number, value as the colour
+const playerColours = ["#dad8db", "#97Bc62ff", "#2c5f2d", "#101820"];
 
 Board.startBoard = () => [
     [1, 1, 1, 2, 2, 2],
@@ -23,7 +24,7 @@ Board.startBoard = () => [
 
 // function that finds all the surrounding tiles of a tile
 // takes in the id of the tile you are considering
-const surroundingTiles = function (element) {
+Board.surroundingTiles = function (element) {
     const surroundingTilesArray = [
         parseInt(element.id) + 5,
         parseInt(element.id) - 5,
@@ -57,7 +58,7 @@ Board.findTile = function (playerNumber) {
     // loops through all the tiles currently owned by the player
     winnersTiles.forEach(function (element) {
         // adds all the surrounding tiles to surrounding
-        surrounding.push.apply(surrounding, surroundingTiles(element));
+        surrounding.push.apply(surrounding, Board.surroundingTiles(element));
     });
     const ofDifferentClass = (element) =>
         el(element).className !== ("player" + playerNumber + "tile");
@@ -77,6 +78,35 @@ Board.findTile = function (playerNumber) {
         // returns the tile to be changed.
         return randomTile;
     }
+};
+
+const divNumberArray = F.sequence(36);
+/*
+
+divNumberArray =
+[
+   0,  1,  2,  3,  4,  5,  6,  7,  8,
+   9, 10, 11, 12, 13, 14, 15, 16, 17,
+  18, 19, 20, 21, 22, 23, 24, 25, 26,
+  27, 28, 29, 30, 31, 32, 33, 34, 35
+]
+
+*/
+const playerclasses = [[ "player1", "player2"],
+                        ["player3", "player4" ]];
+
+const startBoard = function () {
+    let arr = F.sequence(36);
+    F.sequence(36).forEach(
+        function (element) {
+        let ourclass = playerclasses[ Math.floor(element / 18)][ Math.floor((element/3)%2)];
+        arr.splice( element , 1, ourclass);
+        });
+    return arr;
+};
+
+Board.findTile2 = function (playerNumber) {
+
 };
 
 
