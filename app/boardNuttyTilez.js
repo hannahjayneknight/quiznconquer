@@ -105,10 +105,6 @@ const startBoard = function () {
     return arr;
 };
 
-Board.findTile2 = function (playerNumber) {
-
-};
-
 
 
 ////////////////////////////////////////////////////////////////////////////////

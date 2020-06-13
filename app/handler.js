@@ -84,11 +84,11 @@ H.startTimer = function (wsarr) {
 // a function that finds a free tile to change the colour of
 // ensures that the tile is not the winning player's own tile
 // and that it is close to the tiles they currently own
-H.freeTile2 = function (playerNumber) {
+H.freeTile = function (playerNumber) {
     // firstly finds all the tiles currently owned by the winning player
     const winnersTiles = [];
     H.startBoard().forEach( function (element, index) {
-        if (element === ("player" + playerNumber + "tile")) {
+        if (element === ("player" + playerNumber)) {
             winnersTiles.push(index);
         }
     } );
@@ -102,8 +102,9 @@ H.freeTile2 = function (playerNumber) {
     // tiles that belong to the winner
     const outOfRange = (element) =>
         (0<parseInt(element) && parseInt(element) < 36);
-    const freeTiles = F.surrounding.diff(winnersTiles).filter(outOfRange);
+    const freeTiles = F.diff(surrounding, winnersTiles).filter(outOfRange);
     const randomNumber = F.getRandomInt(0, freeTiles.length - 1);
+    // finds a random tile out of the ones that are free
     const randomTile = freeTiles[randomNumber];
     // NB: randomTile will be undefined when the board is full
     // ie a player has won

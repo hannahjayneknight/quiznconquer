@@ -68,11 +68,12 @@ app.ws("/", function (ws, req) {
         // if the message is an answer...
         if (clientObj.answer !== undefined) {
             // it will check if it is correct
-            // and send the player number that won along with the free tile
             if (clientObj.answer === ws.myprivatedata.word[1]) {
-                // const freeTile =
+                // and send the player number that won along with
+                // the free tile to change
                 ws.send(JSON.stringify({
-                    "playerWon": 1
+                    "playerWon": 1,
+                    "tileS": H.freeTile(1)
                 }));
             }
             // it will generate a new word for questioning
