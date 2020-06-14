@@ -98,11 +98,10 @@ H.freeTile = function (playerNumber, currentBoard) {
     winnersTiles.forEach(function (element) {
         surrounding.push.apply(surrounding, surroundingTiles(divNums, element));
     });
-    // removes negative tiles which do not exist and
-    // tiles that belong to the winner
-    const outOfRange = (element) =>
-        (-1<parseInt(element) && parseInt(element) < 36);
-    const freeTiles = F.diff(surrounding, winnersTiles).filter(outOfRange);
+    // removes tiles which belong to the winner and duplicates removing
+    // duplicates ensures that all surrounding tiles have an equal chance
+    // of being picked
+    const freeTiles = F.uniq(F.diff(surrounding, winnersTiles));
     const randomNumber = F.getRandomInt(0, freeTiles.length - 1);
     // finds a random tile out of the ones that are free
     const randomTile = freeTiles[randomNumber];
@@ -127,6 +126,10 @@ const divNums = [
     [30, 31, 32, 33, 34, 35]
 ];
 
+// surrounding tiles finds the surrounding tiles of an element within the
+// constrains of the board, ie it will not return a tile on the other side
+// of the board which would be considered a surrounding tile if the board were
+// one dimensional
 const surroundingTiles = function (matrix, element) {
     const directions = [
         {x: -1, y:-1},
@@ -140,11 +143,15 @@ const surroundingTiles = function (matrix, element) {
     ];
     const res = [];
     const xy = getIndexOfK2(matrix, element);
-    // for each of the options for directions,
+    // for each of the options of directions,
     // we add the x and y index that was parsed in
+    // to find the change in x or y
     directions.forEach( function (element) {
         const cx = xy[0] + element.x;
         const cy = xy[1] + element.y;
+        // if cx and cy are not negative or greater
+        // than the length of the matrix, they are
+        // pushed to the results array
         if (cy >=0 && cy < matrix.length) {
             if(cx >= 0 && cx < matrix[cy].length) {
                 res.push(matrix[cy][cx]);
@@ -170,11 +177,6 @@ const getIndexOfK2 = function (arr, k) {
     });
     return xy;
 };
-
-
-
-
-
 
 H.changeTile = function (tileStolen, currentBoard, playerwon) {
     currentBoard.splice(tileStolen, 1, "player" + playerwon);

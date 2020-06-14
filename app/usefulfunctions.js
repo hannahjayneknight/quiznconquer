@@ -31,4 +31,12 @@ F.diff = function (arr1, arr2) {
     return ret;
 };
 
+// takes an array and removes any duplicates  in the array using .filter()
+F.uniq = function (a) {
+    var seen = {};
+    return a.filter(function(item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+}
+
 export default Object.freeze(F);
