@@ -110,6 +110,7 @@ body
     font-size: 1.75rem;
     text-align: center;
     font-family: var(--font);
+    display: none;
 }
 
 #timer

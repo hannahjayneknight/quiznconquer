@@ -20,6 +20,13 @@ ui.init = function () {
     // this is the client side of the server
     const ws = new WebSocket("ws://localhost:8080");
 
+    /*
+    ws.onclose = function (event) {
+        console.log("Client notified socket has closed", event);
+        ws.close();
+    };
+    */
+
     // when it receives a message (e) from the server...
     ws.onmessage = function ( e ) {
 
@@ -44,9 +51,11 @@ ui.init = function () {
             // it will update the timer if the game is still playing
             if (requestObj.gameStatus === "playing") {
                 el("timer").innerHTML = requestObj.timer;
+                el("answer-pane").style.display = "block";
             // otherwise the game is over
             } else {
                 el("timer").innerHTML = "Game Over!";
+                el("answer-pane").style.display = "none";
             }
         }
     };
@@ -57,7 +66,7 @@ ui.init = function () {
         //Check if modal is visible and key code
         if (event.keyCode === 13) {
             const answer = JSON.stringify(
-                { "answer": el("answer-pane").value.trim() });
+                { "answer": el("answer-pane").value.trim().toLowerCase() });
             ws.send(answer);
             el("answer-pane").value = "";
         }

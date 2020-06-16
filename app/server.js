@@ -109,6 +109,7 @@ app.ws("/", function (ws, req) {
     });
 });
 
+
 // THIS IS FOR BOTH SERVERS
 app.listen(port, function () {
     console.log("Listening on port " + port);
