@@ -22,6 +22,17 @@ in a systematised way.
     Initially, when an element was parsed into surroundingTiles(), the following array was
     returned:
 
+    [
+        element + 5,
+        element - 5,
+        element + 7,
+        element - 7,
+        element + 6,
+        element - 6,
+        element + 1,
+        element - 1,
+    ]
+
     However, for the edge and corner tiles, this would return tiles that were on the other 
     side of the board. This meant that a player would not win a tile directly next to the 
     tiles they currently own. Instead, 
@@ -32,3 +43,10 @@ in a systematised way.
 
 Execute database queries that combine tables and filter data.
     Filter between beginner level and intermediate?
+
+
+initially, divNums was part of the global scope and the function getIndexOf K would take in
+any matrix and any K and return the index. However, this is a problem if the matrix parsed
+in has more than one K in it, in which case the function returns the first index where K is.
+But this isn't necessarily correct and is unwanted in our code, so divNums was removed from
+the global scope.

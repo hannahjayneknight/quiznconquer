@@ -33,12 +33,12 @@ app.get("/", function (req, res, next) {
 
 
 let numWS = [];
+// creates a shallow copy of the starting array
+let currentBoard = Array.from(H.startBoard());
 
 // this is the server that interacts with the user (ie the web socket)
 app.ws("/", function (ws, req) {
     ignorparam(req);
-    // creates a shallow copy of the starting array
-    let currentBoard = Array.from(H.startBoard());
 
     // This is used for ensuring all players on the same game
     // get the same timer and updated board
@@ -80,6 +80,7 @@ app.ws("/", function (ws, req) {
                     ws.myprivatedata.playerNumber,
                     currentBoard
                 );
+                // tileStolen === undefined when the board is full
                 if (tileStolen !== undefined) {
                     ws.myprivatedata.players.forEach(function (thisws) {
                         thisws.send(JSON.stringify({
@@ -89,7 +90,7 @@ app.ws("/", function (ws, req) {
                             }
                         }));
                     });
-                } // ELSE GOES HERE - FOR WHEN THE BOARD IS FULL
+                }
                 // and update the server's array of the current board
                 H.changeTile(
                     tileStolen,

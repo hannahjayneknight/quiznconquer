@@ -44,7 +44,7 @@
             "request": "launch",
             "reAttach": true,
             "reloadOnAttach": true,
-            "file": "${workspaceFolder}/test.html",
+            "file": "${workspaceFolder}/unittests/test.html",
             "preferences": {
                 "security.fileuri.strict_origin_policy": false
             },
