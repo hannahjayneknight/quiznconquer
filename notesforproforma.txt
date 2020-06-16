@@ -1,0 +1,34 @@
+make use of .filter() in F.uniq
+
+Describes the identification and resolution of a simple bug:
+
+Peer review comment of de-capitalizing the word.
+
+Documents the identification and resolution of subtle bugs i.e. edge and corner cases 
+in a systematised way.
+    --- EDGE CASE = problem or situation that occurs only at an extreme (maximum or minimum) 
+    operating parameter. 
+
+        *** EG: what happens when a player fills the whole board? Check that H.freeTile() and
+        surroundingTiles() functions both work.
+
+    Initially, when the board was full, H.freeTile() returned undefined. How I resolved this.
+
+    --- CORNER CASE = as above but when multiple variables are at their extremes. 
+
+    EG: when both the x and y coordinates of a tile are at their extreme (ie an edge or 
+    corner piece).
+
+    Initially, when an element was parsed into surroundingTiles(), the following array was
+    returned:
+
+    However, for the edge and corner tiles, this would return tiles that were on the other 
+    side of the board. This meant that a player would not win a tile directly next to the 
+    tiles they currently own. Instead, 
+
+
+
+
+
+Execute database queries that combine tables and filter data.
+    Filter between beginner level and intermediate?

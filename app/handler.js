@@ -22,7 +22,7 @@ H.startBoard = function () {
     let arr = F.sequence(36);
     F.sequence(36).forEach(
         function (element) {
-        let ourclass = playerclasses[ Math.floor(element / 18)][ Math.floor((element/3)%2)];
+        let ourclass = playerclasses[Math.floor(element / 18)][Math.floor((element/3)%2)];
         arr.splice( element , 1, ourclass);
         });
     return arr;
@@ -142,7 +142,7 @@ const surroundingTiles = function (matrix, element) {
         {x:0, y: -1}
     ];
     const res = [];
-    const xy = getIndexOfK2(matrix, element);
+    const xy = getIndexOfK(matrix, element);
     // for each of the options of directions,
     // we add the x and y index that was parsed in
     // to find the change in x or y
@@ -164,7 +164,7 @@ const surroundingTiles = function (matrix, element) {
 // this function takes the tile number of any tile and
 // returns the index of it on divNums so that it can be
 // used in the surroundingTiles() function
-const getIndexOfK2 = function (arr, k) {
+const getIndexOfK = function (arr, k) {
     const xy = [];
     // loops through each row of the array
     F.sequence(arr.length).forEach( function (i) {

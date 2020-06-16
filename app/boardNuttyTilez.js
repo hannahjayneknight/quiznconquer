@@ -1,5 +1,19 @@
 const Board = Object.create(null);
 
+const el = (id) => document.getElementById(id);
+const playerColours = ["#dad8db", "#97Bc62ff", "#2c5f2d", "#101820"];
+
+// takes in the freetile and the winning player
+// and changes the colour of the freetile to the colour of the winning player
+// and its class to the class of the winning player
+Board.changeTile = function (freetile, winningplayer) {
+    el(freetile.toString()).style.backgroundColor =
+    playerColours[winningplayer - 1];
+    el(freetile.toString()).className = "player" + winningplayer + "tile";
+};
+
+export default Object.freeze(Board);
+
 /*
 DIV NUMBERS FOR TILES ON THE TILEBOARD IN A MULTIDIMENSIONAL ARRAY
 [
@@ -23,18 +37,3 @@ STARTING POSITION FOR PLAYERS ON THE BOARD
 ]
 
 */
-
-const el = (id) => document.getElementById(id);
-// change this to an object with key as the player number, value as the colour????
-const playerColours = ["#dad8db", "#97Bc62ff", "#2c5f2d", "#101820"];
-
-// takes in the freetile and the winning player
-Board.changeTile = function (freetile, winningplayer) {
-    // sets the free tile to that player's colour
-    el(freetile.toString()).style.backgroundColor =
-     playerColours[winningplayer - 1];
-    // changes the id of the free tile to the player that won the point
-    el(freetile.toString()).className = "player" + winningplayer + "tile";
-};
-
-export default Object.freeze(Board);
