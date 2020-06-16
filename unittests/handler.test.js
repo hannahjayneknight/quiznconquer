@@ -27,7 +27,6 @@ describe("Example Based Testing", function () {
     });
 });
 
-/*
 
 // get a random player number
 const arbPlayer = fc.integer(1, 4);
@@ -38,7 +37,7 @@ describe("Winning a tile", function () {
     it(
         "Given any board; " +
         "After playerX wins a tile; " +
-        "The new board will not be the same as the board before. ",
+        "The new board will not be the same as the board before.",
         function () {
             fc.assert(fc.property(
                 arbBoard,
@@ -47,18 +46,20 @@ describe("Winning a tile", function () {
                 // takes in a random board, and player then
                 // adds a new tile for that player
                 function (board, player) {
-                    const newBoard = H.changeTile(
+                    // makes a copy of the board. This board will have its tile
+                    // changed to be compared with the original board
+                    const copyBoard = board.slice();
+                    H.changeTile(
 
-                        H.freeTile(player, board),
-                        board,
+                        H.freeTile(player, copyBoard),
+                        copyBoard,
                         player
 
                     );
-                    // returns true if the boards are not equal
-                    return !(T.twoDArrEquals(newBoard, board));
+                    // returns if it has changed a tile
+                    return !(T.oneDArrEquals(board, copyBoard));
                 }
-            ));
+            ), {"verbose": true});
         }
     );
 });
-*/
