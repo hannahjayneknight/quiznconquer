@@ -133,7 +133,7 @@ const surroundingTiles = function (element) {
         {x:0, y: -1}
     ];
     const res = [];
-    const xy = getIndexOfK(element);
+    const xy = H.getIndexOfK(element);
     // for each of the options of directions,
     // we add the x and y index that was parsed in
     // to find the change in x or y
@@ -155,7 +155,7 @@ const surroundingTiles = function (element) {
 // this function takes the tile number of any tile and
 // returns the index of it on divNums so that it can be
 // used in the surroundingTiles() function
-const getIndexOfK = function (k) {
+H.getIndexOfK = function (k) {
     const xy = [];
     // loops through each row of the array
     F.sequence(H.divNums().length).forEach( function (i) {
