@@ -52,6 +52,7 @@ app.ws("/", function (ws, req) {
     numWS.push(ws);
     if (numWS.length === 4) {
         numWS = [];
+        currentBoard = Array.from(H.startBoard());
         H.startTimer(ws.myprivatedata.players);
 
         // generates a testing word and sends it to the client to be
