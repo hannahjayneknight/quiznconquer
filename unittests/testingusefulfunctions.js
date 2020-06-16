@@ -8,4 +8,6 @@ T.oneDArrEquals = (arr1, arr2) => arr1.every(
     (tile, j) => tile === arr2[j]
 );
 
+T.sequence = (n) => Array.from(new Array(n).keys());
+
 export default Object.freeze(T);

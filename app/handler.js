@@ -3,20 +3,23 @@ import F from "./usefulfunctions.js";
 // NB: this object is only used on the server side
 const H = Object.create(null);
 
-const playerclasses = [[ "player1", "player2"],
-                        ["player3", "player4" ]];
+const playerclasses = [
+    [1, 2],
+    [3, 4]
+];
 
 /*
 generates the starting board which looks like the following:
 H.startBoard =
 [
-  'player1', 'player1', 'player1', 'player2', 'player2', 'player2',
-  'player1', 'player1', 'player1', 'player2', 'player2', 'player2',
-  'player1', 'player1', 'player1', 'player2', 'player2', 'player2',
-  'player3', 'player3', 'player3', 'player4', 'player4', 'player4',
-  'player3', 'player3', 'player3', 'player4', 'player4', 'player4',
-  'player3', 'player3', 'player3', 'player4', 'player4', 'player4'
+    1, 1, 1, 2, 2, 2,
+    1, 1, 1, 2, 2, 2,
+    1, 1, 1, 2, 2, 2,
+    3, 3, 3, 4, 4, 4,
+    3, 3, 3, 4, 4, 4,
+    3, 3, 3, 4, 4, 4
 ]
+
 */
 H.startBoard = function () {
     let arr = F.sequence(36);
@@ -27,7 +30,6 @@ H.startBoard = function () {
         });
     return arr;
 };
-
 
 // takes in the dictionary to be used and returns an array with the word
 // as the first value and the translation as the second
@@ -76,7 +78,7 @@ H.freeTile = function (playerNumber, currentBoard) {
     const winnersTiles = [];
     currentBoard.forEach( function (element, index) {
         // CHANGE THIS TO JUST NUMBERS?
-        if (element === ("player" + playerNumber)) {
+        if (element === (playerNumber)) {
             winnersTiles.push(index);
         }
     } );
@@ -170,7 +172,7 @@ H.getIndexOfK = function (k) {
 };
 
 H.changeTile = function (tileStolen, currentBoard, playerwon) {
-    currentBoard.splice(tileStolen, 1, "player" + playerwon);
+    currentBoard.splice(tileStolen, 1, playerwon);
 };
 
 export default Object.freeze(H);
