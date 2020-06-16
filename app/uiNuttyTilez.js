@@ -20,12 +20,10 @@ ui.init = function () {
     // this is the client side of the server
     const ws = new WebSocket("ws://localhost:8080");
 
-    /*
     ws.onclose = function (event) {
         console.log("Client notified socket has closed", event);
         ws.close();
     };
-    */
 
     // when it receives a message (e) from the server...
     ws.onmessage = function ( e ) {

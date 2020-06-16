@@ -10,7 +10,6 @@ const port = 8080;
 const app = express();
 expressWS(app);
 
-// THIS IS THE STATIC SERVER
 app.use("/", express.static("app"));
 
 // THESE ARE FOR THE DYNAMIC SERVER
@@ -65,11 +64,24 @@ app.ws("/", function (ws, req) {
         });
     }
 
+    // when a websocket has been closed...
+    ws.on("close", function () {
+        console.log("Server websocket has closed");
+        ws.myprivatedata.players.some(function (thisws, ind) {
+            if (thisws.myprivatedata.playerNumber
+                === ws.myprivatedata.playerNumber) {
+                ws.myprivatedata.players.splice(ind, 1);
+                return true;
+            }
+
+            return false;
+        });
+    });
+
     // when receiving a message from the client...
     ws.on("message", function (msg) {
         // de-stringifies the message
         let clientObj = JSON.parse(msg);
-        // this.myprivatedata
 
         // if the message is an answer...
         if (clientObj.answer !== undefined) {
@@ -110,11 +122,15 @@ app.ws("/", function (ws, req) {
 });
 
 
-// THIS IS FOR BOTH SERVERS
+
+/////////////////////////////////////////////////////////
+
+
+
 app.listen(port, function () {
     console.log("Listening on port " + port);
 });
 /*jsl:end*/
 
 
-/////////////////////////////////////////////////////////
+// if(thisws.readyState === WebSocket.OPEN){
