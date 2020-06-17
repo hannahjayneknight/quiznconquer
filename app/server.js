@@ -79,8 +79,7 @@ app.ws("/", function (ws, req) {
             // NB: ws.myprivatedata contains the data for the player that left
             // ws.myprivatedata.players is an array of all the players
             // thisws allows us to loop through each player that WAS playing
-            if (thisws.myprivatedata.playerNumber ===
-                ws.myprivatedata.playerNumber) {
+            if (thisws.myprivatedata.playerNumber === ws.myprivatedata.playerNumber) {
                 ws.myprivatedata.players.splice(ind, 1);
                 return true;
             }
