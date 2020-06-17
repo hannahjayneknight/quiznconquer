@@ -12,6 +12,15 @@
 body
 {
     margin:0;
+    width: 100vw;
+    height: 100vh;
+}
+
+main
+{
+    margin:0;
+    width: 100vw;
+    height: 100vh; 
 }
 
 .level
@@ -129,11 +138,10 @@ button:active {
     top:25vh;
     display: flex;
     flex-wrap: wrap;
-    z-index: -1;
 }
 
 #tileBoard>* {
-    flex: 1 1 8vh;
+    flex: 1 1 14%;
 }
 
 .player1tile {
@@ -198,3 +206,43 @@ button:active {
 textarea:invalid {
     border: 2px dashed red;
   }
+
+.playerArrows {
+    width: 12vh;
+    height: 12vh;
+    display: none;
+}
+
+img
+{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#player1-arrow
+{
+    left: calc(37vw - 12vh);
+    top: 25.5vh;
+    position: absolute;
+}
+
+#player2-arrow
+{
+    left: calc(38vw + 50vh);
+    top: 25.5vh;
+    position: absolute;
+}
+
+#player3-arrow
+{
+    left: calc(37vw - 12vh);
+    top: 50.5vh;
+    position: absolute;
+}
+
+#player4-arrow
+{
+    left: calc(38vw + 50vh);
+    top: 50.5vh;
+    position: absolute;
+}

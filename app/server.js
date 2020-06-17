@@ -46,6 +46,12 @@ app.ws("/", function (ws, req) {
         "players": numWS,
         "currentBoard": currentBoard
     };
+
+    // sends a message with what player number they are
+    ws.send(JSON.stringify({
+        "playerNumber": ws.myprivatedata.playerNumber
+    }));
+
     // numWS contains all the ws socket objects
     // This ensure that it waits for 4 players to join
     numWS.push(ws);

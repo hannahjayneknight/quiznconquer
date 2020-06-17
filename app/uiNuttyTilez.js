@@ -31,6 +31,14 @@ ui.init = function () {
         // parses the message received
         const requestObj = JSON.parse(e.data);
 
+        // if the message contains the player nummber,
+        // it will display their arrow
+        if (requestObj.playerNumber !== undefined) {
+            el("player" +
+            requestObj.playerNumber +
+            "-arrow").style.display = "block";
+        }
+
         // if the message contains the word to be testing on,
         // it will change this in the DOM
         if (requestObj.word !== undefined) {
