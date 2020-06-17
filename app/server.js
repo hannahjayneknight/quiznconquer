@@ -44,7 +44,8 @@ app.ws("/", function (ws, req) {
     ws.myprivatedata = {
         "playerNumber": numWS.length + 1,
         "players": numWS,
-        "currentBoard": currentBoard
+        "currentBoard": currentBoard,
+        "gameStatus": "not playing"
     };
 
     // sends a message with what player number they are
@@ -59,7 +60,6 @@ app.ws("/", function (ws, req) {
         numWS = [];
         currentBoard = Array.from(H.startBoard());
         H.startTimer(ws.myprivatedata.players);
-
         // generates a testing word and sends it to the client to be
         // displayed on the DOM
         ws.myprivatedata.players.forEach(function (thisws) {
@@ -74,7 +74,11 @@ app.ws("/", function (ws, req) {
     ws.on("close", function () {
         console.log("Server websocket has closed");
         // removes the player that left the game from the array of players
+        // to ensure the server stops sending messages to that websocket
         ws.myprivatedata.players.some(function (thisws, ind) {
+            // NB: ws.myprivatedata contains the data for the player that left
+            // ws.myprivatedata.players is an array of all the players
+            // thisws allows us to loop through each player that WAS playing
             if (thisws.myprivatedata.playerNumber ===
                 ws.myprivatedata.playerNumber) {
                 ws.myprivatedata.players.splice(ind, 1);
@@ -82,6 +86,19 @@ app.ws("/", function (ws, req) {
             }
             return false;
         });
+        // if the game hasn't begun, players will be reassigned player numbers
+        // otherwise, the game will continue
+        if (ws.myprivatedata.gameStatus === "not playing") {
+            let tempNumWS = [];
+            ws.myprivatedata.players.forEach(function (thisws) {
+                thisws.myprivatedata.playerNumber = tempNumWS.length + 1;
+                tempNumWS.push(1);
+                thisws.send(JSON.stringify({
+                    "playerNumber": thisws.myprivatedata.playerNumber
+                }));
+            });
+        }
+
     });
 
     // when receiving a message from the client...

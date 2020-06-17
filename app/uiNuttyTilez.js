@@ -3,6 +3,7 @@ import Board from "./boardNuttyTilez.js";
 
 const ui = Object.create(null);
 const el = (id) => document.getElementById(id);
+const ClaN = (classname) => document.getElementsByClassName(classname);
 const tileBoard = el("tileBoard");
 const playerclasses = [[ "player1", "player2"],
                         ["player3", "player4" ]];
@@ -34,6 +35,10 @@ ui.init = function () {
         // if the message contains the player nummber,
         // it will display their arrow
         if (requestObj.playerNumber !== undefined) {
+            const arrows = Array.from(ClaN("playerArrows"));
+            arrows.forEach(function (element) {
+                element.style.display = "none";
+            });
             el("player" +
             requestObj.playerNumber +
             "-arrow").style.display = "block";

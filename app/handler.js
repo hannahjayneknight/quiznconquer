@@ -51,15 +51,25 @@ H.startTimer = function (wsarr) {
         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
         if (parseInt(seconds) === 0) {
             clearInterval(timerID);
-            wsarr.forEach((thisws) => thisws.send(JSON.stringify({
+            wsarr.forEach(function (thisws) {
+
+                thisws.send(JSON.stringify({
                 "timer": seconds,
                 "gameStatus": "gameOver"
-            })));
+                }));
+
+                thisws.myprivatedata.gameStatus = "not playing";
+            });
         } else {
-            wsarr.forEach((thisws) => thisws.send(JSON.stringify({
-                "timer": seconds,
-                "gameStatus": "playing"
-            })));
+            wsarr.forEach( function (thisws) {
+
+                thisws.send(JSON.stringify({
+                                "timer": seconds,
+                                "gameStatus": "playing"
+                }));
+
+                thisws.myprivatedata.gameStatus = "playing";
+            });
         }
     // rather than change html, the server will send
     // JSON.stringify({"timer": seconds})
