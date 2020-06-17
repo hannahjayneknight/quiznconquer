@@ -73,13 +73,13 @@ app.ws("/", function (ws, req) {
     // when a websocket has been closed...
     ws.on("close", function () {
         console.log("Server websocket has closed");
+        // removes the player that left the game from the array of players
         ws.myprivatedata.players.some(function (thisws, ind) {
-            if (thisws.myprivatedata.playerNumber
-                === ws.myprivatedata.playerNumber) {
+            if (thisws.myprivatedata.playerNumber ===
+                ws.myprivatedata.playerNumber) {
                 ws.myprivatedata.players.splice(ind, 1);
                 return true;
             }
-
             return false;
         });
     });
