@@ -70,6 +70,17 @@ ui.init = function () {
         }
     });
 
+    // if the help button is pressed, it will display a help
+    // message with how the game works
+    el("help-button").addEventListener("click", function () {
+        el("help-response-box").style.display = "block";
+    });
+
+    // if the OK button is pressed, the help message is removed
+    el("OK-button").addEventListener("click", function () {
+        el("help-response-box").style.display = "none";
+    });
+
 };
 
 export default Object.freeze(ui);

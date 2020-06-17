@@ -8,7 +8,6 @@
             "name": "Firefox Debugger 2",
             "type": "firefox",
             "request": "launch",
-            "reAttach": true,
             "webRoot": "${workspaceFolder}/app",
             "url": "http://localhost:8080/index.html",
             "pathMappings": [
@@ -31,7 +30,6 @@
             "name": "Firefox Debugger",
             "type": "firefox",
             "request": "launch",
-            "reAttach": true,
             "reloadOnAttach": true,
             "file": "${workspaceFolder}/app/index.html",
             "preferences": {

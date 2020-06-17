@@ -15,13 +15,23 @@
 
     <main>
 
-    <div id="testingWord"></div>
+    <h1 id="testingWord">Nutty Tilez!</h1>
 
-    <label><button id="help-button" class="help" type="button" name="help-button" tabindex="0" aria-label="Press here for help">Help</button></label>
+    <label><button id="help-button" class="help" type="button" name="help-button" tabindex="0" aria-label="Press here for help">
+        <p id="help-button-text" class="help">Help</p>
+    </button></label>
+
+    <div id="help-response-box" class="help" aria-label="A box to outline help text.">
+        <p id="help-response-text" class="help" aria-label="A description on how to play the game">
+            Win tiles from the other players by translating the given word into French. When the timer runs out, the player with the most tiles wins! 
+        </p>
+        <label><button id="OK-button" class="help" type="button" name="OK-button" tabindex="0" aria-label="Press here to remove help">
+            <p id="OK-button-text" class="help">OK</p>
+        </button></label>
+    </div>
     
-    
-    <label><textarea id="answer-pane" class="answer" name="Type answer here" tabindex="0" aria-label="Type answer here" rows="1" cols="100" maxlength="100"></textarea></label>
-    <div id = timer>Waiting for four players...</div>
+    <label><textarea id="answer-pane" class="answer" name="Type answer here" tabindex="0" aria-label="Type answer here" rows="1" cols="100" maxlength="100" placeholder="Translate here..." onfocus="this.placeholder = '' "></textarea></label>
+    <div id = timer>Waiting for more players to join...</div>
     
     <div id ="tileBoard" ></div>
 
