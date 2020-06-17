@@ -87,30 +87,35 @@ H.freeTile = function (playerNumber, currentBoard) {
     // firstly finds all the tiles currently owned by the winning player
     const winnersTiles = [];
     currentBoard.forEach( function (element, index) {
-        // CHANGE THIS TO JUST NUMBERS?
         if (element === (playerNumber)) {
             winnersTiles.push(index);
         }
     } );
-    // loops through all the tiles currently owned by the player
-    // and adds all the surrounding tiles to surrounding
-    let surrounding = [];
-    winnersTiles.forEach(function (element) {
-        surrounding.push.apply(
-            surrounding,
-            surroundingTiles(element)
-            );
-    });
-    // removes tiles which belong to the winner and duplicates removing
-    // duplicates ensures that all surrounding tiles have an equal chance
-    // of being picked
-    const freeTiles = F.uniq(F.diff(surrounding, winnersTiles));
-    const randomNumber = F.getRandomInt(0, freeTiles.length - 1);
-    // finds a random tile out of the ones that are free
-    const randomTile = freeTiles[randomNumber];
-    // NB: randomTile will be undefined when the board is full
-    // ie a player has won. This is handled by the server
-    return randomTile;
+    // if the player owns no tiles
+    if (!(Array.isArray(winnersTiles) && winnersTiles.length)) {
+        return F.getRandomInt(0, 35);
+    } else {
+        // loops through all the tiles currently owned by the player
+        // and adds all the surrounding tiles to surrounding
+        let surrounding = [];
+        winnersTiles.forEach(function (element) {
+            surrounding.push.apply(
+                surrounding,
+                surroundingTiles(element)
+                );
+        });
+        // removes tiles which belong to the winner and duplicates removing
+        // duplicates ensures that all surrounding tiles have an equal chance
+        // of being picked
+        const freeTiles = F.uniq(F.diff(surrounding, winnersTiles));
+        const randomNumber = F.getRandomInt(0, freeTiles.length - 1);
+        // finds a random tile out of the ones that are free
+        const randomTile = freeTiles[randomNumber];
+        // NB: randomTile will be undefined when the board is full
+        // ie a player has won. This is handled by the server
+        return randomTile;
+    }
+
 };
 
 
@@ -135,13 +140,13 @@ H.divNums = () => [
 // one dimensional
 const surroundingTiles = function (element) {
     const directions = [
-        {x: -1, y:-1},
+        // {x: -1, y:-1},
         {x:-1, y:0},
-        {x: -1, y:1},
+        // {x: -1, y:1},
         {x: 0, y:1},
-        {x:1, y:1},
+        // {x:1, y:1},
         {x:1, y:0},
-        {x:1, y: -1},
+        // {x:1, y: -1},
         {x:0, y: -1}
     ];
     const res = [];

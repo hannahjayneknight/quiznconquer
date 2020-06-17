@@ -154,6 +154,3 @@ app.listen(port, function () {
     console.log("Listening on port " + port);
 });
 /*jsl:end*/
-
-
-// if(thisws.readyState === WebSocket.OPEN){

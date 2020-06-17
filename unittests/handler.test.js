@@ -56,7 +56,7 @@ describe("Winning a tile", function () {
                         player
 
                     );
-                    // returns if it has changed a tile
+                    // returns true if it has changed a tile
                     return !(T.oneDArrEquals(board, copyBoard));
                 }
             ), {"verbose": true});

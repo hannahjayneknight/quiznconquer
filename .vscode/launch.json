@@ -40,7 +40,6 @@
             "name": "Mocha Tests",
             "type": "firefox",
             "request": "launch",
-            "reAttach": true,
             "reloadOnAttach": true,
             "file": "${workspaceFolder}/unittests/test.html",
             "preferences": {

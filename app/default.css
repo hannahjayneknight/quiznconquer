@@ -203,10 +203,6 @@ button:active {
     font-family: var(--font);
 }
 
-textarea:invalid {
-    border: 2px dashed red;
-  }
-
 .playerArrows {
     width: 12vh;
     height: 12vh;
@@ -245,4 +241,17 @@ img
     left: calc(38vw + 50vh);
     top: 50.5vh;
     position: absolute;
+}
+
+#accessbility-feedback-email
+{
+    bottom: 2.5vh;
+    width: 75vh;
+    position: absolute;
+    margin: 0;
+    left: calc(50vw - 37.5vh);
+    font-family: var(--font);
+    font-size: 1rem;
+    text-align: center;
+    color: var(--nearBlack);
 }
