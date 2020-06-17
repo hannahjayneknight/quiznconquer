@@ -123,7 +123,6 @@ H.freeTile = function (playerNumber, currentBoard) {
 Div-numbers of the tileboard, laid out in a multidimensional array.
 This is used for the surroundingTiles() function.
 
-MAKE A FUNCTION THAT CAN MAKE THIS ARRAY???
 */
 H.divNums = () => [
     [0, 1, 2, 3, 4, 5],
@@ -186,6 +185,7 @@ H.getIndexOfK = function (k) {
     return xy;
 };
 
+// changes a tile in the server's copy of the board
 H.changeTile = function (tileStolen, currentBoard, playerwon) {
     currentBoard.splice(tileStolen, 1, playerwon);
 };
