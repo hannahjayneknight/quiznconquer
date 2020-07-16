@@ -19,7 +19,7 @@ ui.init = function () {
     });
 
     // this is the client side of the server
-    const ws = new WebSocket("ws://localhost:8080");
+    const ws = new WebSocket("ws://localhost:1711");
 
     ws.onclose = function (event) {
         console.log("Client notified socket has closed", event);

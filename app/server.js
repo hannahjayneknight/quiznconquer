@@ -5,7 +5,7 @@ import dictionary from "./dictionary.js";
 import H from "./handler.js";
 function ignorparam() {}
 
-const port = 8080;
+const port = 1711;
 
 const app = express();
 expressWS(app);

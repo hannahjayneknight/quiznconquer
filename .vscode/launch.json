@@ -9,10 +9,10 @@
             "type": "firefox",
             "request": "launch",
             "webRoot": "${workspaceFolder}/app",
-            "url": "http://localhost:8080/index.html",
+            "url": "http://localhost:1711/index.html",
             "pathMappings": [
                 {
-                    "url": "http://localhost:8080/index.html",
+                    "url": "http://localhost:1711/index.html",
                     "path": "${workspaceFolder}/app"
                 },
             ]
