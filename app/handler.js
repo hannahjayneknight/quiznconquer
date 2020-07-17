@@ -1,5 +1,7 @@
 import F from "./usefulfunctions.js";
 
+import sqlite3 from "sqlite3";
+
 // NB: this object is only used on the server side
 const H = Object.create(null);
 
@@ -37,6 +39,43 @@ H.generateWord = function (dictionary) {
     const randomNumber =
         F.getRandomInt(0, Object.keys(dictionary).length);
     return Object.entries(dictionary)[randomNumber];
+};
+
+H.generateWordFromDB = function( cb ) {
+    const db = new sqlite3.Database("./sample.db", function (err) {
+        if (err) {
+            console.error(err.message);
+        }
+        console.log("Connected to the sample database.");
+    });
+
+    // finds a random word from the ones being tested
+    // (depends on level - NEED TO CHANGE LEVEL FOR THIS)
+    let level = 6;
+    const queryWord = `SELECT * FROM (
+        SELECT * FROM langs ORDER BY langID LIMIT ${level}
+        ) ORDER BY RANDOM() LIMIT 1;`;
+
+    const dbObj = {};
+    db.serialize(function () {
+        db.get(queryWord, [], function (err, row) {
+            if (err) {
+                return console.error(err.message);
+            }
+            // adds the random to the database object
+            dbObj.word = row;
+            console.log(dbObj);
+        });
+    });
+
+
+    db.close(function (err) {
+        if (err) {
+            console.error(err.message);
+        }
+    cb(dbObj);
+        console.log("Close the database connection.");
+    });
 };
 
 // THE TIMER

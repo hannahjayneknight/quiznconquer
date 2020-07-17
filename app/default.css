@@ -23,14 +23,6 @@ main
     height: 100vh; 
 }
 
-.level
-{
-    position: absolute;
-    left: 5vw;
-    top:5vh;
-    font-size: 1.25rem;
-}
-
 #help-button
 {
     position: fixed;
@@ -67,10 +59,6 @@ button:focus {
     background: var(--grey);
 }
 
-button:focus {
-    outline: 1px solid #fff;
-    outline-offset: -4px;
-}
 
 button:active {
     transform: scale(0.99);

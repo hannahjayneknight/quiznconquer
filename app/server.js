@@ -63,10 +63,12 @@ app.ws("/", function (ws, req) {
         // generates a testing word and sends it to the client to be
         // displayed on the DOM
         ws.myprivatedata.players.forEach(function (thisws) {
-            thisws.myprivatedata.word = H.generateWord(dictionary.beginner);
-            thisws.send(JSON.stringify({
-                "word": thisws.myprivatedata.word[0]
-            }));
+
+            H.generateWordFromDB( function( obj ) {
+                thisws.send(JSON.stringify({
+                    "word": obj.word.name
+                }));
+            });
         });
     }
 
