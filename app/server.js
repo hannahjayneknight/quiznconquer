@@ -53,23 +53,31 @@ app.ws("/", function (ws, req) {
         "playerNumber": ws.myprivatedata.playerNumber
     }));
 
-    // numWS contains all the ws socket objects
-    // This ensure that it waits for 4 players to join
-    numWS.push(ws);
-    if (numWS.length === 4) {
+    const startGame = function () {
+        // sets the number of web sockets being counted to 0
         numWS = [];
+        // initializes the starting board
         currentBoard = Array.from(H.startBoard());
+        // starts the timer
         H.startTimer(ws.myprivatedata.players);
         // generates a testing word and sends it to the client to be
         // displayed on the DOM
         ws.myprivatedata.players.forEach(function (thisws) {
 
             H.generateWordFromDB( function( obj ) {
+                thisws.myprivatedata.word = obj.word;
                 thisws.send(JSON.stringify({
                     "word": obj.word.name
                 }));
             });
         });
+    };
+
+    // numWS contains all the ws socket objects
+    // This ensure that no more than 4 players can join
+    numWS.push(ws);
+    if (numWS.length === 4) {
+        startGame();
     }
 
     // when a websocket has been closed...
@@ -107,10 +115,18 @@ app.ws("/", function (ws, req) {
         // de-stringifies the message
         let clientObj = JSON.parse(msg);
 
+        // this allows a player to manually start a game if there
+        // are fewer than four players
+        if (clientObj.startGame !== undefined) {
+            if (clientObj.startGame === true) {
+                startGame();
+            }
+        }
+
         // if the message is an answer...
         if (clientObj.answer !== undefined) {
             // it will check if it is correct
-            if (clientObj.answer === ws.myprivatedata.word[1]) {
+            if (clientObj.answer === ws.myprivatedata.word.answer) {
                 // and send the player number that won along with
                 // the free tile to change
                 const tileStolen = H.freeTile(
@@ -137,9 +153,12 @@ app.ws("/", function (ws, req) {
             }
             // it will generate a new word for questioning
             // ONLY for the player that won the tile
-            ws.myprivatedata.word = H.generateWord(dictionary.beginner);
-            ws.send(JSON.stringify({"word": ws.myprivatedata.word[0]}));
-
+            H.generateWordFromDB( function( obj ) {
+                ws.myprivatedata.word = obj.word;
+                ws.send(JSON.stringify({
+                    "word": obj.word.name
+                }));
+            });
         }
 
     });

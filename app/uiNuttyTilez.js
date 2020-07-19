@@ -63,6 +63,8 @@ ui.init = function () {
             if (requestObj.gameStatus === "playing") {
                 el("timer").innerHTML = requestObj.timer;
                 el("answer-pane").style.display = "block";
+                el("everyone-has-joined-button").style.display = "none";
+                el("make-this-game-public-button").style.display = "none";
             // otherwise the game is over
             } else {
                 el("timer").innerHTML = "Game Over!";
@@ -93,6 +95,27 @@ ui.init = function () {
     el("OK-button").addEventListener("click", function () {
         el("help-response-box").style.display = "none";
     });
+
+    // if the "everyone-has-joined" button has pressed, it will
+    // send a message to the server to start the game (it will do this by adding
+    // computer players until it gets to 4)
+    // ADD COMPUTER PLAYERS HERE
+    el("everyone-has-joined-button").addEventListener("click", function () {
+        ws.send(JSON.stringify(
+            {"startGame": true}
+        ));
+    });
+
+    /*
+    NB: need to add this feature, and for the game to be removed from the
+    currently available games when it starts
+
+    // if the "make-this-game-public" button has pressed, it will
+    // add the game code to the list of public games
+    el("make-this-game-public-button").addEventListener("click", function () {
+    });
+
+    */
 
 };
 

@@ -46,7 +46,7 @@ H.generateWordFromDB = function( cb ) {
         if (err) {
             console.error(err.message);
         }
-        console.log("Connected to the sample database.");
+        // console.log("Connected to the sample database.");
     });
 
     // finds a random word from the ones being tested
@@ -62,9 +62,12 @@ H.generateWordFromDB = function( cb ) {
             if (err) {
                 return console.error(err.message);
             }
-            // adds the random to the database object
+            // adds the random word to the database object
+            // eg dbObj.word = { word: { name: 'ham', langID:4,answer:'jambon'}}
+            // dbObj.word.name gives the word to be questioned
+            // dbObj.word.answer gives the answer to that word
             dbObj.word = row;
-            console.log(dbObj);
+            // console.log(dbObj);
         });
     });
 
@@ -74,7 +77,7 @@ H.generateWordFromDB = function( cb ) {
             console.error(err.message);
         }
     cb(dbObj);
-        console.log("Close the database connection.");
+        // console.log("Close the database connection.");
     });
 };
 
