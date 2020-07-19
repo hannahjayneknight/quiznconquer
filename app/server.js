@@ -1,7 +1,6 @@
 
 import express from "express";
 import expressWS from "express-ws";
-import dictionary from "./dictionary.js";
 import H from "./handler.js";
 function ignorparam() {}
 

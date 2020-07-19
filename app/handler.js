@@ -1,5 +1,4 @@
 import F from "./usefulfunctions.js";
-
 import sqlite3 from "sqlite3";
 
 // NB: this object is only used on the server side
