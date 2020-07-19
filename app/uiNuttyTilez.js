@@ -106,16 +106,28 @@ ui.init = function () {
         ));
     });
 
-    /*
-    NB: need to add this feature, and for the game to be removed from the
-    currently available games when it starts
+    // if the variable gamePublic is false, the game is
+    // not public but it is private
+    let gamePublic = false;
+
+    // NB: need to add this feature, and for the game to be removed from the
+    // currently available games when it starts
 
     // if the "make-this-game-public" button has pressed, it will
     // add the game code to the list of public games
     el("make-this-game-public-button").addEventListener("click", function () {
+        if (gamePublic === false) {
+            el("make-this-game-public-text").innerHTML = "This game is public";
+            el("make-this-game-public-button").style.background = "var(--grey)";
+            el("make-this-game-public-text").style.color = "var(--nearBlack)";
+            gamePublic = true;
+        } else {
+            el("make-this-game-public-text").innerHTML = "This game is private";
+            el("make-this-game-public-button").style.background = "var(--nearBlack)";
+            el("make-this-game-public-text").style.color = "white";
+            gamePublic = false;
+        }
     });
-
-    */
 
 };
 
