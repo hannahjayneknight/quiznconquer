@@ -44,6 +44,8 @@ ui.init = function () {
             "-arrow").style.display = "block";
         }
 
+        // making a list of all the quizes
+        // WILL NEED TO MOVE THIS TO THE OTHER PAGE!
         if (requestObj.quizList !== undefined) {
             F.sequence(requestObj.quizList.length).forEach(function (element) {
                 // makes a p element which will represent each quiz
