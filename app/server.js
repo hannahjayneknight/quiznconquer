@@ -2,6 +2,7 @@
 import express from "express";
 import expressWS from "express-ws";
 import H from "./handler.js";
+import dbH from "./dbHander.js";
 function ignorparam() {}
 
 const port = 1711;
@@ -63,7 +64,7 @@ app.ws("/", function (ws, req) {
         // displayed on the DOM
         ws.myprivatedata.players.forEach(function (thisws) {
 
-            H.generateWordFromDB( function( obj ) {
+            dbH.generateWordFromDB( function( obj ) {
                 thisws.myprivatedata.word = obj.word;
                 thisws.send(JSON.stringify({
                     "word": obj.word.name
@@ -152,7 +153,7 @@ app.ws("/", function (ws, req) {
             }
             // it will generate a new word for questioning
             // ONLY for the player that won the tile
-            H.generateWordFromDB( function( obj ) {
+            dbH.generateWordFromDB( function( obj ) {
                 ws.myprivatedata.word = obj.word;
                 ws.send(JSON.stringify({
                     "word": obj.word.name
