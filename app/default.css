@@ -261,3 +261,9 @@ img
     text-align: center;
     color: var(--nearBlack);
 }
+
+#ListOfQuizzes
+{
+    width: 37.5vw;
+    height:100vh;
+}

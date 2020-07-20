@@ -4,6 +4,8 @@ import sqlite3 from "sqlite3";
 // NB: this object is only used on the server side
 const dbH = Object.create(null);
 
+// usedto generate a testing word
+// NEED TO MODIFY SO TAKES IN THE TABLE TO BE USED
 dbH.generateWordFromDB = function (cb) {
     const db = new sqlite3.Database("./sample.db", function (err) {
         if (err) {
@@ -42,6 +44,41 @@ dbH.generateWordFromDB = function (cb) {
         cb(dbObj);
         // console.log("Close the database connection.");
     });
+};
+
+dbH.getInfoTables = function (cb) {
+
+    const db = new sqlite3.Database("./sample.db", function (err) {
+        if (err) {
+            console.error(err.message);
+        }
+        console.log("Connected to the sample database.");
+    });
+
+    const queryTables = `SELECT name FROM sqlite_master
+    WHERE type='table'
+    ORDER BY name;`;
+
+    const dbObj = {};
+    db.serialize(function () {
+        db.all(queryTables, [], function (err, row) {
+            if (err) {
+                return console.error(err.message);
+            }
+            // saves the array of all the tables to dbObj.tables
+            dbObj.tables = row;
+        });
+    });
+
+    db.close(function (err) {
+        if (err) {
+            console.error(err.message);
+        }
+
+        console.log("Close the database connection.");
+        cb(dbObj);
+    });
+
 };
 
 export default Object.freeze(dbH);

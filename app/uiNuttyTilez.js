@@ -44,6 +44,18 @@ ui.init = function () {
             "-arrow").style.display = "block";
         }
 
+        if (requestObj.quizList !== undefined) {
+            F.sequence(requestObj.quizList.length).forEach(function (element) {
+                // makes a p element which will represent each quiz
+                const publicQuiz = document.createElement("p");
+                // CHANGE ELEMENT TO THE NAME OF THE QUIZ?
+                publicQuiz.setAttribute("id", "Public quiz " + element);
+                publicQuiz.setAttribute("class", "Public Quizzes");
+                publicQuiz.innerHTML = requestObj.quizList[element].name;
+                el("ListOfQuizzes").append(publicQuiz);
+            });
+        }
+
         // if the message contains the word to be testing on,
         // it will change this in the DOM
         if (requestObj.word !== undefined) {

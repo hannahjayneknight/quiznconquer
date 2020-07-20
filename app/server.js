@@ -49,9 +49,19 @@ app.ws("/", function (ws, req) {
     };
 
     // sends a message with what player number they are
+    // REMOVE THE QUIZ-LIST HERE!
     ws.send(JSON.stringify({
         "playerNumber": ws.myprivatedata.playerNumber
     }));
+
+    // sends a list of all the quizzes
+    // TRANSFER TO ANOTHER PAGE!
+    dbH.getInfoTables( function( obj ) {
+        ws.myprivatedata.word = obj.word;
+        ws.send(JSON.stringify({
+            "quizList": obj.tables
+        }));
+    });
 
     const startGame = function () {
         // sets the number of web sockets being counted to 0
