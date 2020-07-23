@@ -10,6 +10,8 @@ const port = 1711;
 const app = express();
 expressWS(app);
 
+app.disable("x-powered-by");
+
 app.use("/", express.static("app"));
 
 // THESE ARE FOR THE DYNAMIC SERVER
