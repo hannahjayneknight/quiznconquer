@@ -9,6 +9,7 @@ const playerclasses = [[ "player1", "player2"],
                         ["player3", "player4" ]];
 
 ui.init = function (ws) {
+    // NEED TO MOVE THIS TO WHEN GAME PAGE IS SHOWING
     el("answer-pane").value = "";
     F.sequence(36).forEach(function (element) {
         let ourclass = playerclasses[ Math.floor(element / 18)][ Math.floor((element/3)%2)];
@@ -18,8 +19,16 @@ ui.init = function (ws) {
         tileBoard.appendChild(tile); // note the differences from .append()
     });
 
+
+    /*
+
+    Sending and receiving messages with the server.
+
+    */
+
+
     // this is the client side of the server
-    // const ws = new WebSocket("ws://localhost:1711");
+    const ws = new WebSocket("ws://localhost:1711");
 
     ws.onclose = function (event) {
         console.log("Client notified socket has closed", event);
@@ -92,6 +101,14 @@ ui.init = function (ws) {
         }
     };
 
+
+    /*
+
+    Buttons on the game page.
+
+    */
+
+
     // if key button is pressed, it will submit the answer
     // and send it to the server
     document.addEventListener("keyup", function (event) {
@@ -147,6 +164,40 @@ ui.init = function (ws) {
             gamePublic = false;
         }
     });
+
+
+
+
+    /*
+
+    Moving around pages.
+
+    */
+
+    /*
+    // when you are on the homepage
+    //if (el("homePage").style.display === "none") {
+        // clicking on the join button
+        el("Join-button").addEventListener("click", function () {
+            el("homePage").style.display = "block";
+            el("joinWithCodePage").style.display = "none";
+        });
+        // clicking on the host button
+        el("Host-button").addEventListener("click", function () {
+            el("homePage").style.display = "block";
+            el("hostGamePage").style.display = "none";
+        });
+    //}
+
+    // when you are on the hosting page
+    if (el("hostGamePage").style.display === "none") {
+        // clicking on the "create a game" button
+        el("Create-button").addEventListener("click", function () {
+            el("hostGamePage").style.display = "block";
+            el("gamePage").style.display = "none";
+        });
+    }
+    */
 
 };
 

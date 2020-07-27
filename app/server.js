@@ -23,7 +23,7 @@ app.use(function (req, res, next) {
 
 app.get("/", function (req, res, next) {
     ignorparam(next);
-    ignorparam(req); // better way of ignoring a parameter?
+    ignorparam(req);
     res.end();
 });
 

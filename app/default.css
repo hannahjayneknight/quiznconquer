@@ -1,3 +1,12 @@
+
+
+
+
+/* This is for items common to all pages. */
+
+
+
+
 :root
 {
     --grey: #dad8db;
@@ -21,33 +30,6 @@ main
     margin:0;
     width: 100vw;
     height: 100vh; 
-}
-
-#help-button
-{
-    position: fixed;
-    top: 5vh;
-    right: 5vw;
-    width: 15vh;
-    height: 5vh;
-}
-
-#everyone-has-joined-button
-{
-    position: fixed;
-    top:20vh;
-    left:37.5vw;
-    width: 24vh;
-    height: 10vh;
-}
-
-#make-this-game-public-button
-{
-    position: fixed;
-    top:20vh;
-    left: calc(37.5vw + 26vh);
-    width: 24vh;
-    height: 10vh;
 }
 
 button {
@@ -80,6 +62,120 @@ button:focus {
 
 button:active {
     transform: scale(0.99);
+}
+
+img
+{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#accessbility-feedback-email
+{
+    bottom: 2.5vh;
+    width: 75vh;
+    position: absolute;
+    margin: 0;
+    left: calc(50vw - 37.5vh);
+    font-family: var(--font);
+    font-size: 1rem;
+    text-align: center;
+    color: var(--nearBlack);
+}
+
+#Title
+{
+    top: 20vh;
+    left: 25vw;
+    width: 50vw;
+    height: 10vh;
+    position: absolute;
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-align: center;
+    font-family: var(--font);
+    color: var(--green);
+    margin: 0;
+    border: 0vh;
+}
+
+
+
+
+
+/* This is for items on the home page. */
+
+
+
+
+#homePage
+{
+    margin:0;
+    width: 100vw;
+    height: 100vh; 
+}
+
+#Join-button
+{
+    position: absolute;
+    top: 38vh;
+    left: 25vw;
+}
+
+#Host-button
+{
+    position: absolute;
+    top: 50vh;
+    left: 25vw;
+}
+
+#Leaderboard-button
+{
+    position: absolute;
+    top: 62vh;
+    left: 25vw;
+}
+
+.buttons
+{
+    width: 50vw;
+    height: 10vh;
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+
+
+/* This is for items on the game page. */
+
+
+
+
+#help-button
+{
+    position: fixed;
+    top: 5vh;
+    right: 5vw;
+    width: 15vh;
+    height: 5vh;
+}
+
+#everyone-has-joined-button
+{
+    position: fixed;
+    top:20vh;
+    left:37.5vw;
+    width: 24vh;
+    height: 10vh;
+}
+
+#make-this-game-public-button
+{
+    position: fixed;
+    top:20vh;
+    left: calc(37.5vw + 26vh);
+    width: 24vh;
+    height: 10vh;
 }
 
 #OK-button
@@ -215,12 +311,6 @@ button:active {
     display: none;
 }
 
-img
-{
-    max-width: 100%;
-    max-height: 100%;
-}
-
 #player1-arrow
 {
     left: calc(37vw - 12vh);
@@ -249,18 +339,72 @@ img
     position: absolute;
 }
 
-#accessbility-feedback-email
-{
-    bottom: 2.5vh;
-    width: 75vh;
+
+
+
+/* This is for items on the hosting page. */
+
+
+
+
+#Browse-button {
     position: absolute;
-    margin: 0;
-    left: calc(50vw - 37.5vh);
-    font-family: var(--font);
-    font-size: 1rem;
-    text-align: center;
-    color: var(--nearBlack);
+    top: 38vh;
+    left: 25vw;
 }
+
+#Create-button {
+    position: absolute;
+    top: 50vh;
+    left: 25vw;
+}
+
+
+
+
+/* This is for items on the joining with a game code page. */
+
+
+
+
+
+#gameCodeInput
+{
+    resize: none;
+    position: absolute;
+    top: calc(50vh - 4.5rem);
+    left: 37.5vw;
+    width: 25vw;
+    height: 2.25rem;
+
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: 0px;
+    margin: 0vh;
+
+    font-weight: 900;
+    text-align: center;
+    font-size: 1.75rem;
+    font-family: var(--font);
+}
+
+#joinGameButton {
+    position: absolute;
+    top: 50vh;
+    left: 37.5vw;
+    width: 25vw;
+    height: 10vh;
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+
+
+
+/* This is for items on public games page. */
+
+
+
 
 #ListOfQuizzes
 {
