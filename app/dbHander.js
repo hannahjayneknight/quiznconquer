@@ -46,6 +46,8 @@ dbH.generateWordFromDB = function (cb) {
     });
 };
 
+
+// lists all the available quizzes
 dbH.getInfoTables = function (cb) {
 
     const db = new sqlite3.Database("./sample.db", function (err) {

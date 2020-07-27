@@ -1,0 +1,87 @@
+:root
+{
+    --grey: #dad8db;
+    --nearBlack: #101820;
+    --green: #2c5f2d;
+    --font: "Clear Sans", "Helvetica Neue", Arial, sans-serif;;
+}
+
+#Title
+{
+    top: calc(50vh - 10rem);
+    left: 37.5vw;
+    width: 25vw;
+    height: 10vh;
+    position: absolute;
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-align: center;
+    font-family: var(--font);
+    color: var(--green);
+    margin: 0;
+    border: 0vh;
+}
+
+#game-code-input
+{
+    resize: none;
+    position: absolute;
+    top: calc(50vh - 4.5rem);
+    left: 37.5vw;
+    width: 25vw;
+    height: 2.25rem;
+
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: 0px;
+    margin: 0vh;
+
+    font-weight: 900;
+    text-align: center;
+    font-size: 1.75rem;
+    font-family: var(--font);
+}
+
+a {
+    width: 25vw;
+    height: 10vh;
+
+    display: inline-block;
+    border: 1px solid var(--nearBlack);
+    margin: 0vh;
+    border-radius: 5px;
+    outline: 0px;
+
+    text-decoration: none;
+    background: var(--nearBlack);
+    color: #ffffff;
+    font-family: var(--font);
+    font-size: 1.75rem;
+    font-weight: 600;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    
+    transition: background 250ms ease-in-out, 
+                transform 150ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+a:hover,
+a:focus {
+    background: var(--grey);
+    border: 1px solid var(--grey);
+}
+
+a:active {
+    transform: scale(0.99);
+}
+
+.join-anchor {
+    position: absolute;
+    top: 50vh;
+    left: 37.5vw;
+}

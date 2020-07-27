@@ -190,4 +190,16 @@ H.changeTile = function (tileStolen, currentBoard, playerwon) {
     currentBoard.splice(tileStolen, 1, playerwon);
 };
 
+// creates a game code
+H.makeID = function (length = 5) {
+    let result           = "";
+    let characters       = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(
+            Math.floor( Math.random() * characters.length)
+            );
+    }
+   return result;
+};
+
 export default Object.freeze(H);

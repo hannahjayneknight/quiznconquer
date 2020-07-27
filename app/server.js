@@ -57,13 +57,15 @@ app.ws("/", function (ws, req) {
     }));
 
     // sends a list of all the quizzes
-    // TRANSFER TO ANOTHER PAGE!
+    // NEED TO DECIDE HOW TO USE THIS
+    /*
     dbH.getInfoTables( function( obj ) {
         ws.myprivatedata.word = obj.word;
         ws.send(JSON.stringify({
             "quizList": obj.tables
         }));
     });
+    */
 
     const startGame = function () {
         // sets the number of web sockets being counted to 0

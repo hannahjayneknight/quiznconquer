@@ -9,10 +9,10 @@
             "type": "firefox",
             "request": "launch",
             "webRoot": "${workspaceFolder}/app",
-            "url": "http://localhost:1711/index.html",
+            "url": "http://localhost:1711/game.html",
             "pathMappings": [
                 {
-                    "url": "http://localhost:1711/index.html",
+                    "url": "http://localhost:1711/game.html",
                     "path": "${workspaceFolder}/app"
                 },
             ]
@@ -31,7 +31,7 @@
             "type": "firefox",
             "request": "launch",
             "reloadOnAttach": true,
-            "file": "${workspaceFolder}/app/index.html",
+            "file": "${workspaceFolder}/app/game.html",
             "preferences": {
                 "security.fileuri.strict_origin_policy": false
             }
@@ -46,6 +46,16 @@
                 "security.fileuri.strict_origin_policy": false
             },
             "clearConsoleOnReload": true
+        },
+        {
+            "name": "Launch Index Page",
+            "type": "firefox",
+            "request": "launch",
+            "reloadOnAttach": true,
+            "file": "${workspaceFolder}/app/index.html",
+            "preferences": {
+                "security.fileuri.strict_origin_policy": false
+            }
         }
     ]
 

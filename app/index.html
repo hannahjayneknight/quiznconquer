@@ -3,9 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 <html lang="en-gb"></html>
-<script type="module" src="./main.js"></script>
-<link rel="stylesheet" href="./default.css">
-
+<link rel="stylesheet" href="./index.css">
 
 <head>
     <title>Nutty Tilez</title>
@@ -16,42 +14,16 @@
 
     <main>
 
-    <h1 id="testingWord">Nutty Tilez!</h1>
+    <h1 id="Title">Nutty Tilez</h1>
 
-    <label><button id="help-button" class="help" type="button" name="help-button" tabindex="0" aria-label="Press here for help">
-        <p id="help-button-text" class="help">Help</p>
-    </button></label>
+    <nav>
+        <ul>
+            <li class="Join" tabindex="0" aria-label="Press here to join a game"><a href="join-with-code.html" >Join</a></li>
+            <li class="Host" tabindex="0" aria-label="Press here to host a game"><a href="host.html">Host</a></li>
+            <li class="Leaderboard" tabindex="0" aria-label="Press here to view the leaderboard"><a href="leaderboard.html">Leaderboard</a></li>
+        </ul>
+    </nav>
 
-    <div id="help-response-box" class="help" aria-label="A box to outline help text.">
-        <p id="help-response-text" class="help" aria-label="A description on how to play the game">
-            Win tiles from the other players by translating the given word into French. When the timer runs out, the player with the most tiles wins! 
-        </p>
-        <label><button id="OK-button" class="help" type="button" name="OK-button" tabindex="0" aria-label="Press here to remove help">
-            <p id="OK-button-text" class="help">OK</p>
-        </button></label>
-    </div>
-
-    <label><button id="everyone-has-joined-button" class="everyone-has-joined" type="button" tabindex="0" aria-label="Press here if all players have joined the game">
-        <p id="everyone-has-joined-button-text">Click here if everyone has joined</p>
-    </button></label>
-
-    <label><button id="make-this-game-public-button" class="make-this-game-public" type="button" tabindex="0" aria-label="Press here if you wish to make this game public">
-        <p id="make-this-game-public-text">This game is private</p>
-    </button></label>
-    
-    <label><textarea id="answer-pane" class="answer" name="Type answer here" tabindex="0" aria-label="Type answer here" rows="1" cols="100" maxlength="100" placeholder="Translate here..." onfocus="this.placeholder = '' "></textarea></label>
-    <div id = timer>Waiting for more players to join...</div>
-    
-    <div id ="tileBoard" ></div>
-
-    <div id="player1-arrow" class="playerArrows"><img src="images/greyArrow.png" alt="" aria-label="Arrow pointing to your tiles"/></div>
-    <div id="player2-arrow" class="playerArrows"><img src="images/lightGreenArrow.png" alt="" aria-label="Arrow pointing to your tiles"/></div>
-    <div id="player3-arrow" class="playerArrows"><img src="images/darkGreenArrow.png" alt="" aria-label="Arrow pointing to your tiles"/></div>
-    <div id="player4-arrow" class="playerArrows"><img src="images/nearBlackArrow.png" alt="" aria-label="Arrow pointing to your tiles"/></div>
-
-    <div id="ListOfQuizzes"></div>
-
-    <p id="accessbility-feedback-email" class="accessbility" aria-label="Please email nuttytilezfeedback@gmail.com to help us improve accessibility">Please email nuttytilezfeedback@gmail.com to help us improve accessibility</p>
-    </main>
+</main>
 
 </body>
