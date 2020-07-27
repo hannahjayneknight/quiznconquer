@@ -44,6 +44,11 @@ ui.init = function () {
             "-arrow").style.display = "block";
         }
 
+        // displaying the game code
+        if (requestObj.gameCode !== undefined) {
+            el("testingWord").textContent = requestObj.gameCode;
+        }
+
         // making a list of all the quizes
         // WILL NEED TO MOVE THIS TO THE OTHER PAGE!
         if (requestObj.quizList !== undefined) {

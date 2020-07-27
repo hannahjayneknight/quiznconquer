@@ -5,14 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Firefox Debugger 2",
+            "name": "Firefox Debugger",
             "type": "firefox",
             "request": "launch",
             "webRoot": "${workspaceFolder}/app",
-            "url": "http://localhost:1711/game.html",
+            "url": "http://localhost:1711/index.html",
             "pathMappings": [
                 {
-                    "url": "http://localhost:1711/game.html",
+                    "url": "http://localhost:1711/index.html",
                     "path": "${workspaceFolder}/app"
                 },
             ]
@@ -27,7 +27,7 @@
             ]
         },
         {
-            "name": "Firefox Debugger",
+            "name": "Launch game page",
             "type": "firefox",
             "request": "launch",
             "reloadOnAttach": true,
