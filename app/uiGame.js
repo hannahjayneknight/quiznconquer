@@ -1,5 +1,5 @@
 import F from "./usefulfunctions.js";
-import Board from "./boardNuttyTilez.js";
+import Board from "./boardGame.js";
 
 const ui = Object.create(null);
 const el = (id) => document.getElementById(id);
@@ -8,7 +8,7 @@ const tileBoard = el("tileBoard");
 const playerclasses = [[ "player1", "player2"],
                         ["player3", "player4" ]];
 
-ui.init = function () {
+ui.init = function (ws) {
     el("answer-pane").value = "";
     F.sequence(36).forEach(function (element) {
         let ourclass = playerclasses[ Math.floor(element / 18)][ Math.floor((element/3)%2)];
@@ -19,7 +19,7 @@ ui.init = function () {
     });
 
     // this is the client side of the server
-    const ws = new WebSocket("ws://localhost:1711");
+    // const ws = new WebSocket("ws://localhost:1711");
 
     ws.onclose = function (event) {
         console.log("Client notified socket has closed", event);

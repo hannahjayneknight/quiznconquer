@@ -47,7 +47,8 @@ app.ws("/", function (ws, req) {
         "playerNumber": numWS.length + 1,
         "players": numWS,
         "currentBoard": currentBoard,
-        "gameStatus": "not playing"
+        "gameStatus": "not playing",
+        "hosting": false
     };
 
     // sends a message with what player number they are
