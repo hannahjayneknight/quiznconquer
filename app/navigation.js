@@ -1,5 +1,6 @@
 
 const el = (id) => document.getElementById(id);
+
 const nav = Object.create(null);
 
 // sends a message to the server telling it whether
@@ -10,7 +11,6 @@ nav.hosting = function (ws) {
             {"hosting": false}
         ));
     });
-
     el("host-anchor").addEventListener("click", function () {
         ws.send(JSON.stringify(
             {"hosting": true}
