@@ -31,10 +31,10 @@ app.get("/", function (req, res, next) {
 
 /////////////////////////////////////////////////////////
 
-// an array containing the players in a game
-let numWS = [];
+
 // creates a shallow copy of the starting array
 let currentBoard = Array.from(H.startBoard());
+
 const games = {};
 /*
 
@@ -64,17 +64,11 @@ app.ws("/", function (ws, req) {
     // This is used for ensuring all players on the same game
     // get the same timer and updated board
     ws.myprivatedata = {
-        "playerNumber": numWS.length + 1,
-        "players": numWS,
         "currentBoard": currentBoard,
         "gameStatus": "not playing",
         "hosting": false
     };
 
-    // sends a message with what player number they are
-    ws.send(JSON.stringify({
-        "playerNumber": ws.myprivatedata.playerNumber
-    }));
 
     // sends a list of all the quizzes
     // NEED TO DECIDE HOW TO USE THIS
@@ -88,15 +82,13 @@ app.ws("/", function (ws, req) {
     */
 
     const startGame = function () {
-        // sets the number of web sockets being counted to 0
-        numWS = [];
         // initializes the starting board
         currentBoard = Array.from(H.startBoard());
         // starts the timer
-        H.startTimer(ws.myprivatedata.players);
+        H.startTimer(games[ws.myprivatedata.gameCode].players);
         // generates a testing word and sends it to the client to be
         // displayed on the DOM
-        ws.myprivatedata.players.forEach(function (thisws) {
+        games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
 
             dbH.generateWordFromDB( function( obj ) {
                 thisws.myprivatedata.word = obj.word;
@@ -107,24 +99,17 @@ app.ws("/", function (ws, req) {
         });
     };
 
-    // numWS contains all the ws socket objects
-    // This ensure that no more than 4 players can join
-    numWS.push(ws);
-    if (numWS.length === 4) {
-        startGame();
-    }
 
     // when a websocket has been closed...
     ws.on("close", function () {
         console.log("Server websocket has closed");
         // removes the player that left the game from the array of players
         // to ensure the server stops sending messages to that websocket
-        ws.myprivatedata.players.some(function (thisws, ind) {
+        games[ws.myprivatedata.gameCode].players.some(function (thisws, ind) {
             // NB: ws.myprivatedata contains the data for the player that left
-            // ws.myprivatedata.players is an array of all the players
             // thisws allows us to loop through each player that WAS playing
             if (thisws.myprivatedata.playerNumber === ws.myprivatedata.playerNumber) {
-                ws.myprivatedata.players.splice(ind, 1);
+                games[ws.myprivatedata.gameCode].players.splice(ind, 1);
                 return true;
             }
             return false;
@@ -133,7 +118,7 @@ app.ws("/", function (ws, req) {
         // otherwise, the game will continue
         if (ws.myprivatedata.gameStatus === "not playing") {
             let tempNumWS = [];
-            ws.myprivatedata.players.forEach(function (thisws) {
+            games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
                 thisws.myprivatedata.playerNumber = tempNumWS.length + 1;
                 tempNumWS.push(1);
                 thisws.send(JSON.stringify({
@@ -163,10 +148,15 @@ app.ws("/", function (ws, req) {
                 games[ws.myprivatedata.gameCode].players = [];
                 // pushes this player (ie the host) to the array
                 games[ws.myprivatedata.gameCode].players.push(ws);
+                // sets their player number
+                ws.myprivatedata.playerNumber =
+                    games[ws.myprivatedata.gameCode].players.length;
                 // sets the game to private by default
                 games[ws.myprivatedata.gameCode].public = false;
+                // sends the game code and their player number
                 ws.send(JSON.stringify({
-                    "gameCode": ws.myprivatedata.gameCode
+                    "gameCode": ws.myprivatedata.gameCode,
+                    "playerNumber": ws.myprivatedata.playerNumber
                 }));
             }
         }
@@ -178,12 +168,22 @@ app.ws("/", function (ws, req) {
                 // adds the game code to their private data
                 ws.myprivatedata.gameCode = clientObj.joinGameCode;
                 // adds their web socket object to the games object
-
+                games[ws.myprivatedata.gameCode].players.push(ws);
+                // sets their player number
+                ws.myprivatedata.playerNumber =
+                    games[ws.myprivatedata.gameCode].players.length;
                 // sends message to client to say they are joining game
+                // with the game code and their player number
                 ws.send(JSON.stringify({
                     "joinGameAccepted": true,
-                    "gameCode": ws.myprivatedata.gameCode
+                    "gameCode": ws.myprivatedata.gameCode,
+                    "playerNumber": ws.myprivatedata.playerNumber
                 }));
+                // if the game that the person has just joined has 4
+                // players in it, it will begin
+                if (games[ws.myprivatedata.gameCode].players.length === 4) {
+                    startGame();
+                }
             } else {
                 return;
             }
@@ -210,7 +210,7 @@ app.ws("/", function (ws, req) {
                 );
                 // tileStolen === undefined when the board is full
                 if (tileStolen !== undefined) {
-                    ws.myprivatedata.players.forEach(function (thisws) {
+                    games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
                         thisws.send(JSON.stringify({
                             "tileStolen": {
                                 "winner": ws.myprivatedata.playerNumber,
