@@ -1,6 +1,9 @@
+const games = Object.create(null);
+
 /*
 
-1. create an object with all the games in.
+games is an object that stores info about all the games
+currently being played.
 
 One game would look like this:
 
@@ -16,7 +19,6 @@ games.WXYZ = {
 
 }
 
-This means it can give information on the players and
-whether it is private or public.
-
 */
+
+export default Object.freeze(games);

@@ -4,9 +4,6 @@ import Board from "./boardGame.js";
 const ui = Object.create(null);
 const el = (id) => document.getElementById(id);
 const ClaN = (classname) => document.getElementsByClassName(classname);
-const tileBoard = el("tileBoard");
-const playerclasses = [[ "player1", "player2"],
-                        ["player3", "player4" ]];
 
 ui.init = function () {
 
@@ -44,9 +41,9 @@ ui.init = function () {
             "-arrow").style.display = "block";
         }
 
-        // displaying the game code
-        if (requestObj.gameCode !== undefined) {
-            el("testingWord").textContent = requestObj.gameCode;
+        // displaying the game id
+        if (requestObj.gameID !== undefined) {
+            el("testingWord").textContent = requestObj.gameID;
         }
 
         // making a list of all the quizes

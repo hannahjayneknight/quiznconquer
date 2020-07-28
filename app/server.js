@@ -31,11 +31,31 @@ app.get("/", function (req, res, next) {
 
 /////////////////////////////////////////////////////////
 
-
-
+// an array containing the players in a game
 let numWS = [];
 // creates a shallow copy of the starting array
 let currentBoard = Array.from(H.startBoard());
+const games = {};
+/*
+
+games is an object that stores info about all the games
+currently being played.
+
+One game would look like this:
+
+games.WXYZ = {
+
+    players: [
+        { player web socket object goes here },
+        { player web socket object goes here },
+        { player web socket object goes here },
+        { player web socket object goes here }
+    ],
+    public: true
+
+}
+
+*/
 
 // this is the server that interacts with the user (ie the web socket)
 app.ws("/", function (ws, req) {
@@ -48,7 +68,8 @@ app.ws("/", function (ws, req) {
         "players": numWS,
         "currentBoard": currentBoard,
         "gameStatus": "not playing",
-        "hosting": false
+        "hosting": false,
+        "gameID": undefined
     };
 
     // sends a message with what player number they are
@@ -133,6 +154,26 @@ app.ws("/", function (ws, req) {
         // telling the server whether the player is a host or not
         if (clientObj.hosting !== undefined) {
             ws.myprivatedata.hosting = clientObj.hosting;
+            // when hosting...
+            if (clientObj.hosting === true) {
+                // makes a game id
+                ws.myprivatedata.gameID = H.makeID();
+                // adds this game to the games obj
+                games[ws.myprivatedata.gameID] = {};
+                // creates an array of the players in this game
+                games[ws.myprivatedata.gameID].players = [];
+                // pushes this player (ie the host) to the array
+                games[ws.myprivatedata.gameID].players.push(ws);
+                // sets the game to private by default
+                games[ws.myprivatedata.gameID].public = false;
+                // this prints all the info about the game being played
+                console.log(games[ws.myprivatedata.gameID]);
+                ws.send(JSON.stringify({
+                    "gameID": ws.myprivatedata.gameID
+                }));
+            } else {
+
+            }
         }
 
         // this allows a player to manually start a game if there
