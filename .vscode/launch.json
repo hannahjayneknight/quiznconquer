@@ -27,16 +27,6 @@
             ]
         },
         {
-            "name": "Launch game page",
-            "type": "firefox",
-            "request": "launch",
-            "reloadOnAttach": true,
-            "file": "${workspaceFolder}/app/game.html",
-            "preferences": {
-                "security.fileuri.strict_origin_policy": false
-            }
-        },
-        {
             "name": "Mocha Tests",
             "type": "firefox",
             "request": "launch",

@@ -40,7 +40,7 @@
 
         <label><textarea id="gameCodeInput" tabindex="0" aria-label="Type your game code here" rows="1" cols="50" maxlength="5" placeholder="Game code" onfocus="this.placeholder = '' "></textarea></label>
     
-        <button id="joinGameButton" tabindex="0" aria-label="Click here to join the game">Join game</button>
+        <button id="joinGameCode" tabindex="0" aria-label="Click here to join the game">Join game</button>
     
     </div>
 
@@ -68,6 +68,13 @@
 
         <h1 id="testingWord">Nutty Tilez!</h1>
 
+        <div id="gameCodeBox">
+            <p>
+                <div id="gameCodeBoxHeader">Game code:</div>
+                <div id="gameCode"></div>
+            </p>
+        </div>
+
         <label><button id="help-button" class="help" type="button" name="help-button" tabindex="0" aria-label="Press here for help">
             <p id="help-button-text" class="help">Help</p>
         </button></label>
@@ -90,7 +97,7 @@
         </button></label>
         
         <label><textarea id="answer-pane" class="answer" name="Type answer here" tabindex="0" aria-label="Type answer here" rows="1" cols="100" maxlength="100" placeholder="Translate here..." onfocus="this.placeholder = '' "></textarea></label>
-        <div id = timer>Game code:</div>
+        <div id = timer>Waiting for more players to join..</div>
         
         <div id ="tileBoard" ></div>
 

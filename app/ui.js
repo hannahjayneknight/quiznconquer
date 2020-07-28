@@ -29,6 +29,14 @@ ui.init = function () {
         // parses the message received
         const requestObj = JSON.parse(e.data);
 
+        // if the message says the player has joined a game
+        // it will display the game page for them
+        if (requestObj.joinGameAccepted === true) {
+            el("joinWithCodePage").style.display = "none";
+            el("gamePage").style.display = "block";
+            Board.buildGamePage();
+        }
+
         // if the message contains the player nummber,
         // it will display their arrow
         if (requestObj.playerNumber !== undefined) {
@@ -41,9 +49,9 @@ ui.init = function () {
             "-arrow").style.display = "block";
         }
 
-        // displaying the game id
-        if (requestObj.gameID !== undefined) {
-            el("testingWord").textContent = requestObj.gameID;
+        // displaying the game code
+        if (requestObj.gameCode !== undefined) {
+            el("gameCode").textContent = requestObj.gameCode;
         }
 
         // making a list of all the quizes
@@ -174,6 +182,13 @@ ui.init = function () {
                 {"hosting": false}
             ));
         });
+
+        el("joinGameCode").addEventListener("click", function () {
+            ws.send(JSON.stringify(
+                {"joinGameCode": el("gameCodeInput").value}
+            ));
+        });
+
         // clicking on the host button
         // THIS PLAYER IS THE HOST
         // - this should be changed to when a game code is created

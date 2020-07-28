@@ -68,12 +68,10 @@ app.ws("/", function (ws, req) {
         "players": numWS,
         "currentBoard": currentBoard,
         "gameStatus": "not playing",
-        "hosting": false,
-        "gameID": undefined
+        "hosting": false
     };
 
     // sends a message with what player number they are
-    // REMOVE THE QUIZ-LIST HERE!
     ws.send(JSON.stringify({
         "playerNumber": ws.myprivatedata.playerNumber
     }));
@@ -151,30 +149,46 @@ app.ws("/", function (ws, req) {
         // de-stringifies the message
         let clientObj = JSON.parse(msg);
 
-        // telling the server whether the player is a host or not
+        // hosting/ joining a game
         if (clientObj.hosting !== undefined) {
             ws.myprivatedata.hosting = clientObj.hosting;
-            // when hosting...
-            if (clientObj.hosting === true) {
-                // makes a game id
-                ws.myprivatedata.gameID = H.makeID();
-                // adds this game to the games obj
-                games[ws.myprivatedata.gameID] = {};
-                // creates an array of the players in this game
-                games[ws.myprivatedata.gameID].players = [];
-                // pushes this player (ie the host) to the array
-                games[ws.myprivatedata.gameID].players.push(ws);
-                // sets the game to private by default
-                games[ws.myprivatedata.gameID].public = false;
-                // this prints all the info about the game being played
-                console.log(games[ws.myprivatedata.gameID]);
-                ws.send(JSON.stringify({
-                    "gameID": ws.myprivatedata.gameID
-                }));
-            } else {
 
+            // when hosting a game...
+            if (clientObj.hosting === true) {
+                // makes a game code
+                ws.myprivatedata.gameCode = H.makeGameCode();
+                // adds this game to the games obj
+                games[ws.myprivatedata.gameCode] = {};
+                // creates an array of the players in this game
+                games[ws.myprivatedata.gameCode].players = [];
+                // pushes this player (ie the host) to the array
+                games[ws.myprivatedata.gameCode].players.push(ws);
+                // sets the game to private by default
+                games[ws.myprivatedata.gameCode].public = false;
+                ws.send(JSON.stringify({
+                    "gameCode": ws.myprivatedata.gameCode
+                }));
             }
         }
+
+        // upon receiving a game code...
+        if (clientObj.joinGameCode !== undefined) {
+            // checks if the game code is valid
+            if (games[clientObj.joinGameCode] !== undefined) {
+                // adds the game code to their private data
+                ws.myprivatedata.gameCode = clientObj.joinGameCode;
+                // adds their web socket object to the games object
+
+                // sends message to client to say they are joining game
+                ws.send(JSON.stringify({
+                    "joinGameAccepted": true,
+                    "gameCode": ws.myprivatedata.gameCode
+                }));
+            } else {
+                return;
+            }
+        }
+
 
         // this allows a player to manually start a game if there
         // are fewer than four players

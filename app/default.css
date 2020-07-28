@@ -151,6 +151,36 @@ img
 
 
 
+#gameCodeBox
+{
+    position: fixed;
+    top: 5vh;
+    left: 15vw;
+    border-radius: 5px;
+    background-color: var(--grey);
+    display: inline-block;
+}
+
+#gameCodeBoxHeader
+{
+    font-family: var(--font);
+    font-size: 1.5rem;
+    margin: 3px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--nearBlack);
+}
+
+#gameCode
+{
+    font-family: var(--font);
+    font-size: 2.75rem;
+    margin: 3px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--green);
+}
+
 #help-button
 {
     position: fixed;
@@ -388,7 +418,7 @@ img
     font-family: var(--font);
 }
 
-#joinGameButton {
+#joinGameCode {
     position: absolute;
     top: 50vh;
     left: 37.5vw;

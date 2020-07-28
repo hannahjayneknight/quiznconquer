@@ -191,7 +191,7 @@ H.changeTile = function (tileStolen, currentBoard, playerwon) {
 };
 
 // creates a game code
-H.makeID = function (length = 5) {
+H.makeGameCode = function (length = 5) {
     let result           = "";
     let characters       = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     for ( var i = 0; i < length; i++ ) {
