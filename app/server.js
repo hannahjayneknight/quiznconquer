@@ -130,6 +130,11 @@ app.ws("/", function (ws, req) {
         // de-stringifies the message
         let clientObj = JSON.parse(msg);
 
+        // telling the server whether the player is a host or not
+        if (clientObj.hosting !== undefined) {
+            ws.myprivatedata.hosting = clientObj.hosting;
+        }
+
         // this allows a player to manually start a game if there
         // are fewer than four players
         if (clientObj.startGame !== undefined) {

@@ -8,16 +8,7 @@ const tileBoard = el("tileBoard");
 const playerclasses = [[ "player1", "player2"],
                         ["player3", "player4" ]];
 
-ui.init = function (ws) {
-    // NEED TO MOVE THIS TO WHEN GAME PAGE IS SHOWING
-    el("answer-pane").value = "";
-    F.sequence(36).forEach(function (element) {
-        let ourclass = playerclasses[ Math.floor(element / 18)][ Math.floor((element/3)%2)];
-        const tile = document.createElement("div"); // makes a div element
-        tile.setAttribute("id", element);
-        tile.setAttribute("class", ourclass + "tile");
-        tileBoard.appendChild(tile); // note the differences from .append()
-    });
+ui.init = function () {
 
 
     /*
@@ -174,31 +165,37 @@ ui.init = function (ws) {
 
     */
 
-    /*
+
     // when you are on the homepage
-    //if (el("homePage").style.display === "none") {
+
         // clicking on the join button
+        // THIS PLAYER IS NOT THE HOST
         el("Join-button").addEventListener("click", function () {
-            el("homePage").style.display = "block";
-            el("joinWithCodePage").style.display = "none";
+            el("homePage").style.display = "none";
+            el("joinWithCodePage").style.display = "block";
+            ws.send(JSON.stringify(
+                {"hosting": false}
+            ));
         });
         // clicking on the host button
+        // THIS PLAYER IS THE HOST
+        // - this should be changed to when a game code is created
         el("Host-button").addEventListener("click", function () {
-            el("homePage").style.display = "block";
-            el("hostGamePage").style.display = "none";
+            el("homePage").style.display = "none";
+            el("hostGamePage").style.display = "block";
+            ws.send(JSON.stringify(
+                {"hosting": true}
+            ));
         });
-    //}
 
     // when you are on the hosting page
-    if (el("hostGamePage").style.display === "none") {
+
         // clicking on the "create a game" button
         el("Create-button").addEventListener("click", function () {
-            el("hostGamePage").style.display = "block";
-            el("gamePage").style.display = "none";
+            el("hostGamePage").style.display = "none";
+            el("gamePage").style.display = "block";
+            Board.buildGamePage();
         });
-    }
-    */
-
 };
 
 export default Object.freeze(ui);
