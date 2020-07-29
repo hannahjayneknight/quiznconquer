@@ -35,7 +35,12 @@ app.get("/", function (req, res, next) {
 // creates a shallow copy of the starting array
 let currentBoard = Array.from(H.startBoard());
 
-const games = {};
+const games = {
+    set removeGame(key) {
+        delete games[key];
+        return games;
+    }
+};
 /*
 
 games is an object that stores info about all the games
@@ -54,6 +59,22 @@ games.WXYZ = {
     public: true
 
 }
+
+The games object could look like this:
+
+games = {
+
+    HIAZY: { players: [websocket, websocket, websocket], gameStatus: 'playing'},
+    WXYZ: { players: [websocket], gameStatus: 'not playing' },
+    removeGame: [Setter]
+
+}
+
+removeGame is a setter that allows a game code
+to be removed when that game has ended. Removing
+the game code "WXYZ" is achieved from the following:
+
+obj4.removeGame = "WXYZ";
 
 */
 

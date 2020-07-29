@@ -41,7 +41,7 @@ H.generateWord = function (dictionary) {
 };
 
 // THE TIMER
-H.startTimer = function (wsarr) {
+H.startTimer = function (players, games) {
     const mins = 0.5;
     const now = Date.now();
     const deadline = mins * 60 * 1000 + now;
@@ -52,7 +52,9 @@ H.startTimer = function (wsarr) {
         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
         if (parseInt(seconds) === 0) {
             clearInterval(timerID);
-            wsarr.forEach(function (thisws) {
+            // removes game code from the games obj
+            games.removeGame = players[0].myprivatedata.gameCode;
+            players.forEach(function (thisws) {
 
                 thisws.send(JSON.stringify({
                 "timer": seconds,
@@ -62,7 +64,7 @@ H.startTimer = function (wsarr) {
                 thisws.myprivatedata.gameStatus = "not playing";
             });
         } else {
-            wsarr.forEach( function (thisws) {
+            players.forEach( function (thisws) {
 
                 thisws.send(JSON.stringify({
                                 "timer": seconds,
@@ -75,7 +77,7 @@ H.startTimer = function (wsarr) {
     // rather than change html, the server will send
     // JSON.stringify({"timer": seconds})
     }, 500);
-    wsarr.forEach((thisws) => thisws.send(JSON.stringify({
+    players.forEach((thisws) => thisws.send(JSON.stringify({
         "timer": 30,
         "gameStatus": "playing"
     })));
@@ -208,7 +210,7 @@ H.startGame = function (ws, games, currentBoard) {
     // initializes the starting board
     currentBoard = Array.from(H.startBoard());
     // starts the timer
-    H.startTimer(games[ws.myprivatedata.gameCode].players);
+    H.startTimer(games[ws.myprivatedata.gameCode].players, games);
     // generates a testing word and sends it to the client to be
     // displayed on the DOM
     games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
@@ -221,5 +223,6 @@ H.startGame = function (ws, games, currentBoard) {
         });
     });
 };
+
 
 export default Object.freeze(H);

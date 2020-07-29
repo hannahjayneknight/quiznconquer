@@ -91,8 +91,10 @@ ui.init = function () {
                 el("make-this-game-public-button").style.display = "none";
             // otherwise the game is over
             } else {
-                el("timer").innerHTML = "Game Over!";
+                el("timer").innerHTML = "";
+                el("testingWord").innerHTML = "Game Over!";
                 el("answer-pane").style.display = "none";
+                el("gameCodeBox").style.display = "none";
             }
         }
     };
