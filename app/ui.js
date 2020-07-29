@@ -72,8 +72,9 @@ ui.init = function () {
         }
         */
 
-        // creates a list of all the public games on the join page
+        // when a receiving a list of the public games...
         if (requestObj.listPublicGames !== undefined) {
+            // creates a list of all the public games on the join page
             F.sequence(requestObj.listPublicGames.length).forEach(function (element) {
                 // makes a button element for each public game
                 const publicGame = document.createElement("button");
@@ -139,18 +140,15 @@ ui.init = function () {
             el("answer-pane").value = "";
         }
     });
-
     // if the help button is pressed, it will display a help
     // message with how the game works
     el("help-button").addEventListener("click", function () {
         el("help-response-box").style.display = "block";
     });
-
     // if the OK button is pressed, the help message is removed
     el("OK-button").addEventListener("click", function () {
         el("help-response-box").style.display = "none";
     });
-
     // if the "everyone-has-joined" button has pressed, it will
     // send a message to the server to start the game (it will do this by adding
     // computer players until it gets to 4)
@@ -160,14 +158,9 @@ ui.init = function () {
             {"startGame": true}
         ));
     });
-
     // if the variable gamePublic is false, the game is
     // not public but it is private
     let gamePublic = false;
-
-    // NB: need to add this feature, and for the game to be removed from the
-    // currently available games when it starts
-
     // if the "make-this-game-public" button has pressed, it will send a message
     // to the server asking to add the game code to the list of public games
     el("make-this-game-public-button").addEventListener("click", function () {
@@ -204,11 +197,14 @@ ui.init = function () {
             {"joinGameCode": el("gameCodeInput").value}
         ));
     });
-    // buttons for public games
-    const currentPublicGames = ClaN("publicGame");
+    // Creates an event listener for the buttons for public games
+    const currentPublicGames = Array.from(document.getElementsByClassName("publicGame"));
     F.sequence(currentPublicGames.length).forEach( function (element) {
-        currentPublicGames[element].addEventListener("click", Board.joinPublicGame(currentPublicGames[element])) // or this.id?
-    })
+        el(currentPublicGames[element].id).addEventListener("click", console.log(currentPublicGames[element].id)); // or this.id?
+        //console.log(currentPublicGames[element]);
+        // console.log(currentPublicGames[element].id);
+    });
+    //console.log(currentPublicGames);
 
 
     /*
@@ -228,7 +224,6 @@ ui.init = function () {
             "listPublicGames": true
         }));
     });
-
     // clicking on the host button
     // (this player is set to be the host)
     el("Host-button").addEventListener("click", function () {
