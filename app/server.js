@@ -65,7 +65,7 @@ app.ws("/", function (ws, req) {
     // get the same timer and updated board
     ws.myprivatedata = {
         "currentBoard": currentBoard,
-        "gameStatus": "not playing",
+        "gameStatus": "hasn't started",
         "hosting": false
     };
 
@@ -81,26 +81,14 @@ app.ws("/", function (ws, req) {
     });
     */
 
-    const startGame = function () {
-        // initializes the starting board
-        currentBoard = Array.from(H.startBoard());
-        // starts the timer
-        H.startTimer(games[ws.myprivatedata.gameCode].players);
-        // generates a testing word and sends it to the client to be
-        // displayed on the DOM
-        games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
 
-            dbH.generateWordFromDB( function( obj ) {
-                thisws.myprivatedata.word = obj.word;
-                thisws.send(JSON.stringify({
-                    "word": obj.word.name
-                }));
-            });
-        });
-    };
+    /*
+
+    when a websocket has been closed...
+
+    */
 
 
-    // when a websocket has been closed...
     ws.on("close", function () {
         console.log("Server websocket has closed");
         // removes the player that left the game from the array of players
@@ -116,7 +104,7 @@ app.ws("/", function (ws, req) {
         });
         // if the game hasn't begun, players will be reassigned player numbers
         // otherwise, the game will continue
-        if (ws.myprivatedata.gameStatus === "not playing") {
+        if (ws.myprivatedata.gameStatus === "hasn't started") {
             let tempNumWS = [];
             games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
                 thisws.myprivatedata.playerNumber = tempNumWS.length + 1;
@@ -129,7 +117,14 @@ app.ws("/", function (ws, req) {
 
     });
 
-    // when receiving a message from the client...
+
+    /*
+
+    when receiving a message from the client...
+
+    */
+
+
     ws.on("message", function (msg) {
         // de-stringifies the message
         let clientObj = JSON.parse(msg);
@@ -182,7 +177,7 @@ app.ws("/", function (ws, req) {
                 // if the game that the person has just joined has 4
                 // players in it, it will begin
                 if (games[ws.myprivatedata.gameCode].players.length === 4) {
-                    startGame();
+                    H.startGame(ws, games);
                 }
             } else {
                 return;
@@ -194,7 +189,7 @@ app.ws("/", function (ws, req) {
         // are fewer than four players
         if (clientObj.startGame !== undefined) {
             if (clientObj.startGame === true) {
-                startGame();
+                H.startGame(ws, games);
             }
         }
 
@@ -248,4 +243,3 @@ app.ws("/", function (ws, req) {
 app.listen(port, function () {
     console.log("Listening on port " + port);
 });
-/*jsl:end*/

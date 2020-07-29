@@ -58,7 +58,7 @@ H.startTimer = function (wsarr) {
                 "gameStatus": "gameOver"
                 }));
 
-                thisws.myprivatedata.gameStatus = "not playing";
+                thisws.myprivatedata.gameStatus = "game over";
             });
         } else {
             wsarr.forEach( function (thisws) {
@@ -200,6 +200,25 @@ H.makeGameCode = function (length = 5) {
             );
     }
    return result;
+};
+
+// function to start a game
+H.startGame = function (ws, games) {
+    // initializes the starting board
+    currentBoard = Array.from(H.startBoard());
+    // starts the timer
+    H.startTimer(games[ws.myprivatedata.gameCode].players);
+    // generates a testing word and sends it to the client to be
+    // displayed on the DOM
+    games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
+
+        dbH.generateWordFromDB( function( obj ) {
+            thisws.myprivatedata.word = obj.word;
+            thisws.send(JSON.stringify({
+                "word": obj.word.name
+            }));
+        });
+    });
 };
 
 export default Object.freeze(H);
