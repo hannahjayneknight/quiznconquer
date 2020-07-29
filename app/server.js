@@ -44,7 +44,10 @@ const games = {
 /*
 
 games is an object that stores info about all the games
-currently being played.
+currently being played. Currently, it only has the players
+in each game and whether the game is public or private, but
+more information could be added if needed. NB: game set to
+private by default.
 
 One game would look like this:
 
@@ -56,8 +59,7 @@ games.WXYZ = {
         { player web socket object goes here },
         { player web socket object goes here }
     ],
-    public: true
-
+    public: false
 }
 
 The games object could look like this:
@@ -199,6 +201,13 @@ app.ws("/", function (ws, req) {
             }
         }
 
+        // making a game public/ private...
+        if (clientObj.makeGamePublic !== undefined) {
+            games[clientObj.makeGamePublic].public = true;
+        }
+        if (clientObj.makeGamePrivate !== undefined) {
+            games[clientObj.makeGamePrivate].public = false;
+        }
 
         // this allows a player to manually start a game if there
         // are fewer than four players
