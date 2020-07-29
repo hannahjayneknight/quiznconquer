@@ -1,4 +1,5 @@
 import F from "./usefulfunctions.js";
+import dbH from "./dbHandler.js";
 
 // NB: this object is only used on the server side
 const H = Object.create(null);
@@ -58,7 +59,7 @@ H.startTimer = function (wsarr) {
                 "gameStatus": "gameOver"
                 }));
 
-                thisws.myprivatedata.gameStatus = "game over";
+                thisws.myprivatedata.gameStatus = "not playing";
             });
         } else {
             wsarr.forEach( function (thisws) {
@@ -203,7 +204,7 @@ H.makeGameCode = function (length = 5) {
 };
 
 // function to start a game
-H.startGame = function (ws, games) {
+H.startGame = function (ws, games, currentBoard) {
     // initializes the starting board
     currentBoard = Array.from(H.startBoard());
     // starts the timer

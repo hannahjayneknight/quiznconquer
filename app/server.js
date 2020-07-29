@@ -2,7 +2,7 @@
 import express from "express";
 import expressWS from "express-ws";
 import H from "./handler.js";
-import dbH from "./dbHander.js";
+import dbH from "./dbHandler.js";
 function ignorparam() {}
 
 const port = 1711;
@@ -61,25 +61,19 @@ games.WXYZ = {
 app.ws("/", function (ws, req) {
     ignorparam(req);
 
-    // This is used for ensuring all players on the same game
-    // get the same timer and updated board
-    ws.myprivatedata = {
-        "currentBoard": currentBoard,
-        "gameStatus": "hasn't started",
-        "hosting": false
-    };
 
-
-    // sends a list of all the quizzes
-    // NEED TO DECIDE HOW TO USE THIS
     /*
-    dbH.getInfoTables( function( obj ) {
-        ws.myprivatedata.word = obj.word;
-        ws.send(JSON.stringify({
-            "quizList": obj.tables
-        }));
-    });
+
+    Starting conditions
+
     */
+
+
+    ws.myprivatedata = {
+        "currentBoard": currentBoard, // updated as game goes on
+        "gameStatus": "not playing", // "playing" or "not playing"
+        "hosting": false // true if they are the host
+    };
 
 
     /*
@@ -104,7 +98,7 @@ app.ws("/", function (ws, req) {
         });
         // if the game hasn't begun, players will be reassigned player numbers
         // otherwise, the game will continue
-        if (ws.myprivatedata.gameStatus === "hasn't started") {
+        if (ws.myprivatedata.gameStatus === "not playing") {
             let tempNumWS = [];
             games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
                 thisws.myprivatedata.playerNumber = tempNumWS.length + 1;
@@ -177,7 +171,7 @@ app.ws("/", function (ws, req) {
                 // if the game that the person has just joined has 4
                 // players in it, it will begin
                 if (games[ws.myprivatedata.gameCode].players.length === 4) {
-                    H.startGame(ws, games);
+                    H.startGame(ws, games, currentBoard);
                 }
             } else {
                 return;
@@ -189,7 +183,7 @@ app.ws("/", function (ws, req) {
         // are fewer than four players
         if (clientObj.startGame !== undefined) {
             if (clientObj.startGame === true) {
-                H.startGame(ws, games);
+                H.startGame(ws, games, currentBoard);
             }
         }
 
@@ -235,6 +229,17 @@ app.ws("/", function (ws, req) {
 });
 
 
+
+    // sends a list of all the quizzes
+    // NEED TO DECIDE HOW TO USE THIS
+    /*
+    dbH.getInfoTables( function( obj ) {
+        ws.myprivatedata.word = obj.word;
+        ws.send(JSON.stringify({
+            "quizList": obj.tables
+        }));
+    });
+    */
 
 /////////////////////////////////////////////////////////
 
