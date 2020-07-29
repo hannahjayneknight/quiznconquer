@@ -28,6 +28,10 @@ Board.buildGamePage = function () {
     });
 };
 
+Board.joinPublicGame = function (clicked_id) {
+    console.log(clicked_id);
+};
+
 export default Object.freeze(Board);
 
 /*

@@ -56,8 +56,8 @@ ui.init = function () {
             el("gameCode").textContent = requestObj.gameCode;
         }
 
-        // making a list of all the quizes
-        // WILL NEED TO MOVE THIS TO THE OTHER PAGE!
+        // making a list of all the quizes on the browsing page
+        /*
         if (requestObj.quizList !== undefined) {
             F.sequence(requestObj.quizList.length).forEach(function (element) {
                 // makes a p element which will represent each quiz
@@ -70,8 +70,9 @@ ui.init = function () {
                 el("ListOfQuizzes").append(publicQuiz);
             });
         }
+        */
 
-        // creates a button for each public game on the join page
+        // creates a list of all the public games on the join page
         if (requestObj.listPublicGames !== undefined) {
             F.sequence(requestObj.listPublicGames.length).forEach(function (element) {
                 // makes a button element for each public game
@@ -85,7 +86,6 @@ ui.init = function () {
                 // CHANGE THIS TO THE QUIZ NAME EG BEGINNER FRENCH
                 publicGame.innerHTML = requestObj.listPublicGames[element];
                 el("listPublicGames").appendChild(publicGame);
-                console.log(publicGame);
             });
         }
 
@@ -191,53 +191,68 @@ ui.init = function () {
     });
 
 
-
-
     /*
 
-    Moving around pages.
+    Buttons on the page where you join a game.
 
     */
 
 
-    // when you are on the homepage
+    // button to join a game with a code
+    el("joinGameCode").addEventListener("click", function () {
+        ws.send(JSON.stringify(
+            {"joinGameCode": el("gameCodeInput").value}
+        ));
+    });
+    // buttons for public games
+    const currentPublicGames = ClaN("publicGame");
+    F.sequence(currentPublicGames.length).forEach( function (element) {
+        currentPublicGames[element].addEventListener("click", Board.joinPublicGame(currentPublicGames[element])) // or this.id?
+    })
 
-        // clicking on the join button
-        // THIS PLAYER IS NOT THE HOST
-        el("Join-button").addEventListener("click", function () {
-            el("homePage").style.display = "none";
-            el("joinPage").style.display = "block";
-            ws.send(JSON.stringify({
-                "hosting": false,
-                "listPublicGames": true
-            }));
-        });
-        // button to join a game with a code
-        el("joinGameCode").addEventListener("click", function () {
-            ws.send(JSON.stringify(
-                {"joinGameCode": el("gameCodeInput").value}
-            ));
-        });
 
-        // clicking on the host button
-        // THIS PLAYER IS THE HOST
-        // - this should be changed to when a game code is created
-        el("Host-button").addEventListener("click", function () {
-            el("homePage").style.display = "none";
-            el("hostGamePage").style.display = "block";
-            ws.send(JSON.stringify(
-                {"hosting": true}
-            ));
-        });
+    /*
 
-    // when you are on the hosting page
+    Buttons on the homepage.
 
-        // clicking on the "create a game" button
-        el("Create-button").addEventListener("click", function () {
-            el("hostGamePage").style.display = "none";
-            el("gamePage").style.display = "block";
-            Board.buildGamePage();
-        });
+    */
+
+
+    // clicking on the join button
+    // (this player is set to not be a host)
+    el("Join-button").addEventListener("click", function () {
+        el("homePage").style.display = "none";
+        el("joinPage").style.display = "block";
+        ws.send(JSON.stringify({
+            "hosting": false,
+            "listPublicGames": true
+        }));
+    });
+
+    // clicking on the host button
+    // (this player is set to be the host)
+    el("Host-button").addEventListener("click", function () {
+        el("homePage").style.display = "none";
+        el("hostGamePage").style.display = "block";
+        ws.send(JSON.stringify(
+            {"hosting": true}
+        ));
+    });
+
+
+    /*
+
+    Buttons on the hosting page.
+
+    */
+
+
+    // clicking on the "create a game" button
+    el("Create-button").addEventListener("click", function () {
+        el("hostGamePage").style.display = "none";
+        el("gamePage").style.display = "block";
+        Board.buildGamePage();
+    });
 };
 
 export default Object.freeze(ui);

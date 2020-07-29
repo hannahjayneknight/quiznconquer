@@ -129,7 +129,6 @@ app.ws("/", function (ws, req) {
             if (games[ws.myprivatedata.gameCode].players.length === 0) {
                 // removes game code from the games obj
                 games.removeGame = ws.myprivatedata.gameCode;
-                console.log(ws.myprivatedata.gameCode);
             }
 
             // if the game hasn't begun and there are still players in the game, players
