@@ -1,4 +1,5 @@
 
+/*jslint maxlen: 100 */
 import express from "express";
 import expressWS from "express-ws";
 import H from "./handler.js";
@@ -108,30 +109,42 @@ app.ws("/", function (ws, req) {
 
     ws.on("close", function () {
         console.log("Server websocket has closed");
-        // removes the player that left the game from the array of players
-        // to ensure the server stops sending messages to that websocket
-        games[ws.myprivatedata.gameCode].players.some(function (thisws, ind) {
-            // NB: ws.myprivatedata contains the data for the player that left
-            // thisws allows us to loop through each player that WAS playing
-            if (thisws.myprivatedata.playerNumber === ws.myprivatedata.playerNumber) {
-                games[ws.myprivatedata.gameCode].players.splice(ind, 1);
-                return true;
-            }
-            return false;
-        });
-        // if the game hasn't begun, players will be reassigned player numbers
-        // otherwise, the game will continue
-        if (ws.myprivatedata.gameStatus === "not playing") {
-            let tempNumWS = [];
-            games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
-                thisws.myprivatedata.playerNumber = tempNumWS.length + 1;
-                tempNumWS.push(1);
-                thisws.send(JSON.stringify({
-                    "playerNumber": thisws.myprivatedata.playerNumber
-                }));
-            });
-        }
+        // checks to see if a player was in a game first
+        if (ws.myprivatedata.gameCode !== undefined) {
 
+            // removes the player that left the game from the array of players
+            // to ensure the server stops sending messages to that websocket
+            games[ws.myprivatedata.gameCode].players.some(function (thisws, ind) {
+                // NB: ws.myprivatedata contains the data for the player that left
+                // thisws allows us to loop through each player that WAS playing
+                if (thisws.myprivatedata.playerNumber === ws.myprivatedata.playerNumber) {
+                    games[ws.myprivatedata.gameCode].players.splice(ind, 1);
+                    return true;
+                }
+                return false;
+            });
+
+            // If there aren't any players left in the game, the game code is removed
+            // from the games object.
+            if (games[ws.myprivatedata.gameCode].players.length === 0) {
+                // removes game code from the games obj
+                games.removeGame = ws.myprivatedata.gameCode;
+                console.log(ws.myprivatedata.gameCode);
+            }
+
+            // if the game hasn't begun and there are still players in the game, players
+            // will be reassigned player numbers otherwise, the game will continue
+            if (ws.myprivatedata.gameStatus === "not playing" && games[ws.myprivatedata.gameCode] !== undefined) {
+                let tempNumWS = [];
+                games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
+                    thisws.myprivatedata.playerNumber = tempNumWS.length + 1;
+                    tempNumWS.push(1);
+                    thisws.send(JSON.stringify({
+                        "playerNumber": thisws.myprivatedata.playerNumber
+                    }));
+                });
+            }
+        }
     });
 
 
@@ -202,11 +215,19 @@ app.ws("/", function (ws, req) {
         }
 
         // making a game public/ private...
+        // NB: public = true means the game is public
         if (clientObj.makeGamePublic !== undefined) {
             games[clientObj.makeGamePublic].public = true;
         }
         if (clientObj.makeGamePrivate !== undefined) {
             games[clientObj.makeGamePrivate].public = false;
+        }
+
+        // sending a list of all the public games...
+        if (clientObj.listPublicGames !== undefined){
+            ws.send(JSON.stringify({
+                "listPublicGames": H.findPublicGames(games)
+            }));
         }
 
         // this allows a player to manually start a game if there

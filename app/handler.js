@@ -1,3 +1,4 @@
+
 import F from "./usefulfunctions.js";
 import dbH from "./dbHandler.js";
 
@@ -224,5 +225,16 @@ H.startGame = function (ws, games, currentBoard) {
     });
 };
 
+H.findPublicGames = function (games) {
+    let publicGames = [];
+    Object.keys(games).forEach( function (element) {
+        if (element !== "removeGame") {
+            if (games[element].public === true) {
+                publicGames.push(element);
+            }
+        }
+    });
+    return publicGames;
+}
 
 export default Object.freeze(H);

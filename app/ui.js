@@ -1,3 +1,5 @@
+
+/*jslint maxlen: 100 */
 import F from "./usefulfunctions.js";
 import Board from "./boardGame.js";
 
@@ -61,10 +63,29 @@ ui.init = function () {
                 // makes a p element which will represent each quiz
                 const publicQuiz = document.createElement("p");
                 // CHANGE ELEMENT TO THE NAME OF THE QUIZ?
+                // name of quiz = 
                 publicQuiz.setAttribute("id", "Public quiz " + element);
                 publicQuiz.setAttribute("class", "Public Quizzes");
                 publicQuiz.innerHTML = requestObj.quizList[element].name;
                 el("ListOfQuizzes").append(publicQuiz);
+            });
+        }
+
+        // creates a button for each public game on the join page
+        if (requestObj.listPublicGames !== undefined) {
+            F.sequence(requestObj.listPublicGames.length).forEach(function (element) {
+                // makes a button element for each public game
+                const publicGame = document.createElement("button");
+                // game code for public game = requestObj.listPublicGames[element]
+                publicGame.setAttribute("id", requestObj.listPublicGames[element]);
+                publicGame.setAttribute("tabindex", 0);
+                publicGame.setAttribute("aria-label", "Click here to join the game");
+                publicGame.setAttribute("class", "publicGame");
+                // sets inner HTML to game code
+                // CHANGE THIS TO THE QUIZ NAME EG BEGINNER FRENCH
+                publicGame.innerHTML = requestObj.listPublicGames[element];
+                el("listPublicGames").appendChild(publicGame);
+                console.log(publicGame);
             });
         }
 
@@ -185,12 +206,13 @@ ui.init = function () {
         // THIS PLAYER IS NOT THE HOST
         el("Join-button").addEventListener("click", function () {
             el("homePage").style.display = "none";
-            el("joinWithCodePage").style.display = "block";
-            ws.send(JSON.stringify(
-                {"hosting": false}
-            ));
+            el("joinPage").style.display = "block";
+            ws.send(JSON.stringify({
+                "hosting": false,
+                "listPublicGames": true
+            }));
         });
-
+        // button to join a game with a code
         el("joinGameCode").addEventListener("click", function () {
             ws.send(JSON.stringify(
                 {"joinGameCode": el("gameCodeInput").value}

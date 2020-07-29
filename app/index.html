@@ -31,16 +31,22 @@
 
 
     <!--
-        This is the page where you can join a game using a game code.
+        This is the page where you can join a game.
     -->
 
-    <div id="joinWithCodePage" style="display: none;">
+    <div id="joinPage" style="display: none;">
 
         <h1 id="Title">Nutty Tilez</h1>
 
-        <label><textarea id="gameCodeInput" tabindex="0" aria-label="Type your game code here" rows="1" cols="50" maxlength="5" placeholder="Game code" onfocus="this.placeholder = '' "></textarea></label>
+        <h2 id="subTitle1">Join using a game code.</h2>
+
+        <label><textarea id="gameCodeInput" tabindex="0" aria-label="Type your game code here" rows="1" cols="50" maxlength="5" placeholder="CODE1" onfocus="this.placeholder = '' "></textarea></label>
     
         <button id="joinGameCode" tabindex="0" aria-label="Click here to join the game">Join game</button>
+
+        <h2 id="subTitle2">Or join a public game.</h2>
+
+        <div id ="listPublicGames"></div>
     
     </div>
 
