@@ -75,18 +75,8 @@ ui.init = function () {
         // when a receiving a list of the public games...
         if (requestObj.listPublicGames !== undefined) {
             // creates a list of all the public games on the join page
-            F.sequence(requestObj.listPublicGames.length).forEach(function (element) {
-                // makes a button element for each public game
-                const publicGame = document.createElement("button");
-                // game code for public game = requestObj.listPublicGames[element]
-                publicGame.setAttribute("id", requestObj.listPublicGames[element]);
-                publicGame.setAttribute("tabindex", 0);
-                publicGame.setAttribute("aria-label", "Click here to join the game");
-                publicGame.setAttribute("class", "publicGame");
-                // sets inner HTML to game code
-                // CHANGE THIS TO THE QUIZ NAME EG BEGINNER FRENCH
-                publicGame.innerHTML = requestObj.listPublicGames[element];
-                el("listPublicGames").appendChild(publicGame);
+            Board.listPublicGames(requestObj.listPublicGames, function () {
+                Board.joinPublicGame()
             });
         }
 
@@ -197,14 +187,6 @@ ui.init = function () {
             {"joinGameCode": el("gameCodeInput").value}
         ));
     });
-    // Creates an event listener for the buttons for public games
-    const currentPublicGames = Array.from(document.getElementsByClassName("publicGame"));
-    F.sequence(currentPublicGames.length).forEach( function (element) {
-        el(currentPublicGames[element].id).addEventListener("click", console.log(currentPublicGames[element].id)); // or this.id?
-        //console.log(currentPublicGames[element]);
-        // console.log(currentPublicGames[element].id);
-    });
-    //console.log(currentPublicGames);
 
 
     /*
