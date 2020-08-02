@@ -75,9 +75,8 @@ ui.init = function () {
         // when a receiving a list of the public games...
         if (requestObj.listPublicGames !== undefined) {
             // creates a list of all the public games on the join page
-            Board.listPublicGames(requestObj.listPublicGames, function () {
-                Board.joinPublicGame()
-            });
+            // and calls the callback to listen for each button to be pressed
+            Board.listPublicGames(requestObj.listPublicGames); 
         }
 
         // if the message contains the word to be testing on,
@@ -187,6 +186,24 @@ ui.init = function () {
             {"joinGameCode": el("gameCodeInput").value}
         ));
     });
+
+    // buttons to join a public game
+    // checks to see if the parent element has event listeners
+    const listPublicGames = el("listPublicGames");
+    if (listPublicGames.addEventListener) {
+        listPublicGames.addEventListener("click", joinPublicGame, false);
+    } else if (listPublicGames.attachEvent) {
+        listPublicGames.attachEvent("onclick", joinPublicGame);
+    }
+
+    // code to be executed when player joins a game
+    function joinPublicGame(e) {
+        console.log(e.target.id);
+        // e.target.id gets the id of what triggered the event
+        /*if (e.target.id === 'test') {
+            // the button was clicked
+        }*/
+    }
 
 
     /*

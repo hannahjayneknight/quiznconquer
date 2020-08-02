@@ -35,31 +35,21 @@ Board.buildGamePage = function () {
     });
 };
 
-Board.listPublicGames = function (publicGamesArr, callback) {
-    F.sequence(publicGamesArr.length).forEach(function (element) {
+Board.listPublicGames = function (pubGameArr, gameCode) {
+    F.sequence(pubGameArr.length).forEach( function (element) {
         // makes a button element for each public game
         const publicGame = document.createElement("button");
         // game code for public game = requestObj.listPublicGames[element]
-        publicGame.setAttribute("id", publicGamesArr[element]);
+        publicGame.setAttribute("id", pubGameArr[element]);
         publicGame.setAttribute("tabindex", 0);
         publicGame.setAttribute("aria-label", "Click here to join the game");
         publicGame.setAttribute("class", "publicGame");
         // sets inner HTML to game code
         // CHANGE THIS TO THE QUIZ NAME EG BEGINNER FRENCH
-        publicGame.innerHTML = publicGamesArr[element];
-        publicGame.onload = () => callback(publicGame);
+        publicGame.innerHTML = pubGameArr[element];
+        //publicGame.onload = () => callback(publicGame);
         el("listPublicGames").appendChild(publicGame);
     });
-};
-
-Board.joinPublicGame = function () {
-    console.log("this worked!");
-    // Creates an event listener for the buttons for public games
-    /*const currentPublicGames = Array.from(document.getElementsByClassName("publicGame"));
-    F.sequence(currentPublicGames.length).forEach( function (element) {
-        el(currentPublicGames[element].id).addEventListener("click", alert("Hey, it worked!")); // or this.id?
-    });
-    */
 };
 
 export default Object.freeze(Board);
