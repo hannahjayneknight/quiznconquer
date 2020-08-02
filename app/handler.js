@@ -239,6 +239,8 @@ H.findPublicGames = function (games) {
                 })
                 */
             }
+        } else {
+            return;
         }
     });
     return publicGames;
