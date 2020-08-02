@@ -34,7 +34,7 @@ ui.init = function () {
         // if the message says the player has joined a game
         // it will display the game page for them
         if (requestObj.joinGameAccepted === true) {
-            el("joinWithCodePage").style.display = "none";
+            el("joinPage").style.display = "none";
             el("gamePage").style.display = "block";
             Board.buildGamePage();
         }
@@ -75,7 +75,6 @@ ui.init = function () {
         // when a receiving a list of the public games...
         if (requestObj.listPublicGames !== undefined) {
             // creates a list of all the public games on the join page
-            // and calls the callback to listen for each button to be pressed
             Board.listPublicGames(requestObj.listPublicGames); 
         }
 
@@ -196,12 +195,16 @@ ui.init = function () {
         listPublicGames.attachEvent("onclick", joinPublicGame);
     }
 
-    // code to be executed when player joins a game
+    // when player joins a game a message will be sent to the server and
+    // the game page will be displayed
     function joinPublicGame(e) {
-        console.log(e.target.id);
         // e.target.id gets the id of what triggered the event
-        /*if (e.target.id === 'test') {
-            // the button was clicked
+        // in this case it is the code id of the game
+        ws.send(JSON.stringify(
+            {"joinGameCode": e.target.id}
+        ));
+        /*
+
         }*/
     }
 

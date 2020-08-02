@@ -35,7 +35,7 @@ Board.buildGamePage = function () {
     });
 };
 
-Board.listPublicGames = function (pubGameArr, gameCode) {
+Board.listPublicGames = function (pubGameArr) {
     F.sequence(pubGameArr.length).forEach( function (element) {
         // makes a button element for each public game
         const publicGame = document.createElement("button");

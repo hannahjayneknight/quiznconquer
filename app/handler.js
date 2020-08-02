@@ -227,10 +227,17 @@ H.startGame = function (ws, games, currentBoard) {
 
 H.findPublicGames = function (games) {
     let publicGames = [];
+    // NB: element here will be each game code
     Object.keys(games).forEach( function (element) {
+        // ensures the key is a game node and not the setter
         if (element !== "removeGame") {
             if (games[element].public === true) {
                 publicGames.push(element);
+                /* publicGames.push({
+                    "gameCode": element,
+                    "quizName": games[element].quizName
+                })
+                */
             }
         }
     });

@@ -36,6 +36,8 @@ app.get("/", function (req, res, next) {
 // creates a shallow copy of the starting array
 let currentBoard = Array.from(H.startBoard());
 
+// creates the object which will store all the games 
+// currently being played
 const games = {
     set removeGame(key) {
         delete games[key];
@@ -60,15 +62,16 @@ games.WXYZ = {
         { player web socket object goes here },
         { player web socket object goes here }
     ],
-    public: false
+    public: false,
+    quiz: "beginner_French"
 }
 
 The games object could look like this:
 
 games = {
 
-    HIAZY: { players: [websocket, websocket, websocket], gameStatus: 'playing'},
-    WXYZ: { players: [websocket], gameStatus: 'not playing' },
+    HIAZY: { players: [websocket, websocket, websocket], public: false, quiz: "beginner_French"},
+    WXYZ: { players: [websocket],  public: false, quiz: "beginner_French"
     removeGame: [Setter]
 
 }
@@ -225,6 +228,9 @@ app.ws("/", function (ws, req) {
         // sending a list of all the public games...
         if (clientObj.listPublicGames !== undefined){
             ws.send(JSON.stringify({
+                // this sends an array with all the public game codes
+                // need to make this send the name of the quiz being played too
+                // which will be achieved in the handler
                 "listPublicGames": H.findPublicGames(games)
             }));
         }
