@@ -211,7 +211,7 @@ H.startGame = function (ws, games, currentBoard) {
     // initializes the starting board
     currentBoard = Array.from(H.startBoard());
     // starts the timer
-    H.startTimer(games[ws.myprivatedata.gameCode].players, games);
+    H.startTimer(games[`${ws.myprivatedata.gameCode}`].players, games);
     // generates a testing word and sends it to the client to be
     // displayed on the DOM
     games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {

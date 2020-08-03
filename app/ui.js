@@ -221,6 +221,9 @@ ui.init = function () {
     el("Join-button").addEventListener("click", function () {
         el("homePage").style.display = "none";
         el("joinPage").style.display = "block";
+        // hides the “make this hame public” and “everyone has joined” buttons
+        el("everyone-has-joined-button").style.display = "none";
+        el("make-this-game-public-button").style.display = "none";
         ws.send(JSON.stringify({
             "hosting": false,
             "listPublicGames": true
@@ -231,6 +234,9 @@ ui.init = function () {
     el("Host-button").addEventListener("click", function () {
         el("homePage").style.display = "none";
         el("hostGamePage").style.display = "block";
+        // reveals the “make this hame public” and “everyone has joined” buttons
+        el("everyone-has-joined-button").style.display = "block";
+        el("make-this-game-public-button").style.display = "block";
         ws.send(JSON.stringify(
             {"hosting": true}
         ));
@@ -244,12 +250,27 @@ ui.init = function () {
     */
 
 
-    // clicking on the "create a game" button
+    // clicking on the "Create" button
     el("Create-button").addEventListener("click", function () {
-        el("hostGamePage").style.display = "none";
-        el("gamePage").style.display = "block";
-        Board.buildGamePage();
+        el("hostGamePage").style.display = "none"; // removes
+        el("createQuizPage").style.display = "block"; // shows
+    });
+
+    // clicking on the "Browse" button
+    el("Browse-button").addEventListener("click", function () {
+        el("hostGamePage").style.display = "none"; // removes
+        el("browseQuizzesPage").style.display = "block"; // shows
     });
 };
+
+/*
+
+Code to open and build game playing page.
+
+el("hostGamePage").style.display = "none";
+el("gamePage").style.display = "block";
+Board.buildGamePage();
+
+*/
 
 export default Object.freeze(ui);

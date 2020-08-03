@@ -4,7 +4,7 @@ import sqlite3 from "sqlite3";
 // NB: this object is only used on the server side
 const dbH = Object.create(null);
 
-// usedto generate a testing word
+// used to generate a testing word
 // NEED TO MODIFY SO TAKES IN THE TABLE TO BE USED
 dbH.generateWordFromDB = function (cb) {
     const db = new sqlite3.Database("./sample.db", function (err) {
