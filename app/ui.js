@@ -252,14 +252,14 @@ ui.init = function () {
 
     // clicking on the "Create" button
     el("Create-button").addEventListener("click", function () {
-        el("hostGamePage").style.display = "none"; // removes
-        el("createQuizPage").style.display = "block"; // shows
+        el("hostGamePage").style.display = "none";
+        el("createQuizPage").style.display = "block";
     });
 
     // clicking on the "Browse" button
     el("Browse-button").addEventListener("click", function () {
-        el("hostGamePage").style.display = "none"; // removes
-        el("browseQuizzesPage").style.display = "block"; // shows
+        el("hostGamePage").style.display = "none";
+        el("browseQuizzesPage").style.display = "block";
     });
 };
 
