@@ -100,6 +100,11 @@ app.ws("/", function (ws, req) {
         "currentBoard": currentBoard, // updated as game goes on
         "gameStatus": "not playing", // "playing" or "not playing"
         "hosting": false // true if they are the host
+        
+        // the following are added when a player is in a game
+        // "gameCode": CODE1,
+        // "playerNumber": 1,
+        // "word": "bonjour"
     };
 
 
@@ -225,7 +230,6 @@ app.ws("/", function (ws, req) {
         // receiving a request to list all the quizzes...
         if (clientObj.listQuizzesPlease !== undefined) {
             dbH.getInfoTables( function( obj ) {
-                ws.myprivatedata.quizzes = obj;
                 ws.send(JSON.stringify({
                     "listAllQuizzes": obj
                 }));
@@ -242,13 +246,20 @@ app.ws("/", function (ws, req) {
         }
 
         // sending a list of all the public games...
-        if (clientObj.listPublicGames !== undefined){
+        if (clientObj.listPublicGames !== undefined) {
             ws.send(JSON.stringify({
                 // this sends an array with all the public game codes
                 // need to make this send the name of the quiz being played too
                 // which will be achieved in the handler
                 "listPublicGames": H.findPublicGames(games)
             }));
+        }
+
+        // receiving a request to host a quiz that has been found from browsing...
+        if (clientObj.hostBrowsedQuiz !== undefined) {
+            // sets the quiz name to the games object
+            // this will be saved to the game code of the player that clicked on it
+            games[ws.myprivatedata.gameCode].quiz = clientObj.hostBrowsedQuiz;
         }
 
         // this allows a player to manually start a game if there
@@ -264,9 +275,9 @@ app.ws("/", function (ws, req) {
         }
 
         // if the message is an answer...
-        if (clientObj.answer !== undefined && ws.myprivatedata.word !== undefined) {
+        if (clientObj.answer !== undefined && ws.myprivatedata.word !== undefined && games[ws.myprivatedata.gameCode] !== undefined) {
             // it will check if it is correct
-            if (clientObj.answer === ws.myprivatedata.word.answer) {
+            if (clientObj.answer.trim().toLowerCase() === ws.myprivatedata.word.answer) {
                 // and send the player number that won along with
                 // the free tile to change
                 const tileStolen = H.freeTile(
@@ -293,7 +304,7 @@ app.ws("/", function (ws, req) {
             }
             // it will generate a new word for questioning
             // ONLY for the player that won the tile
-            dbH.generateWordFromDB( function( obj ) {
+            dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz, function( obj ) {
                 ws.myprivatedata.word = obj.word;
                 ws.send(JSON.stringify({
                     "word": obj.word.name
@@ -306,15 +317,10 @@ app.ws("/", function (ws, req) {
 
 
 
-    // sends a list of all the quizzes
-    // NEED TO DECIDE HOW TO USE THIS
+
     /*
-    dbH.getInfoTables( function( obj ) {
-        ws.myprivatedata.quizName = obj.word;
-        ws.send(JSON.stringify({
-            "listAllQuizzes": obj.tables
-        }));
-    });
+    which quiz the player is playing:
+    games[ws.myprivatedata.gameCode].quiz
     */
 
 /////////////////////////////////////////////////////////

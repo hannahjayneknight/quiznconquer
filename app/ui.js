@@ -177,24 +177,20 @@ ui.init = function () {
 
     // buttons to join a public game
     // checks to see if the parent element has event listeners
-    const listPublicGames = el("listPublicGames");
-    if (listPublicGames.addEventListener) {
-        listPublicGames.addEventListener("click", joinPublicGame, false);
-    } else if (listPublicGames.attachEvent) {
-        listPublicGames.attachEvent("onclick", joinPublicGame);
+    if (el("listPublicGames").addEventListener) {
+        el("listPublicGames").addEventListener("click", joinPublicGame, false);
+    } else if (el("listPublicGames").attachEvent) {
+        el("listPublicGames").attachEvent("onclick", joinPublicGame);
     }
 
     // when player joins a game a message will be sent to the server and
     // the game page will be displayed
-    function joinPublicGame(e) {
+    function joinPublicGame (e) {
         // e.target.id gets the id of what triggered the event
         // in this case it is the code id of the game
         ws.send(JSON.stringify(
             {"joinGameCode": e.target.id}
         ));
-        /*
-
-        }*/
     }
 
 
@@ -257,7 +253,6 @@ ui.init = function () {
             {"listQuizzesPlease": true}
         ));
     });
-};
 
 
     /*
@@ -272,6 +267,37 @@ ui.init = function () {
         el("gamePage").style.display = "block";
         Board.buildGamePage();
     });
+
+
+    /*
+
+    Buttons on the browsing quizzes page.
+
+    */
+
+
+    // buttons to join a public game
+    // checks to see if the parent element has event listeners
+    if (el("listOfQuizzes").addEventListener) {
+        el("listOfQuizzes").addEventListener("click", hostBrowsedQuiz, false);
+    } else if (el("listOfQuizzes").attachEvent) {
+        el("listOfQuizzes").attachEvent("onclick", hostBrowsedQuiz);
+    }
+
+    // when player joins a game a message will be sent to the server and
+    // the game page will be displayed
+    function hostBrowsedQuiz (e) {
+        el("browseQuizzesPage").style.display = "none";
+        el("gamePage").style.display = "block";
+        Board.buildGamePage();
+        ws.send(JSON.stringify(
+            {"hostBrowsedQuiz": e.target.id}
+        ));
+        // e.target.id gets the id of what triggered the event
+        // in this case it is the name of the quiz
+    }
+
+};
 /*
 
 Code to open and build game playing page.

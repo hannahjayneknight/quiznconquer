@@ -6,7 +6,7 @@ const dbH = Object.create(null);
 
 // used to generate a testing word
 // NEED TO MODIFY SO TAKES IN THE TABLE TO BE USED
-dbH.generateWordFromDB = function (cb) {
+dbH.generateWordFromDB = function (quiz, cb) {
     const db = new sqlite3.Database("./sample.db", function (err) {
         if (err) {
             console.error(err.message);
@@ -18,7 +18,7 @@ dbH.generateWordFromDB = function (cb) {
     // (depends on level - NEED TO CHANGE LEVEL FOR THIS)
     let level = 6;
     const queryWord = `SELECT * FROM (
-        SELECT * FROM Beginner_French ORDER BY ID LIMIT ${level}
+        SELECT * FROM ${quiz} ORDER BY ID LIMIT ${level}
         ) ORDER BY RANDOM() LIMIT 1;`;
 
     const dbObj = {};

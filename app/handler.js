@@ -1,4 +1,5 @@
 
+/*jslint maxlen: 100 */
 import F from "./usefulfunctions.js";
 import dbH from "./dbHandler.js";
 
@@ -217,7 +218,7 @@ H.startGame = function (ws, games) {
     // displayed on the DOM
     games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
 
-        dbH.generateWordFromDB( function( obj ) {
+        dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz, function( obj ) {
             thisws.myprivatedata.word = obj.word;
             thisws.send(JSON.stringify({
                 "word": obj.word.name
