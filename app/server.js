@@ -211,7 +211,11 @@ app.ws("/", function (ws, req) {
                 // if the game that the person has just joined has 4
                 // players in it, it will begin
                 if (games[ws.myprivatedata.gameCode].players.length === 4) {
-                    H.startGame(ws, games, currentBoard);
+                    H.startGame(ws, games);
+                    // initializes the starting board
+                    currentBoard = Array.from(H.startBoard());
+                    // refreshes this web socket's starting board
+                    ws.myprivatedata.currentBoard = Array.from(H.startBoard());
                 }
             } else {
                 return;
@@ -241,7 +245,11 @@ app.ws("/", function (ws, req) {
         // are fewer than four players
         if (clientObj.startGame !== undefined) {
             if (clientObj.startGame === true) {
-                H.startGame(ws, games, currentBoard);
+                H.startGame(ws, games);
+                // initializes the starting board
+                currentBoard = Array.from(H.startBoard());
+                // refreshes this web socket's starting board
+                ws.myprivatedata.currentBoard = Array.from(H.startBoard());
             }
         }
 

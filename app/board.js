@@ -35,6 +35,15 @@ Board.buildGamePage = function () {
     });
 };
 
+Board.submitAnswer = function (ws) {
+        // if key button is pressed, it will submit the answer
+        // and send it to the server
+        const answer = JSON.stringify(
+            { "answer": el("answer-pane").value.trim().toLowerCase() });
+        ws.send(answer);
+        el("answer-pane").value = "";
+};
+
 Board.listPublicGames = function (pubGameArr) {
     F.sequence(pubGameArr.length).forEach( function (element) {
         // makes a button element for each public game
@@ -50,6 +59,30 @@ Board.listPublicGames = function (pubGameArr) {
         //publicGame.onload = () => callback(publicGame);
         el("listPublicGames").appendChild(publicGame);
     });
+};
+
+Board.createQA = function (number) {
+    // creates the question
+    const Q = document.createElement("textarea");
+    Q.setAttribute("id", ("q" + number));
+    Q.setAttribute("class", "questions");
+    Q.setAttribute("tabindex", 0);
+    Q.setAttribute("aria-label", "Type your question here");
+    Q.setAttribute("placeholder", ("Question " + number));
+    Q.setAttribute("onfocus", ("this.placeholder = '' "));
+    Q.setAttribute("onblur", ("this.placeholder = 'Question "  + number + "' "));
+    el("new-questions-list").appendChild(Q);
+
+    // creates the answer
+    const A = document.createElement("textarea");
+    A.setAttribute("id", ("a" + number));
+    A.setAttribute("class", "answers");
+    A.setAttribute("tabindex", 0);
+    A.setAttribute("aria-label", "Type your answer here");
+    A.setAttribute("placeholder", ("Answer " + number));
+    A.setAttribute("onfocus", ("this.placeholder = '' "));
+    A.setAttribute("onblur", ("this.placeholder = 'Answer "  + number + "' "));
+    el("new-answers-list").appendChild(A);
 };
 
 export default Object.freeze(Board);

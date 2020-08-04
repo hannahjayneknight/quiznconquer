@@ -1,7 +1,7 @@
 
 /*jslint maxlen: 100 */
 import F from "./usefulfunctions.js";
-import Board from "./boardGame.js";
+import Board from "./board.js";
 
 const ui = Object.create(null);
 const el = (id) => document.getElementById(id);
@@ -117,15 +117,13 @@ ui.init = function () {
     */
 
 
+    // document.addEventListener("keyup", Board.submitAnswer(event, ws) );
     // if key button is pressed, it will submit the answer
     // and send it to the server
     document.addEventListener("keyup", function (event) {
         //Check if modal is visible and key code
         if (event.keyCode === 13) {
-            const answer = JSON.stringify(
-                { "answer": el("answer-pane").value.trim().toLowerCase() });
-            ws.send(answer);
-            el("answer-pane").value = "";
+            Board.submitAnswer(ws);
         }
     });
     // if the help button is pressed, it will display a help
@@ -180,7 +178,7 @@ ui.init = function () {
 
 
     // button to join a game with a code
-    el("joinGameCode").addEventListener("click", function () {
+    el("joinGameCodeButton").addEventListener("click", function () {
         ws.send(JSON.stringify(
             {"joinGameCode": el("gameCodeInput").value}
         ));
@@ -254,6 +252,9 @@ ui.init = function () {
     el("Create-button").addEventListener("click", function () {
         el("hostGamePage").style.display = "none";
         el("createQuizPage").style.display = "block";
+        F.sequence(6).forEach( function (element) {
+            Board.createQA(element + 1);
+        })
     });
 
     // clicking on the "Browse" button
@@ -263,11 +264,24 @@ ui.init = function () {
     });
 };
 
+
+    /*
+
+    Buttons on the creating a game page.
+
+    */
+
+
+    el("create-and-play-button").addEventListener("click", function () {
+        el("createQuizPage").style.display = "none";
+        el("gamePage").style.display = "block";
+        Board.buildGamePage();
+    });
 /*
 
 Code to open and build game playing page.
 
-el("hostGamePage").style.display = "none";
+el("hostGamePage").style.display = "none"; // page you want to block goes here
 el("gamePage").style.display = "block";
 Board.buildGamePage();
 

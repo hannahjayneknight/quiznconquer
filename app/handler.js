@@ -54,7 +54,10 @@ H.startTimer = function (players, games) {
         if (parseInt(seconds) === 0) {
             clearInterval(timerID);
             // removes game code from the games obj
-            games.removeGame = players[0].myprivatedata.gameCode;
+            if (players[0] !== undefined) {
+                games.removeGame = players[0].myprivatedata.gameCode;
+            }
+
             players.forEach(function (thisws) {
 
                 thisws.send(JSON.stringify({
@@ -207,9 +210,7 @@ H.makeGameCode = function (length = 5) {
 };
 
 // function to start a game
-H.startGame = function (ws, games, currentBoard) {
-    // initializes the starting board
-    currentBoard = Array.from(H.startBoard());
+H.startGame = function (ws, games) {
     // starts the timer
     H.startTimer(games[`${ws.myprivatedata.gameCode}`].players, games);
     // generates a testing word and sends it to the client to be

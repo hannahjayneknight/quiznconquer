@@ -40,9 +40,9 @@
 
         <h2 id="subTitle1">Join using a game code.</h2>
 
-        <label><textarea id="gameCodeInput" tabindex="0" aria-label="Type your game code here" rows="1" cols="50" maxlength="5" placeholder="CODE1" onfocus="this.placeholder = '' "></textarea></label>
+        <label><textarea id="gameCodeInput" tabindex="0" aria-label="Type your game code here" rows="1" cols="50" maxlength="5" placeholder="CODE1" onfocus="this.placeholder = '' " onblur="this.placeholder = 'CODE1'"></textarea></label>
     
-        <button id="joinGameCode" tabindex="0" aria-label="Click here to join the game">Join game</button>
+        <button id="joinGameCodeButton" tabindex="0" aria-label="Click here to join the game">Join game</button>
 
         <h2 id="subTitle2">Or join a public game.</h2>
 
@@ -85,8 +85,10 @@
 
         <h1 id="Title">Nutty Tilez</h1>
 
-        <label><textarea id="setQuizTitle" tabindex="0" aria-label="Type the title of your quiz here" rows="1" cols="100" maxlength="100" placeholder="Title" onfocus="this.placeholder = '' "></textarea></label>
-        <div id="quizContents"></div>
+        <label><textarea id="setQuizTitle" tabindex="0" aria-label="Type the title of your quiz here" rows="1" cols="100" placeholder="Title" onfocus="this.placeholder = '' " onblur="this.placeholder = 'Title'"></textarea></label>
+        
+        <div id="new-questions-list"></div>
+        <div id="new-answers-list"></div>
 
         <label><button id="create-and-play-button" type="button" tabindex="0" aria-label="Press here to save and play the game you have created">
             <p id="create-and-play-button-text">Create and play</p>
