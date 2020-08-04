@@ -65,10 +65,8 @@ Board.listAllQuizzes = function (listAllQuizzesArr) {
     F.sequence(listAllQuizzesArr.length).forEach(function (element) {
         // makes a p element which will represent each quiz
         const quiz = document.createElement("button");
-        // CHANGE ELEMENT TO THE NAME OF THE QUIZ?
-        // name of quiz = ...
-        quiz.setAttribute("id", "Quiz " + element);
-        quiz.setAttribute("class", "listAllQuizzes");
+        quiz.setAttribute("id", listAllQuizzesArr[element].name);
+        quiz.setAttribute("class", "quiz");
         quiz.setAttribute("tabindex", 0);
         quiz.setAttribute("aria-label", "Click here to play this quiz");
         quiz.innerHTML = listAllQuizzesArr[element].name.replace("_", " ");

@@ -116,8 +116,8 @@ textarea {
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 1.75rem;
-    font-family: var(--font);
     height: 2rem;
+    font-family: var(--font);
     overflow: hidden;
 }
 
@@ -467,7 +467,6 @@ textarea {
 
 
 
-
 #gameCodeInput
 {
     position: absolute;
@@ -523,4 +522,28 @@ textarea {
     margin: 5px;
     width: 25vw;
     height: 10vh;
+}
+
+
+
+
+/* This is for items on the browsing page. */
+
+
+
+
+#listOfQuizzes {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    top: 35vh;
+    left: 25vw;
+}
+
+.quiz {
+    margin: 5px;
+    width: 50vw;
+    height: 10vh;
+    justify-content: left;
 }
