@@ -222,6 +222,16 @@ app.ws("/", function (ws, req) {
             }
         }
 
+        // receiving a request to list all the quizzes...
+        if (clientObj.listQuizzesPlease !== undefined) {
+            dbH.getInfoTables( function( obj ) {
+                ws.myprivatedata.quizzes = obj;
+                ws.send(JSON.stringify({
+                    "listAllQuizzes": obj
+                }));
+            });
+        }
+
         // making a game public/ private...
         // NB: public = true means the game is public
         if (clientObj.makeGamePublic !== undefined) {
@@ -254,7 +264,7 @@ app.ws("/", function (ws, req) {
         }
 
         // if the message is an answer...
-        if (clientObj.answer !== undefined) {
+        if (clientObj.answer !== undefined && ws.myprivatedata.word !== undefined) {
             // it will check if it is correct
             if (clientObj.answer === ws.myprivatedata.word.answer) {
                 // and send the player number that won along with
@@ -300,9 +310,9 @@ app.ws("/", function (ws, req) {
     // NEED TO DECIDE HOW TO USE THIS
     /*
     dbH.getInfoTables( function( obj ) {
-        ws.myprivatedata.word = obj.word;
+        ws.myprivatedata.quizName = obj.word;
         ws.send(JSON.stringify({
-            "quizList": obj.tables
+            "listAllQuizzes": obj.tables
         }));
     });
     */

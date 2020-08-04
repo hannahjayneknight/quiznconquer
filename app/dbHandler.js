@@ -67,8 +67,8 @@ dbH.getInfoTables = function (cb) {
             if (err) {
                 return console.error(err.message);
             }
-            // saves the array of all the tables to dbObj.tables
-            dbObj.tables = row;
+            // saves the array of all the tables to dbObj.quizzes
+            dbObj.quizzes = row;
         });
     });
 
@@ -78,7 +78,7 @@ dbH.getInfoTables = function (cb) {
         }
 
         console.log("Close the database connection.");
-        cb(dbObj);
+        cb(dbObj.quizzes);
     });
 
 };

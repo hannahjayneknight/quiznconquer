@@ -56,21 +56,12 @@ ui.init = function () {
             el("gameCode").textContent = requestObj.gameCode;
         }
 
-        // making a list of all the quizes on the browsing page
-        /*
-        if (requestObj.quizList !== undefined) {
-            F.sequence(requestObj.quizList.length).forEach(function (element) {
-                // makes a p element which will represent each quiz
-                const publicQuiz = document.createElement("p");
-                // CHANGE ELEMENT TO THE NAME OF THE QUIZ?
-                // name of quiz = 
-                publicQuiz.setAttribute("id", "Public quiz " + element);
-                publicQuiz.setAttribute("class", "Public Quizzes");
-                publicQuiz.innerHTML = requestObj.quizList[element].name;
-                el("ListOfQuizzes").append(publicQuiz);
-            });
+        // making a list of all the quizzes on the browsing page
+        if (requestObj.listAllQuizzes !== undefined) {
+            let quizzessArr = requestObj.listAllQuizzes;
+            // requestObj.listAllQuizzes
+            Board.listAllQuizzes(requestObj.listAllQuizzes);
         }
-        */
 
         // when a receiving a list of the public games...
         if (requestObj.listPublicGames !== undefined) {
@@ -121,7 +112,7 @@ ui.init = function () {
     // if key button is pressed, it will submit the answer
     // and send it to the server
     document.addEventListener("keyup", function (event) {
-        //Check if modal is visible and key code
+        // Check if modal is visible and key code
         if (event.keyCode === 13) {
             Board.submitAnswer(ws);
         }
@@ -261,6 +252,10 @@ ui.init = function () {
     el("Browse-button").addEventListener("click", function () {
         el("hostGamePage").style.display = "none";
         el("browseQuizzesPage").style.display = "block";
+        // send request to server for all the quizzes
+        ws.send(JSON.stringify(
+            {"listQuizzesPlease": true}
+        ));
     });
 };
 
