@@ -109,12 +109,12 @@ dbH.createQuiz = function (tableName, cb) {
         "answer" TEXT NOT NULL
     );`;
 
-    const dbObj = {};
     db.serialize(function () {
         db.run(createTable, [], function (err, row) {
             if (err) {
                 return console.error(err.message);
             }
+            console.log(row);
         });
     });
 
@@ -131,22 +131,25 @@ dbH.createQuiz = function (tableName, cb) {
 
 // adding tableContents to the database
 // please see board.js to see the format of tableContents
-dbH.addToQuiz = function (tableName, tableContents) {
+dbH.addToQuiz = function (tableName, tableContents, cb) {
     const db = new sqlite3.Database("./sample2.db", function (err) {
         if (err) {
             console.error(err.message);
         }
     });
 
-    const insertQA = `INSERT INTO ${tableName} (question, answer)
-    VALUES (?, ?)`;
-
     // adds each qa pair to the table in the database
-    tableContents.forEach( function (element) {
-        db.run(insertQA, [element.question, element.answer], function (err, row) {
+    tableContents.forEach(function (element) {
+        let QA = [element.question, element.answer];
+        let placeholders = QA.map((i) => "?").join(",");
+        let insertQA = `INSERT INTO ${tableName.replace(/\s/g, "_")} (question, answer)
+        VALUES (` + placeholders + `)`;
+        db.run(insertQA, QA, function (err, row) {
             if (err) {
+                console.log(element);
                 return console.error(err.message);
             }
+            console.log(row);
         });
     });
 
@@ -154,6 +157,7 @@ dbH.addToQuiz = function (tableName, tableContents) {
         if (err) {
             console.error(err.message);
         }
+        cb();
     });
 };
 

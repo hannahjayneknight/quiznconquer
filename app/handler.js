@@ -218,7 +218,7 @@ H.startGame = function (ws, games) {
     // displayed on the DOM
     games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
 
-        dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz, function( obj ) {
+        dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz.replace(/\s/g, "_"), function( obj ) {
             thisws.myprivatedata.word = obj.word;
             thisws.send(JSON.stringify({
                 "word": obj.word.question

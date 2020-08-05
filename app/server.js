@@ -258,16 +258,18 @@ app.ws("/", function (ws, req) {
         // after clicking "create and play" button...
         if (clientObj.createTable !== undefined) {
             dbH.createQuiz(clientObj.createTable.tableName, function () {
-                dbH.addToQuiz(clientObj.createTable.tableName, clientObj.createTable.tableContents)
+                dbH.addToQuiz(clientObj.createTable.tableName, clientObj.createTable.tableContents, function () {
+                    games[ws.myprivatedata.gameCode].quiz = clientObj.createTable.tableName.replace(/\s/g, "_");
+                });
             });
-            games[ws.myprivatedata.gameCode].quiz = clientObj.createTable.tableName;
+            
         }
 
         // receiving a request to host a quiz that has been found from browsing...
         if (clientObj.hostBrowsedQuiz !== undefined) {
             // sets the quiz name to the games object
             // this will be saved to the game code of the player that clicked on it
-            games[ws.myprivatedata.gameCode].quiz = clientObj.hostBrowsedQuiz;
+            games[ws.myprivatedata.gameCode].quiz = clientObj.hostBrowsedQuiz.replace(/\s/g, "_");
         }
 
         // this allows a player to manually start a game if there
@@ -312,7 +314,7 @@ app.ws("/", function (ws, req) {
             }
             // it will generate a new word for questioning
             // ONLY for the player that won the tile
-            dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz, function( obj ) {
+            dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz.replace(/\s/g, "_"), function( obj ) {
                 ws.myprivatedata.word = obj.word;
                 ws.send(JSON.stringify({
                     "word": obj.word.question
