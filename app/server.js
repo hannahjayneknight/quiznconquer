@@ -257,8 +257,8 @@ app.ws("/", function (ws, req) {
 
         // creating a game...
         if (clientObj.createTable !== undefined) {
-            dbH.addQuiz(clientObj.createTable.tableName, function () {
-                console.log("quiz created")
+            dbH.createQuiz(clientObj.createTable.tableName, function () {
+                dbH.addToQuiz(clientObj.createTable.tableName, clientObj.createTable.tableContents)
             });
         }
 

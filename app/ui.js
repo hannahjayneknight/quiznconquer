@@ -266,11 +266,11 @@ ui.init = function () {
         ws.send(JSON.stringify(
             {"createTable": {
                 "tableName": el("setQuizTitle").value,
-                // "tableContents": 
+                "tableContents": Board.getQA()
                 }
             }
         ));
-        Board.getQA();
+        
         /*
         el("createQuizPage").style.display = "none";
         el("gamePage").style.display = "block";

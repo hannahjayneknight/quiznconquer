@@ -99,12 +99,27 @@ Board.createQA = function (number) {
     el("new-answers-list").appendChild(A);
 };
 
+/*
+
+Board.getQA returns an array with the qa pairs the user has created.
+
+The array is called tableContents and looks like this:
+
+[
+    { question: q1, answer: a1 },
+    { question: q2, answer: a2 },
+    { question: q3, answer: a3 },
+    ...
+]
+
+*/
 Board.getQA = function () {
     const allQA = Array.from(document.getElementsByClassName("qa"));
     let tableContents = [];
     F.sequence( allQA.length / 2 ).forEach( function (element) {
         let qaObj = {};
-        qaObj[el("q" + (element + 1)).value] = el("a" + (element + 1)).value;
+        qaObj.question = el("q" + (element + 1)).value;
+        qaObj.answer = el("a" + (element + 1)).value;
         if (F.objEmpty(qaObj) === true) {
             // only pushes to qaObj when a qa has been inputted
             tableContents.push(qaObj);
@@ -112,22 +127,6 @@ Board.getQA = function () {
     });
     return tableContents;
 };
-
-/*
-
-tableContents will look like this:
-
-[
-    { q1: a1 },
-    { q2: a2 },
-    { q3: a3 },
-    ...
-]
-
-const insertQA = `INSERT INTO tableName (question, answer)
-VALUES (q1, a1)`;
-
-*/
 
 export default Object.freeze(Board);
 

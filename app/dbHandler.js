@@ -94,16 +94,16 @@ dbH.getInfoTables = function (cb) {
 
 };
 
-// adding a quiz to the database
-dbH.addQuiz = function (tableName, cb) {
+// creating a quiz as a table in the database
+dbH.createQuiz = function (tableName, cb) {
     const db = new sqlite3.Database("./sample2.db", function (err) {
         if (err) {
             console.error(err.message);
         }
-        // console.log("Connected to the sample database.");
     });
 
-    // replaces any spaces with _ since sqlite does not like spaces
+    // replaces any spaces with _ since sqlite does not like spaces for
+    // column titles
     const createTable = `CREATE TABLE ${tableName.replace(/\s/g, "_")} (
         "question" TEXT NOT NULL,
         "answer" TEXT NOT NULL
@@ -115,9 +115,6 @@ dbH.addQuiz = function (tableName, cb) {
             if (err) {
                 return console.error(err.message);
             }
-            // dbObj.word = row;
-            console.log(dbObj);
-            // console.log(row);
         });
     });
 
@@ -125,11 +122,39 @@ dbH.addQuiz = function (tableName, cb) {
         if (err) {
             console.error(err.message);
         }
-        cb(dbObj);
-        // console.log("Close the database connection.");
+        // runs the callback which is to add to the table that
+        // has just been created
+        cb();
     });
 
+};
 
+// adding tableContents to the database
+// please see board.js to see the format of tableContents
+dbH.addToQuiz = function (tableName, tableContents) {
+    const db = new sqlite3.Database("./sample2.db", function (err) {
+        if (err) {
+            console.error(err.message);
+        }
+    });
+
+    const insertQA = `INSERT INTO ${tableName} (question, answer)
+    VALUES (?, ?)`;
+
+    // adds each qa pair to the table in the database
+    tableContents.forEach( function (element) {
+        db.run(insertQA, [element.question, element.answer], function (err, row) {
+            if (err) {
+                return console.error(err.message);
+            }
+        });
+    });
+
+    db.close(function (err) {
+        if (err) {
+            console.error(err.message);
+        }
+    });
 };
 
 export default Object.freeze(dbH);
