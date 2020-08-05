@@ -111,12 +111,15 @@ ui.init = function () {
     // document.addEventListener("keyup", Board.submitAnswer(event, ws) );
     // if key button is pressed, it will submit the answer
     // and send it to the server
-    document.addEventListener("keyup", function (event) {
-        // Check if modal is visible and key code
-        if (event.keyCode === 13) {
-            Board.submitAnswer(ws);
-        }
-    });
+    if (el("gamePage").addEventListener) {
+        el("gamePage").addEventListener("keyup", function (event) {
+            // Check if modal is visible and key code
+            if (event.keyCode === 13) {
+                Board.submitAnswer(ws);
+            }
+        }, false);
+    }
+
     // if the help button is pressed, it will display a help
     // message with how the game works
     el("help-button").addEventListener("click", function () {
