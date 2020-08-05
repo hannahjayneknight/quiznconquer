@@ -95,7 +95,7 @@ dbH.getInfoTables = function (cb) {
 };
 
 // creating a quiz as a table in the database
-dbH.createQuiz = function (tableName, cb) {
+dbH.createQuiz = function (tableName, ws, cb) {
     const db = new sqlite3.Database("./sample2.db", function (err) {
         if (err) {
             console.error(err.message);
@@ -112,9 +112,19 @@ dbH.createQuiz = function (tableName, cb) {
     db.serialize(function () {
         db.run(createTable, [], function (err, row) {
             if (err) {
-                return console.error(err.message);
+                let tableExists = `SQLITE_ERROR: table ${tableName.replace(/\s/g, "_")} already exists`;
+                if (err.message === tableExists) {
+                    // tells client that quiz name already exists
+                    ws.send(JSON.stringify({
+                        "quizNameExists": true
+                    }));
+                }
+                console.error(err.message);
+            } else {
+                ws.send(JSON.stringify({
+                    "quizNameExists": false
+                }));
             }
-            console.log(row);
         });
     });
 
@@ -122,8 +132,8 @@ dbH.createQuiz = function (tableName, cb) {
         if (err) {
             console.error(err.message);
         }
-        // runs the callback which is to add to the table that
-        // has just been created
+        // runs the callback which is to add elements to
+        // the table that has just been created
         cb();
     });
 
@@ -146,10 +156,8 @@ dbH.addToQuiz = function (tableName, tableContents, cb) {
         VALUES (` + placeholders + `)`;
         db.run(insertQA, QA, function (err, row) {
             if (err) {
-                console.log(element);
                 return console.error(err.message);
             }
-            console.log(row);
         });
     });
 

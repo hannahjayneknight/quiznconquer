@@ -69,6 +69,17 @@ ui.init = function () {
             Board.listPublicGames(requestObj.listPublicGames); 
         }
 
+        // being told a quiz name already exists...
+        if (requestObj.quizNameExists !== undefined) {
+            if (requestObj.quizNameExists === true) {
+                // display error message here
+            } else {
+                el("createQuizPage").style.display = "none";
+                el("gamePage").style.display = "block";
+                Board.buildGamePage();
+            }
+        }
+
         // if the message contains the word to be testing on,
         // it will change this in the DOM
         if (requestObj.word !== undefined) {
@@ -272,10 +283,6 @@ ui.init = function () {
                 "tableContents": Board.getQA()
             }
         }));
-        
-        el("createQuizPage").style.display = "none";
-        el("gamePage").style.display = "block";
-        Board.buildGamePage();
     });
 
 

@@ -257,7 +257,7 @@ app.ws("/", function (ws, req) {
 
         // after clicking "create and play" button...
         if (clientObj.createTable !== undefined) {
-            dbH.createQuiz(clientObj.createTable.tableName, function () {
+            dbH.createQuiz(clientObj.createTable.tableName, ws, function () {
                 dbH.addToQuiz(clientObj.createTable.tableName, clientObj.createTable.tableContents, function () {
                     games[ws.myprivatedata.gameCode].quiz = clientObj.createTable.tableName.replace(/\s/g, "_");
                 });
