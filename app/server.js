@@ -255,11 +255,12 @@ app.ws("/", function (ws, req) {
             }));
         }
 
-        // creating a game...
+        // after clicking "create and play" button...
         if (clientObj.createTable !== undefined) {
             dbH.createQuiz(clientObj.createTable.tableName, function () {
                 dbH.addToQuiz(clientObj.createTable.tableName, clientObj.createTable.tableContents)
             });
+            games[ws.myprivatedata.gameCode].quiz = clientObj.createTable.tableName;
         }
 
         // receiving a request to host a quiz that has been found from browsing...

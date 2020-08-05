@@ -7,7 +7,7 @@ const dbH = Object.create(null);
 // used to generate a testing word
 // NEED TO MODIFY SO TAKES IN THE TABLE TO BE USED
 dbH.generateWordFromDB = function (quiz, cb) {
-    const db = new sqlite3.Database("./sample.db", function (err) {
+    const db = new sqlite3.Database("./sample2.db", function (err) {
         if (err) {
             console.error(err.message);
         }
@@ -61,7 +61,7 @@ dbH.generateWordFromDB = function (quiz, cb) {
 // lists all the available quizzes
 dbH.getInfoTables = function (cb) {
 
-    const db = new sqlite3.Database("./sample.db", function (err) {
+    const db = new sqlite3.Database("./sample2.db", function (err) {
         if (err) {
             console.error(err.message);
         }

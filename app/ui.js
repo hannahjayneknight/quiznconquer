@@ -263,19 +263,16 @@ ui.init = function () {
 
 
     el("create-and-play-button").addEventListener("click", function () {
-        ws.send(JSON.stringify(
-            {"createTable": {
+        ws.send(JSON.stringify({
+            "createTable": {
                 "tableName": el("setQuizTitle").value,
                 "tableContents": Board.getQA()
-                }
             }
-        ));
+        }));
         
-        /*
         el("createQuizPage").style.display = "none";
         el("gamePage").style.display = "block";
         Board.buildGamePage();
-        */
     });
 
 
