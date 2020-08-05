@@ -69,7 +69,7 @@ Board.listAllQuizzes = function (listAllQuizzesArr) {
         quiz.setAttribute("class", "quiz");
         quiz.setAttribute("tabindex", 0);
         quiz.setAttribute("aria-label", "Click here to play this quiz");
-        quiz.innerHTML = listAllQuizzesArr[element].name.replace("_", " ");
+        quiz.innerHTML = listAllQuizzesArr[element].name.replace(/_/g, " ");
         el("listOfQuizzes").append(quiz);
     });
 
@@ -79,7 +79,7 @@ Board.createQA = function (number) {
     // creates the question
     const Q = document.createElement("textarea");
     Q.setAttribute("id", ("q" + number));
-    Q.setAttribute("class", "questions");
+    Q.setAttribute("class", "qa");
     Q.setAttribute("tabindex", 0);
     Q.setAttribute("aria-label", "Type your question here");
     Q.setAttribute("placeholder", ("Question " + number));
@@ -90,7 +90,7 @@ Board.createQA = function (number) {
     // creates the answer
     const A = document.createElement("textarea");
     A.setAttribute("id", ("a" + number));
-    A.setAttribute("class", "answers");
+    A.setAttribute("class", "qa");
     A.setAttribute("tabindex", 0);
     A.setAttribute("aria-label", "Type your answer here");
     A.setAttribute("placeholder", ("Answer " + number));
@@ -98,6 +98,36 @@ Board.createQA = function (number) {
     A.setAttribute("onblur", ("this.placeholder = 'Answer "  + number + "' "));
     el("new-answers-list").appendChild(A);
 };
+
+Board.getQA = function () {
+    const allQA = Array.from(document.getElementsByClassName("qa"));
+    let tableContents = [];
+    F.sequence( allQA.length / 2 ).forEach( function (element) {
+        let qaObj = {};
+        qaObj[el("q" + (element + 1)).value] = el("a" + (element + 1)).value;
+        if (F.objEmpty(qaObj) === true) {
+            // only pushes to qaObj when a qa has been inputted
+            tableContents.push(qaObj);
+        }
+    });
+    return tableContents;
+};
+
+/*
+
+tableContents will look like this:
+
+[
+    { q1: a1 },
+    { q2: a2 },
+    { q3: a3 },
+    ...
+]
+
+const insertQA = `INSERT INTO tableName (question, answer)
+VALUES (q1, a1)`;
+
+*/
 
 export default Object.freeze(Board);
 

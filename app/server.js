@@ -255,6 +255,13 @@ app.ws("/", function (ws, req) {
             }));
         }
 
+        // creating a game...
+        if (clientObj.createTable !== undefined) {
+            dbH.addQuiz(clientObj.createTable.tableName, function () {
+                console.log("quiz created")
+            });
+        }
+
         // receiving a request to host a quiz that has been found from browsing...
         if (clientObj.hostBrowsedQuiz !== undefined) {
             // sets the quiz name to the games object
@@ -307,7 +314,7 @@ app.ws("/", function (ws, req) {
             dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz, function( obj ) {
                 ws.myprivatedata.word = obj.word;
                 ws.send(JSON.stringify({
-                    "word": obj.word.name
+                    "word": obj.word.question
                 }));
             });
         }

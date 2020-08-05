@@ -16,10 +16,21 @@ dbH.generateWordFromDB = function (quiz, cb) {
 
     // finds a random word from the ones being tested
     // (depends on level - NEED TO CHANGE LEVEL FOR THIS)
+
+    const queryWord = `SELECT * FROM (
+        SELECT * FROM ${quiz} ORDER BY ROWID
+        ) ORDER BY RANDOM() LIMIT 1;`;
+
+    /*
+
+    if you want to limit by level:
+
     let level = 6;
     const queryWord = `SELECT * FROM (
-        SELECT * FROM ${quiz} ORDER BY ID LIMIT ${level}
+        SELECT * FROM ${quiz} ORDER BY ROWID LIMIT ${level}
         ) ORDER BY RANDOM() LIMIT 1;`;
+
+    */
 
     const dbObj = {};
     db.serialize(function () {
@@ -54,7 +65,7 @@ dbH.getInfoTables = function (cb) {
         if (err) {
             console.error(err.message);
         }
-        console.log("Connected to the sample database.");
+        // console.log("Connected to the sample database.");
     });
 
     const queryTables = `SELECT name FROM sqlite_master
@@ -77,9 +88,47 @@ dbH.getInfoTables = function (cb) {
             console.error(err.message);
         }
 
-        console.log("Close the database connection.");
+        // console.log("Close the database connection.");
         cb(dbObj.quizzes);
     });
+
+};
+
+// adding a quiz to the database
+dbH.addQuiz = function (tableName, cb) {
+    const db = new sqlite3.Database("./sample2.db", function (err) {
+        if (err) {
+            console.error(err.message);
+        }
+        // console.log("Connected to the sample database.");
+    });
+
+    // replaces any spaces with _ since sqlite does not like spaces
+    const createTable = `CREATE TABLE ${tableName.replace(/\s/g, "_")} (
+        "question" TEXT NOT NULL,
+        "answer" TEXT NOT NULL
+    );`;
+
+    const dbObj = {};
+    db.serialize(function () {
+        db.run(createTable, [], function (err, row) {
+            if (err) {
+                return console.error(err.message);
+            }
+            // dbObj.word = row;
+            console.log(dbObj);
+            // console.log(row);
+        });
+    });
+
+    db.close(function (err) {
+        if (err) {
+            console.error(err.message);
+        }
+        cb(dbObj);
+        // console.log("Close the database connection.");
+    });
+
 
 };
 

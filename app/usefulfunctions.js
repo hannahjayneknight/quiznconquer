@@ -39,4 +39,23 @@ F.uniq = function (a) {
     });
 }
 
+// checks if an object is empty
+// returns false if the object contains an empty string,
+// a string containing only whitespace or any null/ undefined values
+F.objEmpty = function (obj) {
+    for (var key in obj) {
+        if (F.strEmpty(key) || F.strEmpty(obj[key])) {
+            return false;
+        }
+    }
+    return true;
+};
+
+// for checking if a string is empty, null or undefined
+F.strEmpty = function (str) {
+    // returns true if str === "", str === "  " if str === undefined/ null
+    // /^\s*$/ is the regex for empty string or string with only spaces.
+    return (!str || (/^\s*$/.test(str)) );
+}
+
 export default Object.freeze(F);

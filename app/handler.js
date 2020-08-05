@@ -221,7 +221,7 @@ H.startGame = function (ws, games) {
         dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz, function( obj ) {
             thisws.myprivatedata.word = obj.word;
             thisws.send(JSON.stringify({
-                "word": obj.word.name
+                "word": obj.word.question
             }));
         });
     });
