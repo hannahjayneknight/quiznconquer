@@ -23,7 +23,7 @@ body
 {
     margin:0;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
 }
 
 main
@@ -73,14 +73,15 @@ img
 
 #accessbility-feedback-email
 {
-    bottom: 2.5vh;
+    top: 0.5rem;
     width: 75vh;
     position: absolute;
     margin: 0;
-    left: calc(50vw - 37.5vh);
+    right: 5vw;
     font-family: var(--font);
     font-size: 1rem;
-    text-align: center;
+    text-align: right;
+    font-style: italic;
     color: var(--nearBlack);
 }
 
@@ -176,7 +177,7 @@ textarea {
 
 #help-button
 {
-    position: fixed;
+    position: absolute;
     top: 5vh;
     right: 5vw;
     width: 15vh;
