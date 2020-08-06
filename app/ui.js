@@ -21,7 +21,7 @@ ui.init = function () {
     const ws = new WebSocket("ws://localhost:1711");
 
     ws.onclose = function (event) {
-        console.log("Client notified socket has closed", event);
+        // console.log("Client notified socket has closed", event);
         ws.close();
     };
 
@@ -296,15 +296,16 @@ ui.init = function () {
                     el(element.id).value = "";
                 });
             } else {
-                // proceeds to create the quiz
+                // sends the details of the quiz to the server
                 ws.send(JSON.stringify({
                     "createTable": {
-                        "tableName": el("setQuizTitle").value,
+                        "tableName": el("setQuizTitle").value.replace(/\s/g, "_"),
                         "tableContents": Board.getQA()
                     }
                 }));
             }
         } else {
+            // if user hasn't entered a valid title
             el("quizNameExistsError").innerHTML = "Please enter a title";
             el("quizNameExistsError").style.display = "block";
             el("setQuizTitle").value = "";

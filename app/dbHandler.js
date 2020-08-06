@@ -124,6 +124,9 @@ dbH.createQuiz = function (tableName, ws, cb) {
                 ws.send(JSON.stringify({
                     "quizNameExists": false
                 }));
+                // runs the callback which is to add elements to
+                // the table that has just been created
+                cb();
             }
         });
     });
@@ -132,9 +135,6 @@ dbH.createQuiz = function (tableName, ws, cb) {
         if (err) {
             console.error(err.message);
         }
-        // runs the callback which is to add elements to
-        // the table that has just been created
-        cb();
     });
 
 };
