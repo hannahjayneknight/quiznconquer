@@ -57,6 +57,8 @@
 
         <h2 id="subTitle1">Join using a game code.</h2>
 
+        <p id="joinGameError">This game code does not exist</p>
+
         <label><textarea id="gameCodeInput" tabindex="0" aria-label="Type your game code here" rows="1" cols="50" maxlength="5" placeholder="CODE1" onfocus="this.placeholder = '' " onblur="this.placeholder = 'CODE1'"></textarea></label>
     
         <button id="joinGameCodeButton" tabindex="0" aria-label="Click here to join the game">Join game</button>
@@ -64,6 +66,8 @@
         <h2 id="subTitle2">Or join a public game.</h2>
 
         <div id ="listPublicGames"></div>
+
+        <p id="publicGameError">There are currently no public games</p>
     
     </div>
 
@@ -103,7 +107,7 @@
         <h1 id="Title">Nutty Tilez</h1>
 
         <label><textarea id="setQuizTitle" tabindex="0" aria-label="Type the title of your quiz here" rows="1" cols="100" placeholder="Title" onfocus="this.placeholder = '' " onblur="this.placeholder = 'Title'"></textarea></label>
-        <p id="quizNameExistsError">This quiz title already exists</p>
+        <p id="createQuizError">This quiz title already exists</p>
 
         <div id="new-questions-list"></div>
         <div id="new-answers-list"></div>

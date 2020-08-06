@@ -223,6 +223,10 @@ app.ws("/", function (ws, req) {
                     ws.myprivatedata.currentBoard = Array.from(H.startBoard());
                 }
             } else {
+                // if the game code is not valid, sends a message to the client
+                ws.send(JSON.stringify({
+                    "joinGameAccepted": false
+                }));
                 return;
             }
         }

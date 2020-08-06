@@ -438,7 +438,7 @@ textarea {
     font-weight: 900;
 }
 
-#quizNameExistsError {
+#createQuizError {
     position: absolute;
     top: 44vh;
     left: 20vw;
@@ -490,6 +490,38 @@ textarea {
 
 
 
+
+#joinGameError{
+    position: absolute;
+    top: calc(50vh - 6rem);
+    left: 20vw;
+    width: 60vw;
+    height: 2rem;
+    text-align: center;
+    font-weight: 900;
+    font-size: 1.25rem;
+    font-family: var(--font);
+    color: var(--errorColour);
+    margin: 0;
+    border: 0vh;
+    display: none;
+}
+
+#publicGameError {
+    position: absolute;
+    top: 80vh;
+    left: 20vw;
+    width: 60vw;
+    height: 2rem;
+    text-align: center;
+    font-weight: 900;
+    font-size: 1.25rem;
+    font-family: var(--font);
+    color: var(--errorColour);
+    margin: 0;
+    border: 0vh;
+    display: none;
+}
 
 #gameCodeInput
 {

@@ -31,13 +31,19 @@ ui.init = function () {
         // parses the message received
         const requestObj = JSON.parse(e.data);
 
-        // if the message says the player has joined a game
-        // it will display the game page for them
-        if (requestObj.joinGameAccepted === true) {
-            el("joinPage").style.display = "none";
-            el("gamePage").style.display = "block";
-            Board.buildGamePage();
+        // if the message says the player is requesting to join a game...
+        if (requestObj.joinGameAccepted !== undefined) {
+            if (requestObj.joinGameAccepted === true) {
+                // if the game code is valid
+                el("joinPage").style.display = "none";
+                el("gamePage").style.display = "block";
+                Board.buildGamePage();
+            } else {
+                el("joinGameError").style.display = "block";
+                el("gameCodeInput").value = "";
+            }
         }
+        
 
         // if the message contains the player nummber,
         // it will display their arrow
@@ -66,16 +72,22 @@ ui.init = function () {
         // when a receiving a list of the public games...
         if (requestObj.listPublicGames !== undefined) {
             // creates a list of all the public games on the join page
-            Board.listPublicGames(requestObj.listPublicGames); 
+            if (F.arrEmpty(requestObj.listPublicGames)) {
+                // if there are no public games...
+                el("publicGameError").style.display = "block";
+            } else {
+                el("publicGameError").style.display = "none";
+                Board.listPublicGames(requestObj.listPublicGames); 
+            }
         }
 
         // being told a quiz name already exists...
         if (requestObj.quizNameExists !== undefined) {
             if (requestObj.quizNameExists === true) {
                 // display error message here
-                el("quizNameExistsError").style.display = "none";
-                el("quizNameExistsError").innerHTML = "This quiz title already exists";
-                el("quizNameExistsError").style.display = "block";
+                el("createQuizError").style.display = "none";
+                el("createQuizError").innerHTML = "This quiz title already exists";
+                el("createQuizError").style.display = "block";
                 el("setQuizTitle").value = "";
             } else {
                 el("createQuizPage").style.display = "none";
@@ -224,7 +236,8 @@ ui.init = function () {
     el("Join-button").addEventListener("click", function () {
         el("homePage").style.display = "none";
         el("joinPage").style.display = "block";
-        // hides the “make this hame public” and “everyone has joined” buttons
+        el("gameCodeInput").value = "";
+        // hides the “make this game public” and “everyone has joined” buttons
         el("everyone-has-joined-button").style.display = "none";
         el("make-this-game-public-button").style.display = "none";
         ws.send(JSON.stringify({
@@ -287,11 +300,11 @@ ui.init = function () {
             // if user has entered a title
             // doesn't let you create a quiz with no questions and answers
             let tableContents = Board.getQA()
-            if (!Array.isArray(tableContents) || !tableContents.length) {
+            if (F.arrEmpty(tableContents)) {
                 // returns true if array does not exist, is not an array, or is empty
                 // ⇒ do not attempt to process array
-                el("quizNameExistsError").innerHTML = "Please enter at least one valid question and answer";
-                el("quizNameExistsError").style.display = "block";
+                el("createQuizError").innerHTML = "Please enter at least one valid question and answer";
+                el("createQuizError").style.display = "block";
                 Array.from(ClaN("qa")).forEach(function (element) {
                     el(element.id).value = "";
                 });
@@ -306,8 +319,8 @@ ui.init = function () {
             }
         } else {
             // if user hasn't entered a valid title
-            el("quizNameExistsError").innerHTML = "Please enter a title";
-            el("quizNameExistsError").style.display = "block";
+            el("createQuizError").innerHTML = "Please enter a title";
+            el("createQuizError").style.display = "block";
             el("setQuizTitle").value = "";
         }
     });
