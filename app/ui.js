@@ -73,6 +73,10 @@ ui.init = function () {
         if (requestObj.quizNameExists !== undefined) {
             if (requestObj.quizNameExists === true) {
                 // display error message here
+                el("quizNameExistsError").style.display = "none";
+                el("quizNameExistsError").innerHTML = "This quiz title already exists";
+                el("quizNameExistsError").style.display = "block";
+                el("setQuizTitle").value = "";
             } else {
                 el("createQuizPage").style.display = "none";
                 el("gamePage").style.display = "block";
@@ -253,6 +257,7 @@ ui.init = function () {
     el("Create-button").addEventListener("click", function () {
         el("hostGamePage").style.display = "none";
         el("createQuizPage").style.display = "block";
+        el("setQuizTitle").value = "";
         F.sequence(6).forEach( function (element) {
             Board.createQA(element + 1);
         })
@@ -277,12 +282,33 @@ ui.init = function () {
 
 
     el("create-and-play-button").addEventListener("click", function () {
-        ws.send(JSON.stringify({
-            "createTable": {
-                "tableName": el("setQuizTitle").value,
-                "tableContents": Board.getQA()
+        // doesn't let you to create a quiz with no title
+        if (F.strEmpty(el("setQuizTitle").value) === false) {
+            // if user has entered a title
+            // doesn't let you create a quiz with no questions and answers
+            let tableContents = Board.getQA()
+            if (!Array.isArray(tableContents) || !tableContents.length) {
+                // returns true if array does not exist, is not an array, or is empty
+                // ⇒ do not attempt to process array
+                el("quizNameExistsError").innerHTML = "Please enter at least one valid question and answer";
+                el("quizNameExistsError").style.display = "block";
+                Array.from(ClaN("qa")).forEach(function (element) {
+                    el(element.id).value = "";
+                });
+            } else {
+                // proceeds to create the quiz
+                ws.send(JSON.stringify({
+                    "createTable": {
+                        "tableName": el("setQuizTitle").value,
+                        "tableContents": Board.getQA()
+                    }
+                }));
             }
-        }));
+        } else {
+            el("quizNameExistsError").innerHTML = "Please enter a title";
+            el("quizNameExistsError").style.display = "block";
+            el("setQuizTitle").value = "";
+        }
     });
 
 

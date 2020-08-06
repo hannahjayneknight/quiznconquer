@@ -116,7 +116,7 @@ app.ws("/", function (ws, req) {
 
 
     ws.on("close", function () {
-        console.log("Server websocket has closed");
+        // console.log("Server websocket has closed");
         // checks to see if a player was in a game first
         if (ws.myprivatedata.gameCode !== undefined) {
             // checks to see if the game they were in hasn't ended
@@ -286,7 +286,6 @@ app.ws("/", function (ws, req) {
 
         // if the message is an answer...
         if (clientObj.answer !== undefined && ws.myprivatedata.word !== undefined && games[ws.myprivatedata.gameCode] !== undefined) {
-            console.log(clientObj.answer);
             // it will check if it is correct
             if (clientObj.answer.trim().toLowerCase() === ws.myprivatedata.word.answer.trim().toLowerCase()) {
                 // and send the player number that won along with

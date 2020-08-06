@@ -15,6 +15,23 @@
 <body><main>
 
     <!--
+        The "how to play" button which is available on every page.
+    -->
+
+    <label><button id="help-button" class="help" type="button" name="help-button" tabindex="0" aria-label="Press here for help">
+        <p id="help-button-text" class="help">How to play</p>
+    </button></label>
+
+    <div id="help-response-box" class="help" aria-label="A box to outline help text.">
+        <p id="help-response-text" class="help" aria-label="A description on how to play the game">
+            Win tiles from the other players by entering the correct answer. Be careful - an incorrect answer will cause you to lose a life. When the timer runs out, the player with the most tiles wins! 
+        </p>
+        <label><button id="OK-button" class="help" type="button" name="OK-button" tabindex="0" aria-label="Press here to remove help">
+            <p id="OK-button-text" class="help">OK</p>
+        </button></label>
+    </div>
+
+    <!--
         This is the homepage.
     -->
 
@@ -86,7 +103,8 @@
         <h1 id="Title">Nutty Tilez</h1>
 
         <label><textarea id="setQuizTitle" tabindex="0" aria-label="Type the title of your quiz here" rows="1" cols="100" placeholder="Title" onfocus="this.placeholder = '' " onblur="this.placeholder = 'Title'"></textarea></label>
-        
+        <p id="quizNameExistsError">This quiz title already exists</p>
+
         <div id="new-questions-list"></div>
         <div id="new-answers-list"></div>
 
@@ -110,19 +128,6 @@
                 <div id="gameCodeBoxHeader">Game code:</div>
                 <div id="gameCode"></div>
             </p>
-        </div>
-
-        <label><button id="help-button" class="help" type="button" name="help-button" tabindex="0" aria-label="Press here for help">
-            <p id="help-button-text" class="help">Help</p>
-        </button></label>
-
-        <div id="help-response-box" class="help" aria-label="A box to outline help text.">
-            <p id="help-response-text" class="help" aria-label="A description on how to play the game">
-                Win tiles from the other players by translating the given word into French. When the timer runs out, the player with the most tiles wins! 
-            </p>
-            <label><button id="OK-button" class="help" type="button" name="OK-button" tabindex="0" aria-label="Press here to remove help">
-                <p id="OK-button-text" class="help">OK</p>
-            </button></label>
         </div>
 
         <label><button id="everyone-has-joined-button" class="everyone-has-joined" type="button" tabindex="0" aria-label="Press here if all players have joined the game">

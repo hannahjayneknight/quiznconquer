@@ -13,6 +13,7 @@
     --lightGreen: #97Bc62ff;
     --green: #2c5f2d;
     --nearBlack: #101820;
+    --errorColour: #B00020;
     --screenheight: 100vh;
     --screenwidth: 100vw;
     --font: "Clear Sans", "Helvetica Neue", Arial, sans-serif;;
@@ -116,7 +117,6 @@ textarea {
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 1.75rem;
-    height: 2rem;
     font-family: var(--font);
     overflow: hidden;
 }
@@ -168,6 +168,59 @@ textarea {
 
 
 
+
+/* This is for the "how to play" button. */
+
+
+
+
+#help-button
+{
+    position: fixed;
+    top: 5vh;
+    right: 5vw;
+    width: 15vh;
+    height: 5vh;
+}
+
+#OK-button
+{
+    width: 15vh;
+    height: 5vh;
+    position: absolute;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%)
+}
+
+#help-response-box
+{
+    width: 30vh;
+    height: 21.5vh;
+    /* Both these properties centre the element*/
+    position: absolute;
+    top: 10.5vh;
+    right: 5vw;
+    border-radius: 10%;
+    background-color: var(--grey);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+#help-response-text
+{
+    font-family: var(--font);
+    font-size: 1rem;
+    margin: 0;
+    text-align: center;
+    font-weight: bold;
+    color: var(--nearBlack);
+}
+
+
+
 /* This is for items on the game page. */
 
 
@@ -203,15 +256,6 @@ textarea {
     color: var(--green);
 }
 
-#help-button
-{
-    position: fixed;
-    top: 5vh;
-    right: 5vw;
-    width: 15vh;
-    height: 5vh;
-}
-
 #everyone-has-joined-button
 {
     position: fixed;
@@ -228,42 +272,6 @@ textarea {
     left: calc(37.5vw + 26vh);
     width: 24vh;
     height: 10vh;
-}
-
-#OK-button
-{
-    width: 15vh;
-    height: 5vh;
-    position: absolute;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-50%)
-}
-
-#help-response-box
-{
-    width: 30vh;
-    height: 20vh;
-    /* Both these properties centre the element*/
-    position: absolute;
-    top: 15vh;
-    right: 5vw;
-    border-radius: 10%;
-    background-color: var(--grey);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    display: none;
-}
-
-#help-response-text
-{
-    font-family: var(--font);
-    font-size: 1rem;
-    margin: 0;
-    text-align: center;
-    font-weight: bold;
-    color: var(--nearBlack);
 }
 
 #testingWord
@@ -415,7 +423,7 @@ textarea {
 
 #create-and-play-button {
     position: absolute;
-    top: 30vh;
+    top: 34vh;
     left: calc(50vw - 68px);
     width: 136px;
     height: 53px;
@@ -423,16 +431,32 @@ textarea {
 
 #setQuizTitle {
     position: absolute;
-    top: 40vh;
+    top: 49vh;
     left: 20vw;
     width: 60vw;
     text-align: left;
     font-weight: 900;
 }
 
+#quizNameExistsError {
+    position: absolute;
+    top: 44vh;
+    left: 20vw;
+    width: 60vw;
+    height: 2rem;
+    text-align: center;
+    font-weight: 900;
+    font-size: 1.25rem;
+    font-family: var(--font);
+    color: var(--errorColour);
+    margin: 0;
+    border: 0vh;
+    display: none;
+}
+
 #new-questions-list {
     position: absolute;
-    top: 50vh;
+    top: 59vh;
     left: 20vw;
     display: flex;
     flex-direction: column;
@@ -443,7 +467,7 @@ textarea {
 
 #new-answers-list {
     position: absolute;
-    top: 50vh;
+    top: 59vh;
     left: calc(50vw + 5px);
     display: flex;
     flex-direction: column;
