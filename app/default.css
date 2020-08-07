@@ -487,6 +487,10 @@ textarea {
 #add-new-qa-button {
     width: 75px;
     height: 38px;
+    left: calc(50vw - 37.5px);
+    position: absolute;
+    top: calc(90vh);
+    bottom: -10px;
 }
 
 

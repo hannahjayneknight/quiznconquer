@@ -283,7 +283,6 @@ ui.init = function () {
         F.sequence(6).forEach( function (element) {
             Board.createQA(element + 1);
         })
-        Board.addButton();
     });
 
     // clicking on the "Browse" button
@@ -335,12 +334,12 @@ ui.init = function () {
         }
     });
 
-    /*
     el("add-new-qa-button").addEventListener("click", function () {
         let qaNum = (Array.from(ClaN("qa")).length / 2) + 1;
         Board.createQA(qaNum);
+        // CHANGE THIS!!
+        el("add-new-qa-button").style.top = window.getComputedStyle(el("add-new-qa-button")).getPropertyValue("top") + "5vh";
     });
-    */
 
 
     /*
