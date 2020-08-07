@@ -4,6 +4,7 @@ import express from "express";
 import expressWS from "express-ws";
 import H from "./handler.js";
 import dbH from "./dbHandler.js";
+import F from "./usefulfunctions.js";
 function ignorparam() {}
 
 const port = 1711;
@@ -82,6 +83,13 @@ the game code "WXYZ" is achieved from the following:
 
 obj4.removeGame = "WXYZ";
 
+We leave out the game status from games. This is because the game code is removed as soon as the game 
+ends to prevent messages being sent etc. If we tried to change the game status to "not playing" after
+it had been deleted, it would lead to an error.
+
+REPLACE GAME STATUS WITH games[ws.myprivatedata.gameCode] ? IF games[ws.myprivatedata.gameCode] IS 
+UNDEFINED, THE GAME WOULD BE OVER. NEED TO CHECK ON CLIENT SIDE.
+
 */
 
 // this is the server that interacts with the user (ie the web socket)
@@ -104,7 +112,7 @@ app.ws("/", function (ws, req) {
         // the following are added when a player is in a game
         // "gameCode": CODE1,
         // "playerNumber": 1,
-        // "word": "bonjour"
+        // "word": { question: "hello:, answer: "bonjour" }
     };
 
 
@@ -278,13 +286,36 @@ app.ws("/", function (ws, req) {
 
         // this allows a player to manually start a game if there
         // are fewer than four players
+        // ADD COMPUTER PLAYERS HERE!!!
         if (clientObj.startGame !== undefined) {
             if (clientObj.startGame === true) {
-                H.startGame(ws, games);
-                // initializes the starting board
-                currentBoard = Array.from(H.startBoard());
-                // refreshes this web socket's starting board
-                ws.myprivatedata.currentBoard = Array.from(H.startBoard());
+                H.addComputerPlayers(ws, games, function () {
+                    // starts the game once the computer players have been addded
+                    H.startGame(ws, games);
+                    // initializes the starting board
+                    currentBoard = Array.from(H.startBoard());
+                    // refreshes this web socket's starting board
+                    ws.myprivatedata.currentBoard = Array.from(H.startBoard());
+                    // adds a tile randomly for each computer player
+                    games[ws.myprivatedata.gameCode].computerPlayers.forEach(function (element) {
+                        let computersID = setInterval( function () {
+                            H.playComputer(element, ws, games, currentBoard);
+                            if (ws.myprivatedata.gameStatus === "not playing" || games[ws.myprivatedata.gameCode] === undefined) {
+                                clearInterval(computersID);
+                            }
+                        }, F.getRandomInt(2000, 5000));
+                    });
+                });
+                /*
+
+                1. Add computer players - check
+
+                2. 
+
+                4. Run the computer player function for each computer player ie:
+                    games[ws.myprivatedata.gameCode].computerPlayers.forEach(...)
+
+                */
             }
         }
 
@@ -330,12 +361,6 @@ app.ws("/", function (ws, req) {
 });
 
 
-
-
-    /*
-    which quiz the player is playing:
-    games[ws.myprivatedata.gameCode].quiz
-    */
 
 /////////////////////////////////////////////////////////
 

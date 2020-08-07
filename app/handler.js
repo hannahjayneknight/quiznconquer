@@ -43,10 +43,11 @@ H.generateWord = function (dictionary) {
 };
 
 // THE TIMER
-H.startTimer = function (players, games) {
+H.startTimer = function (ws, games) {
     const mins = 0.5;
     const now = Date.now();
     const deadline = mins * 60 * 1000 + now;
+    let players = games[ws.myprivatedata.gameCode].players;
 
     let timerID = setInterval(function () {
         let currentTime = Date.now();
@@ -213,7 +214,8 @@ H.makeGameCode = function (length = 5) {
 // function to start a game
 H.startGame = function (ws, games) {
     // starts the timer
-    H.startTimer(games[`${ws.myprivatedata.gameCode}`].players, games);
+    // THIS IS STARTING BEFORE THE COMPUTER PLAYERS HAVE BEEN RECOGNISED - THIS OK?
+    H.startTimer(ws, games);
     // generates a testing word and sends it to the client to be
     // displayed on the DOM
     games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
@@ -225,6 +227,10 @@ H.startGame = function (ws, games) {
             }));
         });
     });
+
+    if ( !F.arrEmpty(games[ws.myprivatedata.gameCode].computerPlayers) ) {
+        // returns true if there ARE computer players
+    }
 };
 
 H.findPublicGames = function (games) {
@@ -246,6 +252,49 @@ H.findPublicGames = function (games) {
         }
     });
     return publicGames;
-}
+};
+
+H.addComputerPlayers = function (ws, games, cb) {
+    // adds the correct number of computer players to the games obj
+    // games[ws.myprivatedata.gameCode].computerPlayers is an array with
+    // the player number of each computer player
+    const noPlayers = (4 - games[ws.myprivatedata.gameCode].players.length );
+    games[ws.myprivatedata.gameCode].computerPlayers = [];
+    F.sequence(noPlayers).forEach(function (element) {
+        games[ws.myprivatedata.gameCode].computerPlayers.push( element + (5 - noPlayers) );
+    });
+
+    // callback will be to start the game
+    // this ensures that the game starts only when the computer
+    // players have been added
+    cb();
+};
+
+// wins a tile for the computer
+H.playComputer = function (playerNumber, ws, games, currentBoard) {
+    const tileStolen = H.freeTile(
+        playerNumber,
+        currentBoard
+    );
+
+    // tileStolen === undefined when the board is full
+    if (tileStolen !== undefined && games[ws.myprivatedata.gameCode] !== undefined) {
+        games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
+            thisws.send(JSON.stringify({
+                "tileStolen": {
+                    "winner": playerNumber,
+                    "tileNumber": tileStolen
+                }
+            }));
+        });
+    }
+    // and update the server's array of the current board
+    H.changeTile(
+        tileStolen,
+        currentBoard,
+        playerNumber
+    );
+
+};
 
 export default Object.freeze(H);
