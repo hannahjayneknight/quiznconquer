@@ -198,7 +198,8 @@ app.ws("/", function (ws, req) {
                 // sends the game code and their player number
                 ws.send(JSON.stringify({
                     "gameCode": ws.myprivatedata.gameCode,
-                    "playerNumber": ws.myprivatedata.playerNumber
+                    "playerNumber": ws.myprivatedata.playerNumber,
+                    "players2join": (4 - ws.myprivatedata.playerNumber),
                 }));
             }
         }
@@ -219,8 +220,13 @@ app.ws("/", function (ws, req) {
                 ws.send(JSON.stringify({
                     "joinGameAccepted": true,
                     "gameCode": ws.myprivatedata.gameCode,
-                    "playerNumber": ws.myprivatedata.playerNumber
+                    "playerNumber": ws.myprivatedata.playerNumber,
                 }));
+                games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
+                    thisws.send(JSON.stringify({
+                        "players2join": (4 - ws.myprivatedata.playerNumber)
+                    }));
+                });
                 // if the game that the person has just joined has 4
                 // players in it, it will begin
                 if (games[ws.myprivatedata.gameCode].players.length === 4) {

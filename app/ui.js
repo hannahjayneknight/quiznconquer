@@ -62,6 +62,15 @@ ui.init = function () {
             el("gameCode").textContent = requestObj.gameCode;
         }
 
+        // displaying how many players are waiting to join
+        if (requestObj.players2join !== undefined) {
+            if (requestObj.players2join > 1) {
+                el("timer").textContent = "Waiting for " + requestObj.players2join + " more players to join...";
+            } else {
+                el("timer").textContent = "Waiting for " + requestObj.players2join + " more player to join...";
+            }
+        }
+
         // making a list of all the quizzes on the browsing page
         if (requestObj.listAllQuizzes !== undefined) {
             let quizzessArr = requestObj.listAllQuizzes;
@@ -86,7 +95,7 @@ ui.init = function () {
             if (requestObj.quizNameExists === true) {
                 // display error message here
                 el("createQuizError").style.display = "none";
-                el("createQuizError").innerHTML = "This quiz title already exists";
+                el("createQuizError").textContent = "This quiz title already exists";
                 el("createQuizError").style.display = "block";
                 el("setQuizTitle").value = "";
             } else {
@@ -113,14 +122,14 @@ ui.init = function () {
         } else if (requestObj.timer !== undefined) {
             // it will update the timer if the game is still playing
             if (requestObj.gameStatus === "playing") {
-                el("timer").innerHTML = requestObj.timer;
+                el("timer").textContent = requestObj.timer;
                 el("answer-pane").style.display = "block";
                 el("everyone-has-joined-button").style.display = "none";
                 el("make-this-game-public-button").style.display = "none";
             // otherwise the game is over
             } else {
-                el("timer").innerHTML = "";
-                el("testingWord").innerHTML = "Game Over!";
+                el("timer").textContent = "";
+                el("testingWord").textContent = "Game Over!";
                 el("answer-pane").style.display = "none";
                 el("gameCodeBox").style.display = "none";
             }
@@ -172,7 +181,7 @@ ui.init = function () {
     // to the server asking to add the game code to the list of public games
     el("make-this-game-public-button").addEventListener("click", function () {
         if (gamePublic === false) {
-            el("make-this-game-public-text").innerHTML = "Make this game private";
+            el("make-this-game-public-text").textContent = "Make this game private";
             el("make-this-game-public-button").style.background = "var(--grey)";
             el("make-this-game-public-text").style.color = "var(--nearBlack)";
             gamePublic = true;
@@ -180,7 +189,7 @@ ui.init = function () {
                 {"makeGamePublic": el("gameCode").textContent}
             ));
         } else {
-            el("make-this-game-public-text").innerHTML = "Make this game public";
+            el("make-this-game-public-text").textContent = "Make this game public";
             el("make-this-game-public-button").style.background = "var(--nearBlack)";
             el("make-this-game-public-text").style.color = "white";
             gamePublic = false;
@@ -274,6 +283,7 @@ ui.init = function () {
         F.sequence(6).forEach( function (element) {
             Board.createQA(element + 1);
         })
+        Board.addButton();
     });
 
     // clicking on the "Browse" button
@@ -303,7 +313,7 @@ ui.init = function () {
             if (F.arrEmpty(tableContents)) {
                 // returns true if array does not exist, is not an array, or is empty
                 // ⇒ do not attempt to process array
-                el("createQuizError").innerHTML = "Please enter at least one valid question and answer";
+                el("createQuizError").textContent = "Please enter at least one valid question and answer";
                 el("createQuizError").style.display = "block";
                 Array.from(ClaN("qa")).forEach(function (element) {
                     el(element.id).value = "";
@@ -319,11 +329,18 @@ ui.init = function () {
             }
         } else {
             // if user hasn't entered a valid title
-            el("createQuizError").innerHTML = "Please enter a title";
+            el("createQuizError").textContent = "Please enter a title";
             el("createQuizError").style.display = "block";
             el("setQuizTitle").value = "";
         }
     });
+
+    /*
+    el("add-new-qa-button").addEventListener("click", function () {
+        let qaNum = (Array.from(ClaN("qa")).length / 2) + 1;
+        Board.createQA(qaNum);
+    });
+    */
 
 
     /*

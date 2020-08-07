@@ -99,6 +99,16 @@ Board.createQA = function (number) {
     el("new-answers-list").appendChild(A);
 };
 
+Board.addButton = function () {
+    const add = document.createElement("button");
+    add.setAttribute("id", "add-new-qa-button");
+    add.setAttribute("type", "button");
+    add.setAttribute("tabindex", 0);
+    add.setAttribute("aria-label", "Press here to add another question and answer");
+    add.textContent = "Add";
+    el("new-questions-list").appendChild(add);
+};
+
 /*
 
 Board.getQA returns an array with the qa pairs the user has created.
