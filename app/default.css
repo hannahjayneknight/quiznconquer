@@ -114,7 +114,7 @@ h2
 
 textarea {
     resize: none;
-    height: 2rem;
+    height: 33px;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 1.75rem;
@@ -422,6 +422,10 @@ textarea {
 
 
 
+#createQuizPage{
+    position: relative;
+}
+
 #create-and-play-button {
     position: absolute;
     top: 34vh;
@@ -477,11 +481,11 @@ textarea {
 }
 
 .questions {
-    margin: 10px;
+    margin: 15px;
 }
 
 .answers {
-    margin: 10px;
+    margin: 15px;
 }
 
 #add-new-qa-button {
@@ -489,8 +493,7 @@ textarea {
     height: 38px;
     left: calc(50vw - 37.5px);
     position: absolute;
-    top: calc(90vh);
-    bottom: -10px;
+    top: 90vh;
 }
 
 

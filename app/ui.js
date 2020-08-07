@@ -337,8 +337,9 @@ ui.init = function () {
     el("add-new-qa-button").addEventListener("click", function () {
         let qaNum = (Array.from(ClaN("qa")).length / 2) + 1;
         Board.createQA(qaNum);
-        // CHANGE THIS!!
-        el("add-new-qa-button").style.top = window.getComputedStyle(el("add-new-qa-button")).getPropertyValue("top") + "5vh";
+        let currTop = window.getComputedStyle(document.querySelector("#add-new-qa-button")).getPropertyValue("top");
+        let newTop = parseFloat(currTop, 10) + parseFloat("38px", 10) + "px";
+        el("add-new-qa-button").style.top = newTop;
     });
 
 
