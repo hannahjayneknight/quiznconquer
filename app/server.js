@@ -291,8 +291,7 @@ app.ws("/", function (ws, req) {
         }
 
         // this allows a player to manually start a game if there
-        // are fewer than four players
-        // ADD COMPUTER PLAYERS HERE!!!
+        // are fewer than four players and adds computer players
         if (clientObj.startGame !== undefined) {
             if (clientObj.startGame === true) {
                 H.addComputerPlayers(ws, games, function () {
@@ -309,7 +308,7 @@ app.ws("/", function (ws, req) {
                             if (ws.myprivatedata.gameStatus === "not playing" || games[ws.myprivatedata.gameCode] === undefined) {
                                 clearInterval(computersID);
                             }
-                        }, F.getRandomInt(2000, 5000));
+                        }, F.getRandomInt(1500, 5000));
                     });
                 });
                 /*
