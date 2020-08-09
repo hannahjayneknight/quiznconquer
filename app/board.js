@@ -27,8 +27,7 @@ Board.changeTile = function (freetile, winningplayer) {
 Board.resetTileBoard = function () {
     el("answer-pane").value = "";
     F.sequence(36).forEach(function (element) {
-        if (el(element) !== undefined) {
-            console.log("hello");
+        if (el(element) !== null) {
            el(element).remove();
         }
     });

@@ -37,7 +37,6 @@ ui.init = function () {
                 // if the game code is valid
                 el("joinPage").style.display = "none";
                 el("gamePage").style.display = "block";
-                console.log("What is happening here");
                 Board.resetTileBoard();
             // restarting a game
             } else if (requestObj.joinGameAccepted === "restart") {

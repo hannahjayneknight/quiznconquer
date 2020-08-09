@@ -337,8 +337,6 @@ H.onClose = function (games, ws) {
     if (ws.myprivatedata.gameStatus === "not playing" && games[ws.myprivatedata.gameCode] !== undefined && ws.myprivatedata.hosting === true) {
         let newHost = games[ws.myprivatedata.gameCode].players[0];
         newHost.myprivatedata.hosting = true;
-        console.log(newHost);
-        console.log(newHost.myprivatedata);
         ws.send(JSON.stringify({
             "hosting": true
         }));
