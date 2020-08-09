@@ -61,7 +61,7 @@
 
         <h2 id="subTitle1">Join using a game code.</h2>
 
-        <p id="joinGameError">This game code does not exist</p>
+        <p id="joinGameError">This game code is invalid or does not exist</p>
 
         <label><textarea id="gameCodeInput" tabindex="0" aria-label="Type your game code here" rows="1" cols="50" maxlength="5" placeholder="CODE1" onfocus="this.placeholder = '' " onblur="this.placeholder = 'CODE1'"></textarea></label>
     
@@ -157,6 +157,14 @@
         <div id="player2-arrow" class="playerArrows"><img src="images/lightGreenArrow.png" alt="" aria-label="Arrow pointing to your tiles"/></div>
         <div id="player3-arrow" class="playerArrows"><img src="images/darkGreenArrow.png" alt="" aria-label="Arrow pointing to your tiles"/></div>
         <div id="player4-arrow" class="playerArrows"><img src="images/nearBlackArrow.png" alt="" aria-label="Arrow pointing to your tiles"/></div>
+
+        <label><button id="restart-game-button" type="button" tabindex="0" aria-label="Press here to restart the game">
+            <p id="restart-game-text">Restart</p>
+        </button></label>
+
+        <label><button id="homepage-button" type="button" tabindex="0" aria-label="Press here if you want to go back to the homepage">
+            <p id="homepage-button-text">Go back to the homepage</p>
+        </button></label>
 
 
     </div>

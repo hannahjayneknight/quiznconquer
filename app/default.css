@@ -394,6 +394,26 @@ textarea {
     position: absolute;
 }
 
+#restart-game-button
+{
+    position: fixed;
+    top:20vh;
+    left:37.5vw;
+    width: 24vh;
+    height: 10vh;
+    display: none;
+}
+
+#homepage-button
+{
+    position: fixed;
+    top:20vh;
+    left: calc(37.5vw + 26vh);
+    width: 24vh;
+    height: 10vh;
+    display: none;
+}
+
 
 
 

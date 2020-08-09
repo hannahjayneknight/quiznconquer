@@ -24,6 +24,18 @@ Board.changeTile = function (freetile, winningplayer) {
     el(freetile.toString()).className = "player" + winningplayer + "tile";
 };
 
+Board.resetTileBoard = function () {
+    el("answer-pane").value = "";
+    F.sequence(36).forEach(function (element) {
+        if (el(element) !== undefined) {
+            console.log("hello");
+           el(element).remove();
+        }
+    });
+    // rebuilds the board
+    Board.buildGamePage();
+};
+
 Board.buildGamePage = function () {
     el("answer-pane").value = "";
     F.sequence(36).forEach(function (element) {

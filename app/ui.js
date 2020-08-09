@@ -37,13 +37,28 @@ ui.init = function () {
                 // if the game code is valid
                 el("joinPage").style.display = "none";
                 el("gamePage").style.display = "block";
-                Board.buildGamePage();
+                console.log("What is happening here");
+                Board.resetTileBoard();
+            // restarting a game
+            } else if (requestObj.joinGameAccepted === "restart") {
+                el("restart-game-button").style.display = "none";
+                el("homepage-button").style.display = "none";
+                el("testingWord").textContent = "Quiz & Conquer!";
+                el("gamePage").style.display = "block";
+                Board.resetTileBoard();
             } else {
                 el("joinGameError").style.display = "block";
                 el("gameCodeInput").value = "";
             }
         }
-        
+
+        // if the message says the player is hosting a game... 
+        // (NB: this will only happen when the game has been restarted)
+        if (requestObj.hosting !== undefined) {
+            // reveals the “make this hame public” and “everyone has joined” buttons
+            el("everyone-has-joined-button").style.display = "block";
+            el("make-this-game-public-button").style.display = "block";
+        }
 
         // if the message contains the player nummber,
         // it will display their arrow
@@ -131,7 +146,8 @@ ui.init = function () {
                 el("timer").textContent = "";
                 el("testingWord").textContent = "Game Over!";
                 el("answer-pane").style.display = "none";
-                el("gameCodeBox").style.display = "none";
+                el("restart-game-button").style.display = "block";
+                el("homepage-button").style.display = "block";
             }
         }
     };
@@ -197,6 +213,25 @@ ui.init = function () {
                 {"makeGamePrivate": el("gameCode").textContent}
             ));
         }
+    });
+
+    el("restart-game-button").addEventListener("click", function () {
+        ws.send(JSON.stringify(
+            {"restart": el("gameCode").textContent}
+        ));
+        el("restart-game-button").style.display = "none";
+        el("homepage-button").style.display = "none";
+        el("testingWord").textContent = "Quiz & Conquer!";
+        el("gamePage").style.display = "block";
+        Board.resetTileBoard();
+    });
+
+    el("homepage-button").addEventListener("click", function () {
+        el("homePage").style.display = "block";
+        el("gamePage").style.display = "none";
+        ws.send(JSON.stringify(
+            {"leftGame": true}
+        ));
     });
 
 

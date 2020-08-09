@@ -112,7 +112,8 @@ app.ws("/", function (ws, req) {
         // the following are added when a player is in a game
         // "gameCode": CODE1,
         // "playerNumber": 1,
-        // "word": { question: "hello:, answer: "bonjour" }
+        // "word": { question: "hello:, answer: "bonjour" },
+        // "quiz": Beginner_French
     };
 
 
@@ -129,37 +130,7 @@ app.ws("/", function (ws, req) {
         if (ws.myprivatedata.gameCode !== undefined) {
             // checks to see if the game they were in hasn't ended
             if (games[ws.myprivatedata.gameCode] !== undefined) {
-                // removes the player that left the game from the array of players
-                // to ensure the server stops sending messages to that websocket
-                games[ws.myprivatedata.gameCode].players.some(function (thisws, ind) {
-                    // NB: ws.myprivatedata contains the data for the player that left
-                    // thisws allows us to loop through each player that WAS playing
-                    if (thisws.myprivatedata.playerNumber === ws.myprivatedata.playerNumber) {
-                        games[ws.myprivatedata.gameCode].players.splice(ind, 1);
-                        return true;
-                    }
-                    return false;
-                });
-
-                // If there aren't any players left in the game, the game code is removed
-                // from the games object.
-                if (games[ws.myprivatedata.gameCode].players.length === 0) {
-                    // removes game code from the games obj
-                    games.removeGame = ws.myprivatedata.gameCode;
-                }
-
-                // if the game hasn't begun and there are still players in the game, players
-                // will be reassigned player numbers otherwise, the game will continue
-                if (ws.myprivatedata.gameStatus === "not playing" && games[ws.myprivatedata.gameCode] !== undefined) {
-                    let tempNumWS = [];
-                    games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
-                        thisws.myprivatedata.playerNumber = tempNumWS.length + 1;
-                        tempNumWS.push(1);
-                        thisws.send(JSON.stringify({
-                            "playerNumber": thisws.myprivatedata.playerNumber
-                        }));
-                    });
-                }
+                H.onClose(games, ws);
             }
         }
     });
@@ -202,6 +173,27 @@ app.ws("/", function (ws, req) {
                     "players2join": (4 - ws.myprivatedata.playerNumber),
                 }));
             }
+        }
+
+        // restarting a game...
+        if (clientObj.restart !== undefined) {
+            games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
+                thisws.send(JSON.stringify({
+                    "joinGameAccepted": "restart"
+                }));
+                if (thisws.myprivatedata.hosting === true) {
+                    // only sends this message to the host
+                    thisws.send(JSON.stringify({
+                        "hosting": true
+                    }));
+                }
+            });
+        }
+
+        // leaving once the game has ended (so you are not affected if the 
+        // other players restart the game)
+        if (clientObj.leftGame !== undefined) {
+            H.onClose(games, ws);
         }
 
         // upon receiving a game code...
