@@ -1,5 +1,4 @@
 
-/*jslint maxlen: 100 */
 import express from "express";
 import expressWS from "express-ws";
 import H from "./handler.js";
@@ -37,7 +36,7 @@ app.get("/", function (req, res, next) {
 // creates a shallow copy of the starting array
 let currentBoard = Array.from(H.startBoard());
 
-// creates the object which will store all the games 
+// creates the object which will store all the games
 // currently being played
 const games = {
     set removeGame(key) {
@@ -83,11 +82,11 @@ the game code "WXYZ" is achieved from the following:
 
 obj4.removeGame = "WXYZ";
 
-We leave out the game status from games. This is because the game code is removed as soon as the game 
+We leave out the game status from games. This is because the game code is removed as soon as the game
 ends to prevent messages being sent etc. If we tried to change the game status to "not playing" after
 it had been deleted, it would lead to an error.
 
-REPLACE GAME STATUS WITH games[ws.myprivatedata.gameCode] ? IF games[ws.myprivatedata.gameCode] IS 
+REPLACE GAME STATUS WITH games[ws.myprivatedata.gameCode] ? IF games[ws.myprivatedata.gameCode] IS
 UNDEFINED, THE GAME WOULD BE OVER. NEED TO CHECK ON CLIENT SIDE.
 
 */
@@ -108,7 +107,7 @@ app.ws("/", function (ws, req) {
         "currentBoard": currentBoard, // updated as game goes on
         "gameStatus": "not playing", // "playing" or "not playing"
         "hosting": false // true if they are the host
-        
+
         // the following are added when a player is in a game
         // "gameCode": CODE1,
         // "playerNumber": 1,
@@ -170,7 +169,7 @@ app.ws("/", function (ws, req) {
                 ws.send(JSON.stringify({
                     "gameCode": ws.myprivatedata.gameCode,
                     "playerNumber": ws.myprivatedata.playerNumber,
-                    "players2join": (4 - ws.myprivatedata.playerNumber),
+                    "players2join": (4 - ws.myprivatedata.playerNumber)
                 }));
             }
         }
@@ -190,7 +189,7 @@ app.ws("/", function (ws, req) {
             });
         }
 
-        // leaving once the game has ended (so you are not affected if the 
+        // leaving once the game has ended (so you are not affected if the
         // other players restart the game)
         if (clientObj.leftGame !== undefined) {
             H.onClose(games, ws);
@@ -212,7 +211,7 @@ app.ws("/", function (ws, req) {
                 ws.send(JSON.stringify({
                     "joinGameAccepted": true,
                     "gameCode": ws.myprivatedata.gameCode,
-                    "playerNumber": ws.myprivatedata.playerNumber,
+                    "playerNumber": ws.myprivatedata.playerNumber
                 }));
                 games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
                     thisws.send(JSON.stringify({
@@ -250,9 +249,19 @@ app.ws("/", function (ws, req) {
         // NB: public = true means the game is public
         if (clientObj.makeGamePublic !== undefined) {
             games[clientObj.makeGamePublic].public = true;
+            games[clientObj.makeGamePublic].players.forEach(function (thisws) {
+                thisws.send(JSON.stringify({
+                    "makeGamePublic": true
+                }));
+            });
         }
         if (clientObj.makeGamePrivate !== undefined) {
             games[clientObj.makeGamePrivate].public = false;
+            games[clientObj.makeGamePrivate].players.forEach(function (thisws) {
+                thisws.send(JSON.stringify({
+                    "makeGamePrivate": true
+                }));
+            });
         }
 
         // sending a list of all the public games...
@@ -272,7 +281,6 @@ app.ws("/", function (ws, req) {
                     games[ws.myprivatedata.gameCode].quiz = clientObj.createTable.tableName.replace(/\s/g, "_");
                 });
             });
-            
         }
 
         // receiving a request to host a quiz that has been found from browsing...
@@ -303,16 +311,6 @@ app.ws("/", function (ws, req) {
                         }, F.getRandomInt(1500, 5000));
                     });
                 });
-                /*
-
-                1. Add computer players - check
-
-                2. 
-
-                4. Run the computer player function for each computer player ie:
-                    games[ws.myprivatedata.gameCode].computerPlayers.forEach(...)
-
-                */
             }
         }
 

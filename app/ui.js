@@ -51,6 +51,7 @@ ui.init = function () {
             }
         }
 
+        /*
         // if the message says the player is hosting a game... 
         // (NB: this will only happen when the game has been restarted)
         if (requestObj.hosting !== undefined) {
@@ -58,6 +59,7 @@ ui.init = function () {
             el("everyone-has-joined-button").style.display = "block";
             el("make-this-game-public-button").style.display = "block";
         }
+        */
 
         // if the message contains the player nummber,
         // it will display their arrow
@@ -102,6 +104,18 @@ ui.init = function () {
                 el("publicGameError").style.display = "none";
                 Board.listPublicGames(requestObj.listPublicGames); 
             }
+        }
+
+        // a game is being made public/ private
+        if (requestObj.makeGamePublic !== undefined) {
+            el("make-this-game-public-text").textContent = "Make this game private";
+            el("make-this-game-public-button").style.background = "var(--grey)";
+            el("make-this-game-public-text").style.color = "var(--nearBlack)";
+        }
+        if (requestObj.makeGamePrivate !== undefined) {
+            el("make-this-game-public-text").textContent = "Make this game public";
+            el("make-this-game-public-button").style.background = "var(--nearBlack)";
+            el("make-this-game-public-text").style.color = "white";
         }
 
         // being told a quiz name already exists...
@@ -183,7 +197,6 @@ ui.init = function () {
     // if the "everyone-has-joined" button has pressed, it will
     // send a message to the server to start the game (it will do this by adding
     // computer players until it gets to 4)
-    // ADD COMPUTER PLAYERS HERE
     el("everyone-has-joined-button").addEventListener("click", function () {
         ws.send(JSON.stringify(
             {"startGame": true}
@@ -281,8 +294,10 @@ ui.init = function () {
         el("joinPage").style.display = "block";
         el("gameCodeInput").value = "";
         // hides the “make this game public” and “everyone has joined” buttons
+        /*
         el("everyone-has-joined-button").style.display = "none";
         el("make-this-game-public-button").style.display = "none";
+        */
         ws.send(JSON.stringify({
             "hosting": false,
             "listPublicGames": true
@@ -294,8 +309,10 @@ ui.init = function () {
         el("homePage").style.display = "none";
         el("hostGamePage").style.display = "block";
         // reveals the “make this hame public” and “everyone has joined” buttons
+        /*
         el("everyone-has-joined-button").style.display = "block";
         el("make-this-game-public-button").style.display = "block";
+        */
         ws.send(JSON.stringify(
             {"hosting": true}
         ));
