@@ -33,6 +33,9 @@ app.get("/", function (req, res, next) {
 /////////////////////////////////////////////////////////
 
 
+// array of all the open web sockets
+let clients = [];
+
 // creates a shallow copy of the starting array
 let currentBoard = Array.from(H.startBoard());
 
@@ -103,7 +106,11 @@ app.ws("/", function (ws, req) {
     */
 
 
+    // adds the web socket to the open web sockets
+    clients.push(ws);
+
     ws.myprivatedata = {
+        "id": clients.length,
         "currentBoard": currentBoard, // updated as game goes on
         "gameStatus": "not playing", // "playing" or "not playing"
         "hosting": false // true if they are the host
@@ -132,6 +139,10 @@ app.ws("/", function (ws, req) {
                 H.onClose(games, ws);
             }
         }
+        // removes them from the array of open websockets
+        // this is done here as we don't want it to happen when the player
+        // goes back to the home page
+        clients.splice( (clients[ws.myprivatedata.id - 1]) , 1);
     });
 
 
@@ -180,12 +191,14 @@ app.ws("/", function (ws, req) {
                 thisws.send(JSON.stringify({
                     "joinGameAccepted": "restart"
                 }));
+                /*
                 if (thisws.myprivatedata.hosting === true) {
                     // only sends this message to the host
                     thisws.send(JSON.stringify({
                         "hosting": true
                     }));
                 }
+                */
             });
         }
 
@@ -208,10 +221,12 @@ app.ws("/", function (ws, req) {
                     games[ws.myprivatedata.gameCode].players.length;
                 // sends message to client to say they are joining game
                 // with the game code and their player number
+                // and whether the game is currently public or private
                 ws.send(JSON.stringify({
                     "joinGameAccepted": true,
                     "gameCode": ws.myprivatedata.gameCode,
-                    "playerNumber": ws.myprivatedata.playerNumber
+                    "playerNumber": ws.myprivatedata.playerNumber,
+                    "public": games[ws.myprivatedata.gameCode].public
                 }));
                 games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
                     thisws.send(JSON.stringify({
@@ -221,6 +236,8 @@ app.ws("/", function (ws, req) {
                 // if the game that the person has just joined has 4
                 // players in it, it will begin
                 if (games[ws.myprivatedata.gameCode].players.length === 4) {
+                    // makes the game private so people cannot join
+                    games[ws.myprivatedata.gameCode].public = false;
                     H.startGame(ws, games);
                     // initializes the starting board
                     currentBoard = Array.from(H.startBoard());
@@ -248,16 +265,17 @@ app.ws("/", function (ws, req) {
         // making a game public/ private...
         // NB: public = true means the game is public
         if (clientObj.makeGamePublic !== undefined) {
-            games[clientObj.makeGamePublic].public = true;
-            games[clientObj.makeGamePublic].players.forEach(function (thisws) {
+            games[ws.myprivatedata.gameCode].public = true;
+            // changes the state of the button for each player
+            games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
                 thisws.send(JSON.stringify({
                     "makeGamePublic": true
                 }));
             });
         }
         if (clientObj.makeGamePrivate !== undefined) {
-            games[clientObj.makeGamePrivate].public = false;
-            games[clientObj.makeGamePrivate].players.forEach(function (thisws) {
+            games[ws.myprivatedata.gameCode].public = false;
+            games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
                 thisws.send(JSON.stringify({
                     "makeGamePrivate": true
                 }));
@@ -295,7 +313,9 @@ app.ws("/", function (ws, req) {
         if (clientObj.startGame !== undefined) {
             if (clientObj.startGame === true) {
                 H.addComputerPlayers(ws, games, function () {
-                    // starts the game once the computer players have been addded
+                    // makes the game private so people cannot join
+                    games[ws.myprivatedata.gameCode].public = false;
+                    // starts the game once the computer players have been added
                     H.startGame(ws, games);
                     // initializes the starting board
                     currentBoard = Array.from(H.startBoard());

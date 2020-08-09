@@ -49,7 +49,7 @@ F.objEmpty = function (obj) {
         }
     }
     return true;
-};
+}
 
 // for checking if a string is empty, null or undefined
 F.strEmpty = function (str) {

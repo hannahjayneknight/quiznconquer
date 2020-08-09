@@ -332,15 +332,14 @@ H.onClose = function (games, ws) {
         });
     }
 
-    // if the game hasn't begun, there are still players in the game, and the player
-    // that left was the host  then the player hosting will be reassigned
-    if (ws.myprivatedata.gameStatus === "not playing" && games[ws.myprivatedata.gameCode] !== undefined && ws.myprivatedata.hosting === true) {
-        let newHost = games[ws.myprivatedata.gameCode].players[0];
-        newHost.myprivatedata.hosting = true;
-        ws.send(JSON.stringify({
-            "hosting": true
-        }));
-    }
 };
+
+/*
+H.relistPublicQuizzes = function (cb) {
+    // makes the game private so people cannot join
+    games[ws.myprivatedata.gameCode].public = false;
+    cb();
+}
+*/
 
 export default Object.freeze(H);

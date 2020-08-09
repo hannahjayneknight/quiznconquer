@@ -1,11 +1,14 @@
 
-/*jslint maxlen: 100 */
+
 import F from "./usefulfunctions.js";
 import Board from "./board.js";
 
 const ui = Object.create(null);
 const el = (id) => document.getElementById(id);
 const ClaN = (classname) => document.getElementsByClassName(classname);
+// if the variable gamePublic is false, the game is
+// not public but it is private
+let gamePublic = false;
 
 ui.init = function () {
 
@@ -38,28 +41,34 @@ ui.init = function () {
                 el("joinPage").style.display = "none";
                 el("gamePage").style.display = "block";
                 Board.resetTileBoard();
+                gamePublic = false;
+                if (requestObj.public === true) {
+                    el("make-this-game-public-text").textContent = "Make this game private";
+                    el("make-this-game-public-button").style.background = "var(--grey)";
+                    el("make-this-game-public-text").style.color = "var(--nearBlack)";
+                    gamePublic = true;
+                    ws.send(JSON.stringify(
+                        {"makeGamePublic": true}
+                    ));
+                }
             // restarting a game
             } else if (requestObj.joinGameAccepted === "restart") {
                 el("restart-game-button").style.display = "none";
                 el("homepage-button").style.display = "none";
                 el("testingWord").textContent = "Quiz & Conquer!";
                 el("gamePage").style.display = "block";
+                el("everyone-has-joined-button").style.display = "block";
+                el("make-this-game-public-button").style.display = "block";
+                el("make-this-game-public-text").textContent = "Make this game public";
+                el("make-this-game-public-button").style.background = "var(--nearBlack)";
+                el("make-this-game-public-text").style.color = "white";
+                gamePublic = false;
                 Board.resetTileBoard();
             } else {
                 el("joinGameError").style.display = "block";
                 el("gameCodeInput").value = "";
             }
         }
-
-        /*
-        // if the message says the player is hosting a game... 
-        // (NB: this will only happen when the game has been restarted)
-        if (requestObj.hosting !== undefined) {
-            // reveals the “make this hame public” and “everyone has joined” buttons
-            el("everyone-has-joined-button").style.display = "block";
-            el("make-this-game-public-button").style.display = "block";
-        }
-        */
 
         // if the message contains the player nummber,
         // it will display their arrow
@@ -102,20 +111,22 @@ ui.init = function () {
                 el("publicGameError").style.display = "block";
             } else {
                 el("publicGameError").style.display = "none";
-                Board.listPublicGames(requestObj.listPublicGames); 
+                Board.listPublicGames(requestObj.listPublicGames);
             }
         }
 
-        // a game is being made public/ private
+        // a game is being made public/ private by another player
         if (requestObj.makeGamePublic !== undefined) {
             el("make-this-game-public-text").textContent = "Make this game private";
             el("make-this-game-public-button").style.background = "var(--grey)";
             el("make-this-game-public-text").style.color = "var(--nearBlack)";
+            gamePublic = true;
         }
         if (requestObj.makeGamePrivate !== undefined) {
             el("make-this-game-public-text").textContent = "Make this game public";
             el("make-this-game-public-button").style.background = "var(--nearBlack)";
             el("make-this-game-public-text").style.color = "white";
+            gamePublic = false;
         }
 
         // being told a quiz name already exists...
@@ -202,9 +213,6 @@ ui.init = function () {
             {"startGame": true}
         ));
     });
-    // if the variable gamePublic is false, the game is
-    // not public but it is private
-    let gamePublic = false;
     // if the "make-this-game-public" button has pressed, it will send a message
     // to the server asking to add the game code to the list of public games
     el("make-this-game-public-button").addEventListener("click", function () {
@@ -214,7 +222,7 @@ ui.init = function () {
             el("make-this-game-public-text").style.color = "var(--nearBlack)";
             gamePublic = true;
             ws.send(JSON.stringify(
-                {"makeGamePublic": el("gameCode").textContent}
+                {"makeGamePublic": true}
             ));
         } else {
             el("make-this-game-public-text").textContent = "Make this game public";
@@ -222,7 +230,7 @@ ui.init = function () {
             el("make-this-game-public-text").style.color = "white";
             gamePublic = false;
             ws.send(JSON.stringify(
-                {"makeGamePrivate": el("gameCode").textContent}
+                {"makeGamePrivate": true}
             ));
         }
     });
@@ -261,14 +269,6 @@ ui.init = function () {
         ));
     });
 
-    // buttons to join a public game
-    // checks to see if the parent element has event listeners
-    if (el("listPublicGames").addEventListener) {
-        el("listPublicGames").addEventListener("click", joinPublicGame, false);
-    } else if (el("listPublicGames").attachEvent) {
-        el("listPublicGames").attachEvent("onclick", joinPublicGame);
-    }
-
     // when player joins a game a message will be sent to the server and
     // the game page will be displayed
     function joinPublicGame (e) {
@@ -277,6 +277,14 @@ ui.init = function () {
         ws.send(JSON.stringify(
             {"joinGameCode": e.target.id}
         ));
+    }
+
+    // buttons to join a public game
+    // checks to see if the parent element has event listeners
+    if (el("listPublicGames").addEventListener) {
+        el("listPublicGames").addEventListener("click", joinPublicGame, false);
+    } else if (el("listPublicGames").attachEvent) {
+        el("listPublicGames").attachEvent("onclick", joinPublicGame);
     }
 
 
@@ -333,7 +341,7 @@ ui.init = function () {
         el("setQuizTitle").value = "";
         F.sequence(6).forEach( function (element) {
             Board.createQA(element + 1);
-        })
+        });
     });
 
     // clicking on the "Browse" button
@@ -359,7 +367,7 @@ ui.init = function () {
         if (F.strEmpty(el("setQuizTitle").value) === false) {
             // if user has entered a title
             // doesn't let you create a quiz with no questions and answers
-            let tableContents = Board.getQA()
+            let tableContents = Board.getQA();
             if (F.arrEmpty(tableContents)) {
                 // returns true if array does not exist, is not an array, or is empty
                 // ⇒ do not attempt to process array
@@ -400,15 +408,6 @@ ui.init = function () {
 
     */
 
-
-    // buttons to join a public game
-    // checks to see if the parent element has event listeners
-    if (el("listOfQuizzes").addEventListener) {
-        el("listOfQuizzes").addEventListener("click", hostBrowsedQuiz, false);
-    } else if (el("listOfQuizzes").attachEvent) {
-        el("listOfQuizzes").attachEvent("onclick", hostBrowsedQuiz);
-    }
-
     // when player joins a game a message will be sent to the server and
     // the game page will be displayed
     function hostBrowsedQuiz (e) {
@@ -418,8 +417,16 @@ ui.init = function () {
         ws.send(JSON.stringify(
             {"hostBrowsedQuiz": e.target.id}
         ));
+    }
         // e.target.id gets the id of what triggered the event
         // in this case it is the name of the quiz
+
+    // buttons to join a public game
+    // checks to see if the parent element has event listeners
+    if (el("listOfQuizzes").addEventListener) {
+        el("listOfQuizzes").addEventListener("click", hostBrowsedQuiz, false);
+    } else if (el("listOfQuizzes").attachEvent) {
+        el("listOfQuizzes").attachEvent("onclick", hostBrowsedQuiz);
     }
 
 };
