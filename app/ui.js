@@ -109,9 +109,10 @@ ui.init = function () {
             if (F.arrEmpty(requestObj.listPublicGames)) {
                 // if there are no public games...
                 el("publicGameError").style.display = "block";
+                Board.RElistPublicGames(requestObj.listPublicGames);
             } else {
                 el("publicGameError").style.display = "none";
-                Board.listPublicGames(requestObj.listPublicGames);
+                Board.RElistPublicGames(requestObj.listPublicGames);
             }
         }
 

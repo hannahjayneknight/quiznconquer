@@ -10,6 +10,7 @@ import F from "./usefulfunctions.js";
 const Board = Object.create(null);
 
 const el = (id) => document.getElementById(id);
+const ClaN = (className) => document.getElementsByClassName(className);
 const playerColours = ["#dad8db", "#97Bc62ff", "#2c5f2d", "#101820"];
 const playerclasses = [[ "player1", "player2"],
                         ["player3", "player4" ]];
@@ -53,6 +54,15 @@ Board.submitAnswer = function (ws) {
             { "answer": el("answer-pane").value.trim().toLowerCase() });
         ws.send(answer);
         el("answer-pane").value = "";
+};
+
+Board.RElistPublicGames = function (pubGameArr) {
+    Array.from(ClaN("publicGame")).forEach(function (element) {
+        if (el(element.id) !== null) {
+            el(element.id).remove();
+         }
+    });
+    Board.listPublicGames(pubGameArr);
 };
 
 Board.listPublicGames = function (pubGameArr) {
@@ -125,7 +135,7 @@ The array is called tableContents and looks like this:
 
 */
 Board.getQA = function () {
-    const allQA = Array.from(document.getElementsByClassName("qa"));
+    const allQA = Array.from(ClaN("qa"));
     let tableContents = [];
     F.sequence( allQA.length / 2 ).forEach( function (element) {
         let qaObj = {};

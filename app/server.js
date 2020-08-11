@@ -139,9 +139,8 @@ app.ws("/", function (ws, req) {
                 H.onClose(games, ws);
             }
         }
-        // removes them from the array of open websockets
-        // this is done here as we don't want it to happen when the player
-        // goes back to the home page
+        // removes them from the total array of open websockets H.onclose() is
+        // used elsewhere which is why this is not part of the function
         clients.splice( (clients[ws.myprivatedata.id - 1]) , 1);
     });
 
@@ -191,14 +190,6 @@ app.ws("/", function (ws, req) {
                 thisws.send(JSON.stringify({
                     "joinGameAccepted": "restart"
                 }));
-                /*
-                if (thisws.myprivatedata.hosting === true) {
-                    // only sends this message to the host
-                    thisws.send(JSON.stringify({
-                        "hosting": true
-                    }));
-                }
-                */
             });
         }
 
@@ -238,6 +229,12 @@ app.ws("/", function (ws, req) {
                 if (games[ws.myprivatedata.gameCode].players.length === 4) {
                     // makes the game private so people cannot join
                     games[ws.myprivatedata.gameCode].public = false;
+                    // relists all the public games on the join page
+                    clients.forEach(function (thisws) {
+                        thisws.send(JSON.stringify({
+                            "listPublicGames": H.findPublicGames(games)
+                        }));
+                    });
                     H.startGame(ws, games);
                     // initializes the starting board
                     currentBoard = Array.from(H.startBoard());
@@ -272,12 +269,26 @@ app.ws("/", function (ws, req) {
                     "makeGamePublic": true
                 }));
             });
+            // relists all the public games on the join page
+            clients.forEach(function (thisws) {
+                console.log("testing");
+                thisws.send(JSON.stringify({
+                    "listPublicGames": H.findPublicGames(games)
+                }));
+            });
         }
         if (clientObj.makeGamePrivate !== undefined) {
             games[ws.myprivatedata.gameCode].public = false;
             games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
                 thisws.send(JSON.stringify({
                     "makeGamePrivate": true
+                }));
+            });
+            // relists all the public games on the join page
+            clients.forEach(function (thisws) {
+                console.log("testing");
+                thisws.send(JSON.stringify({
+                    "listPublicGames": H.findPublicGames(games)
                 }));
             });
         }
@@ -315,6 +326,12 @@ app.ws("/", function (ws, req) {
                 H.addComputerPlayers(ws, games, function () {
                     // makes the game private so people cannot join
                     games[ws.myprivatedata.gameCode].public = false;
+                    // relists all the public games on the join page
+                    clients.forEach(function (thisws) {
+                        thisws.send(JSON.stringify({
+                            "listPublicGames": H.findPublicGames(games)
+                        }));
+                    });
                     // starts the game once the computer players have been added
                     H.startGame(ws, games);
                     // initializes the starting board
