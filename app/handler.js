@@ -329,9 +329,12 @@ H.leaveGame = function (clients, games, ws) {
                 games.removeGame = ws.myprivatedata.gameCode;
                 // relists all the public games on the join page
                 clients.forEach(function (thisws) {
-                    thisws.send(JSON.stringify({
+                    // checks the web socket is open
+                    if (thisws.readystate !== 3) {
+                        thisws.send(JSON.stringify({
                         "listPublicGames": H.findPublicGames(games)
-                    }));
+                        }));
+                    }
                 });
             }
 
