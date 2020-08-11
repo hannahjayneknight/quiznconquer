@@ -131,17 +131,11 @@ app.ws("/", function (ws, req) {
 
 
     ws.on("close", function () {
-        // console.log("Server websocket has closed");
-        // checks to see if a player was in a game first
-        if (ws.myprivatedata.gameCode !== undefined) {
-            // checks to see if the game they were in hasn't ended
-            if (games[ws.myprivatedata.gameCode] !== undefined) {
-                H.onClose(games, ws);
-            }
-        }
-        // removes them from the total array of open websockets H.onclose() is
-        // used elsewhere which is why this is not part of the function
-        clients.splice( (clients[ws.myprivatedata.id - 1]) , 1);
+        // removes them from the total array of open websockets
+        H.onclose(clients, games, ws, function (clients, games, ws) {
+            // removes them from games array etc etc
+            H.leaveGame(clients, games, ws);
+        });
     });
 
 
@@ -196,7 +190,7 @@ app.ws("/", function (ws, req) {
         // leaving once the game has ended (so you are not affected if the
         // other players restart the game)
         if (clientObj.leftGame !== undefined) {
-            H.onClose(games, ws);
+            H.leaveGame(clients, games, ws);
         }
 
         // upon receiving a game code...
@@ -271,7 +265,6 @@ app.ws("/", function (ws, req) {
             });
             // relists all the public games on the join page
             clients.forEach(function (thisws) {
-                console.log("testing");
                 thisws.send(JSON.stringify({
                     "listPublicGames": H.findPublicGames(games)
                 }));
@@ -286,7 +279,6 @@ app.ws("/", function (ws, req) {
             });
             // relists all the public games on the join page
             clients.forEach(function (thisws) {
-                console.log("testing");
                 thisws.send(JSON.stringify({
                     "listPublicGames": H.findPublicGames(games)
                 }));
