@@ -160,12 +160,20 @@ ui.init = function () {
 
         // if the message contains the status of the timer...
         } else if (requestObj.timer !== undefined) {
-            // it will update the timer if the game is still playing
+            // it will update the timer if the game is being played
             if (requestObj.gameStatus === "playing") {
                 el("timer").textContent = requestObj.timer;
                 el("answer-pane").style.display = "block";
                 el("everyone-has-joined-button").style.display = "none";
                 el("make-this-game-public-button").style.display = "none";
+            // it will update the timer during the countdown
+            } else if (requestObj.gameStatus === "countdown") {
+                el("timer").textContent = requestObj.timer;
+                el("everyone-has-joined-button").style.display = "none";
+                el("make-this-game-public-button").style.display = "none";
+            // countdown has ended
+            } else if (requestObj.gameStatus === "go") {
+                el("timer").textContent = "Go!";
             // otherwise the game is over
             } else {
                 el("timer").textContent = "";

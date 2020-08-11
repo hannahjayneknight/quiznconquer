@@ -331,6 +331,7 @@ app.ws("/", function (ws, req) {
                     // refreshes this web socket's starting board
                     ws.myprivatedata.currentBoard = Array.from(H.startBoard());
                     // adds a tile randomly for each computer player
+                    // SET TIMEOUT HERE SO COMPUTER PLAYERS DO NOT START PLAYING TOO EARLY!!
                     games[ws.myprivatedata.gameCode].computerPlayers.forEach(function (element) {
                         let computersID = setInterval( function () {
                             H.playComputer(element, ws, games, currentBoard);

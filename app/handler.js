@@ -42,6 +42,45 @@ H.generateWord = function (dictionary) {
     return Object.entries(dictionary)[randomNumber];
 };
 
+H.countdown = function (ws, games) {
+    const seconds = 3;
+    const now = Date.now();
+    const deadline = seconds * 1000 + now;
+    let players = games[ws.myprivatedata.gameCode].players;
+
+    let timerID = setInterval(function () {
+        let currentTime = Date.now();
+        let distance = deadline - currentTime;
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        if (parseInt(seconds) === 0) {
+            clearInterval(timerID);
+
+            players.forEach(function (thisws) {
+
+                thisws.send(JSON.stringify({
+                "timer": "countdown ended",
+                "gameStatus": "go"
+                }));
+            });
+
+        } else {
+            players.forEach( function (thisws) {
+
+                thisws.send(JSON.stringify({
+                                "timer": seconds,
+                                "gameStatus": "countdown"
+                }));
+            });
+        }
+    // rather than change html, the server will send
+    // JSON.stringify({"timer": seconds})
+    }, 500);
+    players.forEach((thisws) => thisws.send(JSON.stringify({
+        "timer": 3,
+        "gameStatus": "countdown"
+    })));
+};
+
 // THE TIMER
 H.startTimer = function (ws, games) {
     const mins = 0.5;
@@ -55,17 +94,11 @@ H.startTimer = function (ws, games) {
         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
         if (parseInt(seconds) === 0) {
             clearInterval(timerID);
-            /*
-            // removes game code from the games obj
-            if (players[0] !== undefined) {
-                games.removeGame = players[0].myprivatedata.gameCode;
-            }
-            */
 
             players.forEach(function (thisws) {
 
                 thisws.send(JSON.stringify({
-                "timer": seconds,
+                "timer": "Game ended",
                 "gameStatus": "gameOver"
                 }));
 
@@ -215,24 +248,25 @@ H.makeGameCode = function (length = 5) {
 
 // function to start a game
 H.startGame = function (ws, games) {
-    // starts the timer
-    // THIS IS STARTING BEFORE THE COMPUTER PLAYERS HAVE BEEN RECOGNISED - THIS OK?
-    H.startTimer(ws, games);
-    // generates a testing word and sends it to the client to be
-    // displayed on the DOM
-    games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
+    // starts the coutndown
+    H.countdown(ws, games);
 
-        dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz.replace(/\s/g, "_"), function( obj ) {
-            thisws.myprivatedata.word = obj.word;
-            thisws.send(JSON.stringify({
-                "word": obj.word.question
-            }));
+    const playGame = function () {
+        // starts the timer
+        H.startTimer(ws, games);
+        games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
+
+            dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz.replace(/\s/g, "_"), function( obj ) {
+                thisws.myprivatedata.word = obj.word;
+                thisws.send(JSON.stringify({
+                    "word": obj.word.question
+                }));
+            });
         });
-    });
-
-    if ( !F.arrEmpty(games[ws.myprivatedata.gameCode].computerPlayers) ) {
-        // returns true if there ARE computer players
     }
+
+    // plays the game when the countdown ends
+    setTimeout(playGame, 3250);
 };
 
 H.findPublicGames = function (games) {
