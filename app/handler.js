@@ -1,5 +1,4 @@
 
-/*jslint maxlen: 100 */
 import F from "./usefulfunctions.js";
 import dbH from "./dbHandler.js";
 
@@ -43,17 +42,17 @@ H.generateWord = function (dictionary) {
 };
 
 H.countdown = function (ws, games) {
-    const seconds = 3;
+    const secs = 3;
     const now = Date.now();
-    const deadline = seconds * 1000 + now;
+    const deadline = secs * 1000 + now;
     let players = games[ws.myprivatedata.gameCode].players;
 
-    let timerID = setInterval(function () {
+    let countdownID = setInterval(function () {
         let currentTime = Date.now();
         let distance = deadline - currentTime;
         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
         if (parseInt(seconds) === 0) {
-            clearInterval(timerID);
+            clearInterval(countdownID);
 
             players.forEach(function (thisws) {
 
@@ -82,11 +81,40 @@ H.countdown = function (ws, games) {
 };
 
 // THE TIMER
-H.startTimer = function (ws, games) {
+H.startTimer = function (ws, games, currentBoard) {
     const mins = 0.5;
     const now = Date.now();
     const deadline = mins * 60 * 1000 + now;
     let players = games[ws.myprivatedata.gameCode].players;
+    let computers = games[ws.myprivatedata.gameCode].computerPlayers;
+    let computer1;
+    let computer2;
+    let computer3;
+
+    // adds random tiles in random time intervales for each
+    // computer player
+    if (computers.length == 1) {
+        computer1 = setInterval( function () {
+            H.playComputer(4, ws, games, currentBoard);
+        }, F.getRandomInt(1500, 5000));
+    } else if (computers.length == 2) {
+        computer1 = setInterval( function () {
+            H.playComputer(4, ws, games, currentBoard);
+        }, F.getRandomInt(1500, 5000));
+        computer2 = setInterval( function () {
+            H.playComputer(3, ws, games, currentBoard);
+        }, F.getRandomInt(1500, 5000));
+    } else if (computers.length == 3) {
+        computer1 = setInterval( function () {
+            H.playComputer(4, ws, games, currentBoard);
+        }, F.getRandomInt(1500, 5000));
+        computer2 = setInterval( function () {
+            H.playComputer(3, ws, games, currentBoard);
+        }, F.getRandomInt(1500, 5000));
+        computer3 = setInterval( function () {
+            H.playComputer(2, ws, games, currentBoard);
+        }, F.getRandomInt(1500, 5000));
+    }
 
     let timerID = setInterval(function () {
         let currentTime = Date.now();
@@ -94,6 +122,9 @@ H.startTimer = function (ws, games) {
         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
         if (parseInt(seconds) === 0) {
             clearInterval(timerID);
+            clearInterval(computer1);
+            clearInterval(computer2);
+            clearInterval(computer3);
 
             players.forEach(function (thisws) {
 
@@ -104,6 +135,7 @@ H.startTimer = function (ws, games) {
 
                 thisws.myprivatedata.gameStatus = "not playing";
             });
+
         } else {
             players.forEach( function (thisws) {
 
@@ -247,13 +279,14 @@ H.makeGameCode = function (length = 5) {
 };
 
 // function to start a game
-H.startGame = function (ws, games) {
+H.startGame = function (ws, games, currentBoard) {
     // starts the coutndown
     H.countdown(ws, games);
 
     const playGame = function () {
         // starts the timer
-        H.startTimer(ws, games);
+        H.startTimer(ws, games, currentBoard);
+        // sends the starting word
         games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
 
             dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz.replace(/\s/g, "_"), function( obj ) {
@@ -387,5 +420,23 @@ H.leaveGame = function (clients, games, ws) {
         }
     }
 };
+
+H.findWinner = function (currentBoard) {
+    let score1 = 0;
+    let score2 = 0;
+    let score3 = 0;
+    let score4 = 0;
+    currentBoard.forEach(function (element) {
+        if (element === 1) {
+            score1 += 1;
+        } else if (element === 2) {
+            score2 += 1;
+        } else if (element === 3) {
+            score3 += 1;
+        } if (element === 4) {
+            score4 += 1;
+        }
+    })
+}
 
 export default Object.freeze(H);

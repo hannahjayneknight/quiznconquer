@@ -229,7 +229,7 @@ app.ws("/", function (ws, req) {
                             "listPublicGames": H.findPublicGames(games)
                         }));
                     });
-                    H.startGame(ws, games);
+                    H.startGame(ws, games, currentBoard);
                     // initializes the starting board
                     currentBoard = Array.from(H.startBoard());
                     // refreshes this web socket's starting board
@@ -325,21 +325,11 @@ app.ws("/", function (ws, req) {
                         }));
                     });
                     // starts the game once the computer players have been added
-                    H.startGame(ws, games);
+                    H.startGame(ws, games, currentBoard);
                     // initializes the starting board
                     currentBoard = Array.from(H.startBoard());
                     // refreshes this web socket's starting board
                     ws.myprivatedata.currentBoard = Array.from(H.startBoard());
-                    // adds a tile randomly for each computer player
-                    // SET TIMEOUT HERE SO COMPUTER PLAYERS DO NOT START PLAYING TOO EARLY!!
-                    games[ws.myprivatedata.gameCode].computerPlayers.forEach(function (element) {
-                        let computersID = setInterval( function () {
-                            H.playComputer(element, ws, games, currentBoard);
-                            if (ws.myprivatedata.gameStatus === "not playing" || games[ws.myprivatedata.gameCode] === undefined) {
-                                clearInterval(computersID);
-                            }
-                        }, F.getRandomInt(1500, 5000));
-                    });
                 });
             }
         }
