@@ -47,6 +47,8 @@ const games = {
         return games;
     }
 };
+
+
 /*
 
 games is an object that stores info about all the games

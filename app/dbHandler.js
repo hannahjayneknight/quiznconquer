@@ -5,7 +5,6 @@ import sqlite3 from "sqlite3";
 const dbH = Object.create(null);
 
 // used to generate a testing word
-// NEED TO MODIFY SO TAKES IN THE TABLE TO BE USED
 dbH.generateWordFromDB = function (quiz, cb) {
     const db = new sqlite3.Database("./sample2.db", function (err) {
         if (err) {
@@ -166,6 +165,48 @@ dbH.addToQuiz = function (tableName, tableContents, cb) {
             console.error(err.message);
         }
         cb();
+    });
+};
+
+/*
+
+returns dbArr which is an array with all the questions
+and answers in a quiz. It looks like this:
+
+[
+    {question: 'salt', answer: 'sel'},
+    {question: 'bed', answer: 'lit'},
+    {question: 'ham', answer: 'jambon'},
+    ...
+]
+*/
+dbH.getQA = function (quiz, cb) {
+
+    const db = new sqlite3.Database("./sample2.db", function (err) {
+        if (err) {
+            console.error(err.message);
+        }
+    });
+
+    const getQA = `SELECT question, answer
+    FROM ${quiz};`;
+
+    const dbArr = [];
+    db.serialize(function () {
+        db.all(getQA, [], function (err, row) {
+            if (err) {
+                return console.error(err.message);
+            }
+            row.forEach((element) => dbArr.push(element));
+        });
+    });
+
+    db.close(function (err) {
+        if (err) {
+            console.error(err.message);
+        }
+
+        cb(dbArr);
     });
 };
 
