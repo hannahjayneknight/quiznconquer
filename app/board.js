@@ -27,6 +27,7 @@ Board.changeTile = function (freetile, winningplayer) {
 
 Board.resetTileBoard = function () {
     el("answer-pane").value = "";
+    el("winnersBox").style.display = "none";
     F.sequence(36).forEach(function (element) {
         if (el(element) !== null) {
            el(element).remove();
@@ -150,19 +151,59 @@ Board.getQA = function () {
 };
 
 Board.findWinners = function (winnersarr) {
+    el("1st").style.display = "block";
+    el("2nd").style.display = "block";
+    el("3rd").style.display = "block";
+    el("draw").style.display = "none";
     const names = ["Grey", "Light Green", "Dark Green", "Black"];
-    if (winnersarr.length === 1) {
-        // everyone drew
-    } else if (winnersarr.length === 2) {
-        // two drawing pairs
-    } else if (winnersarr.length === 3) {
-        // one pair that drew or one person
-    } else if (winnersarr.length === 4) {
-        // no-one drew
-        el("player3rd").textContent = names[winnersarr[1].map((x) => x - 1 )];
-        el("player2nd").textContent = names[winnersarr[2].map((x) => x - 1 )];
-        el("player1st").textContent = names[winnersarr[3].map((x) => x - 1 )];
+    let player1st = [];
+    let player2nd = [];
+    let player3rd = [];
+    let player4th = [];
+
+    // adds the colours of the players that won to the arrays
+    if (winnersarr[0] !== undefined) {
+        winnersarr[0].forEach(function (element) {
+            player4th.push(names[element - 1]);
+        });
     }
+
+    if (winnersarr[1] !== undefined) {
+        winnersarr[1].forEach(function (element) {
+            player3rd.push(names[element - 1]);
+        });
+    }
+
+    if (winnersarr[2] !== undefined) {
+        winnersarr[2].forEach(function (element) {
+            player2nd.push(names[element - 1]);
+        });
+    }
+
+    if (winnersarr[3] !== undefined) {
+        winnersarr[3].forEach(function (element) {
+            player1st.push(names[element - 1]);
+        });
+    }
+    if (winnersarr.length === 2) {
+        el("player2nd").textContent = player4th.join(", ");
+        el("player1st").textContent = player3rd.join(", ");
+    } else if (winnersarr.length === 3) {
+        el("player3rd").textContent = names[winnersarr[0].map((x) => x - 1)];
+        el("player2nd").textContent = player3rd.join(", ");
+        el("player1st").textContent = player2nd.join(", ");
+    } else if (winnersarr.length === 4) {
+        el("player3rd").textContent = player3rd.join(", ");
+        el("player2nd").textContent = player2nd.join(", ");
+        el("player1st").textContent = player1st.join(", ");
+    } else {
+        el("1st").style.display = "none";
+        el("2nd").style.display = "none";
+        el("3rd").style.display = "none";
+        el("draw").style.display = "inline";
+    }
+
+    el("winnersBox").style.display = "inline-block";
 };
 
 export default Object.freeze(Board);

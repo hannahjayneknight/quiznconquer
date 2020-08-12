@@ -56,28 +56,39 @@ H.countdown = function (ws, games) {
 
             players.forEach(function (thisws) {
 
-                thisws.send(JSON.stringify({
-                "timer": "countdown ended",
-                "gameStatus": "go"
-                }));
+                if (thisws.readystate !== 3) {
+                    thisws.send(JSON.stringify({
+                    "timer": "countdown ended",
+                    "gameStatus": "go"
+                    }));
+                }
+
             });
 
         } else {
             players.forEach( function (thisws) {
 
-                thisws.send(JSON.stringify({
-                                "timer": seconds,
-                                "gameStatus": "countdown"
-                }));
+                if (thisws.readystate !== 3) {
+                    thisws.send(JSON.stringify({
+                        "timer": seconds,
+                        "gameStatus": "countdown"
+                    }));
+                }
+
             });
         }
     // rather than change html, the server will send
     // JSON.stringify({"timer": seconds})
     }, 500);
-    players.forEach((thisws) => thisws.send(JSON.stringify({
-        "timer": 3,
-        "gameStatus": "countdown"
-    })));
+    players.forEach(function (thisws) {
+        if (thisws.readystate !== 3) {
+            thisws.send(JSON.stringify({
+            "timer": 3,
+            "gameStatus": "countdown"
+            }));
+        }
+
+    });
 };
 
 // THE TIMER
