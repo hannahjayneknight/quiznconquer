@@ -414,6 +414,37 @@ textarea {
     display: none;
 }
 
+#winnersBox
+{
+    position: fixed;
+    top: 5vh;
+    right: 15vw;
+    border-radius: 5px;
+    background-color: var(--grey);
+    display: inline-block;
+}
+
+.winnersBoxHeaders
+{
+    font-family: var(--font);
+    font-size: 1.5rem;
+    margin: 3px;
+    text-align: left;
+    font-weight: bold;
+    color: var(--nearBlack);
+}
+
+.winnersBoxPlayers
+{
+    font-family: var(--font);
+    font-size: 1.5rem;
+    margin: 3px;
+    text-align: left;
+    font-weight: bold;
+    color: var(--lightGreen);
+    display:inline;
+}
+
 
 
 

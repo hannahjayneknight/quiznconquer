@@ -63,3 +63,23 @@ describe("Winning a tile", function () {
         }
     );
 });
+
+describe("Calculating the score", function () {
+    it(
+        "Given any board; " +
+        "After the game ends; " +
+        "The score can be calculated.",
+        function () {
+
+            fc.assert(fc.property(
+                arbBoard,
+                // takes in a random board and calculates the placing of players
+                function (board) {
+                    let places = H.findWinner(board);
+                    // returns true if a nonempty array has been returned
+                    return !(T.arrEmpty(places));
+                }
+            ), {"verbose": true});
+        }
+    );
+});

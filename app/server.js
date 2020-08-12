@@ -229,7 +229,7 @@ app.ws("/", function (ws, req) {
                             "listPublicGames": H.findPublicGames(games)
                         }));
                     });
-                    H.startGame(ws, games, currentBoard);
+                    H.startGame(ws, games, []);
                     // initializes the starting board
                     currentBoard = Array.from(H.startBoard());
                     // refreshes this web socket's starting board
@@ -325,12 +325,14 @@ app.ws("/", function (ws, req) {
                         }));
                     });
                     // starts the game once the computer players have been added
-                    H.startGame(ws, games, currentBoard);
+                    let computers = H.startGameComputers(ws, games, currentBoard);
+                    H.startGame(ws, games, computers);
                     // initializes the starting board
                     currentBoard = Array.from(H.startBoard());
                     // refreshes this web socket's starting board
                     ws.myprivatedata.currentBoard = Array.from(H.startBoard());
                 });
+                // plays the computer players
             }
         }
 
@@ -359,6 +361,12 @@ app.ws("/", function (ws, req) {
                 H.changeTile(
                     tileStolen,
                     currentBoard,
+                    ws.myprivatedata.playerNumber
+                );
+                // update the player's array of the current board
+                H.changeTile(
+                    tileStolen,
+                    ws.myprivatedata.currentBoard,
                     ws.myprivatedata.playerNumber
                 );
             }

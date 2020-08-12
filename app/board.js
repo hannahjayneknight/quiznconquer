@@ -149,6 +149,22 @@ Board.getQA = function () {
     return tableContents;
 };
 
+Board.findWinners = function (winnersarr) {
+    const names = ["Grey", "Light Green", "Dark Green", "Black"];
+    if (winnersarr.length === 1) {
+        // everyone drew
+    } else if (winnersarr.length === 2) {
+        // two drawing pairs
+    } else if (winnersarr.length === 3) {
+        // one pair that drew or one person
+    } else if (winnersarr.length === 4) {
+        // no-one drew
+        el("player3rd").textContent = names[winnersarr[1].map((x) => x - 1 )];
+        el("player2nd").textContent = names[winnersarr[2].map((x) => x - 1 )];
+        el("player1st").textContent = names[winnersarr[3].map((x) => x - 1 )];
+    }
+};
+
 export default Object.freeze(Board);
 
 /*

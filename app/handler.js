@@ -81,40 +81,11 @@ H.countdown = function (ws, games) {
 };
 
 // THE TIMER
-H.startTimer = function (ws, games, currentBoard) {
+H.startTimer = function (ws, games, computers) {
     const mins = 0.5;
     const now = Date.now();
     const deadline = mins * 60 * 1000 + now;
     let players = games[ws.myprivatedata.gameCode].players;
-    let computers = games[ws.myprivatedata.gameCode].computerPlayers;
-    let computer1;
-    let computer2;
-    let computer3;
-
-    // adds random tiles in random time intervales for each
-    // computer player
-    if (computers.length == 1) {
-        computer1 = setInterval( function () {
-            H.playComputer(4, ws, games, currentBoard);
-        }, F.getRandomInt(1500, 5000));
-    } else if (computers.length == 2) {
-        computer1 = setInterval( function () {
-            H.playComputer(4, ws, games, currentBoard);
-        }, F.getRandomInt(1500, 5000));
-        computer2 = setInterval( function () {
-            H.playComputer(3, ws, games, currentBoard);
-        }, F.getRandomInt(1500, 5000));
-    } else if (computers.length == 3) {
-        computer1 = setInterval( function () {
-            H.playComputer(4, ws, games, currentBoard);
-        }, F.getRandomInt(1500, 5000));
-        computer2 = setInterval( function () {
-            H.playComputer(3, ws, games, currentBoard);
-        }, F.getRandomInt(1500, 5000));
-        computer3 = setInterval( function () {
-            H.playComputer(2, ws, games, currentBoard);
-        }, F.getRandomInt(1500, 5000));
-    }
 
     let timerID = setInterval(function () {
         let currentTime = Date.now();
@@ -122,15 +93,15 @@ H.startTimer = function (ws, games, currentBoard) {
         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
         if (parseInt(seconds) === 0) {
             clearInterval(timerID);
-            clearInterval(computer1);
-            clearInterval(computer2);
-            clearInterval(computer3);
+
+            computers.forEach((element) => clearInterval(element));
 
             players.forEach(function (thisws) {
 
                 thisws.send(JSON.stringify({
                 "timer": "Game ended",
-                "gameStatus": "gameOver"
+                "gameStatus": "gameOver",
+                "places": H.findWinner(ws.myprivatedata.currentBoard)
                 }));
 
                 thisws.myprivatedata.gameStatus = "not playing";
@@ -279,13 +250,13 @@ H.makeGameCode = function (length = 5) {
 };
 
 // function to start a game
-H.startGame = function (ws, games, currentBoard) {
+H.startGame = function (ws, games, computers) {
     // starts the coutndown
     H.countdown(ws, games);
 
     const playGame = function () {
         // starts the timer
-        H.startTimer(ws, games, currentBoard);
+        H.startTimer(ws, games, computers);
         // sends the starting word
         games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
 
@@ -299,7 +270,7 @@ H.startGame = function (ws, games, currentBoard) {
     }
 
     // plays the game when the countdown ends
-    setTimeout(playGame, 3250);
+    setTimeout(playGame, 3200);
 };
 
 H.findPublicGames = function (games) {
@@ -339,8 +310,8 @@ H.addComputerPlayers = function (ws, games, cb) {
     cb();
 };
 
-// wins a tile for the computer
-H.playComputer = function (playerNumber, ws, games, currentBoard) {
+// wins a tile for a single computer player
+H.winComputerTile = function (playerNumber, ws, games, currentBoard) {
     const tileStolen = H.freeTile(
         playerNumber,
         currentBoard
@@ -363,8 +334,59 @@ H.playComputer = function (playerNumber, ws, games, currentBoard) {
         currentBoard,
         playerNumber
     );
-
+    // update the player's copy of the board
+    H.changeTile(
+        tileStolen,
+        ws.myprivatedata.currentBoard,
+        playerNumber
+    );
 };
+
+// starts the game for all the computer players
+// 1 argument = array of computer players
+H.startGameComputers = function (ws, games, currentBoard) {
+    let computers = games[ws.myprivatedata.gameCode].computerPlayers;
+    let currentComputers = [];
+    let computer1;
+    let computer2;
+    let computer3;
+
+    const playGameComputer = function () {
+
+        // adds random tiles in random time intervals for each
+        // computer player
+        if (computers.length == 1) {
+            computer1 = setInterval( function () {
+                H.winComputerTile(4, ws, games, currentBoard);
+            }, F.getRandomInt(1500, 5000));
+            currentComputers.push(computer1);
+        } else if (computers.length == 2) {
+            computer1 = setInterval( function () {
+                H.winComputerTile(4, ws, games, currentBoard);
+            }, F.getRandomInt(1500, 5000));
+            computer2 = setInterval( function () {
+                H.winComputerTile(3, ws, games, currentBoard);
+            }, F.getRandomInt(1500, 5000));
+            currentComputers.push(computer1, computer2);
+        } else if (computers.length == 3) {
+            computer1 = setInterval( function () {
+                H.winComputerTile(4, ws, games, currentBoard);
+            }, F.getRandomInt(1500, 5000));
+            computer2 = setInterval( function () {
+                H.winComputerTile(3, ws, games, currentBoard);
+            }, F.getRandomInt(1500, 5000));
+            computer3 = setInterval( function () {
+                H.winComputerTile(2, ws, games, currentBoard);
+            }, F.getRandomInt(1500, 5000));
+            currentComputers.push(computer1, computer2, computer3);
+        }
+    }
+
+    // plays the game when the countdown ends
+    setTimeout(playGameComputer, 3200);
+
+    return currentComputers;
+}
 
 H.onclose = function (clients, games, ws, cb) {
     clients.splice( (clients[ws.myprivatedata.id - 1]) , 1);
@@ -421,22 +443,39 @@ H.leaveGame = function (clients, games, ws) {
     }
 };
 
+// returns an object containing the players that came 1st, 2nd, 3rd and 4th
 H.findWinner = function (currentBoard) {
-    let score1 = 0;
-    let score2 = 0;
-    let score3 = 0;
-    let score4 = 0;
+
+    let scores = [0, 0, 0, 0];
     currentBoard.forEach(function (element) {
         if (element === 1) {
-            score1 += 1;
+            scores[0] += 1;
         } else if (element === 2) {
-            score2 += 1;
+            scores[1] += 1;
         } else if (element === 3) {
-            score3 += 1;
-        } if (element === 4) {
-            score4 += 1;
+            scores[2] += 1;
+        } else if (element === 4) {
+            scores[3] += 1;
         }
-    })
+    });
+
+    // orders the scores from lowest to highest
+    let ordered = scores.concat().sort((a, b) => a - b);
+
+    // places is an array containing the player numbers in ascending order
+    // of placing. If there was a draw, it will be a nested array.
+    // element 0 corresponds to fourth place, element 3 is 1st
+    let places = [];
+
+    F.sequence(4).forEach(function (element) {
+        // gets the player number/ numbers of those who came that place
+        // .map() is to convert the index to the player number
+        places.push(F.getAllIndexes(scores, ordered[element]).map((x) => x + 1));
+    });
+
+    // removes any duplicates
+    return F.uniq(places);
+
 }
 
 export default Object.freeze(H);

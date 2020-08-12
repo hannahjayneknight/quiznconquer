@@ -181,6 +181,7 @@ ui.init = function () {
                 el("answer-pane").style.display = "none";
                 el("restart-game-button").style.display = "block";
                 el("homepage-button").style.display = "block";
+                Board.findWinners(requestObj.places);
             }
         }
     };
