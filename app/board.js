@@ -55,6 +55,7 @@ Board.submitAnswer = function (ws) {
             { "answer": el("answer-pane").value.trim().toLowerCase() });
         ws.send(answer);
         el("answer-pane").value = "";
+        el("correctAnswer").textContent = "";
 };
 
 Board.RElistPublicGames = function (pubGameArr) {
@@ -186,6 +187,7 @@ Board.findWinners = function (winnersarr) {
         });
     }
     if (winnersarr.length === 2) {
+        el("3rd").style.display = "none";
         el("player2nd").textContent = player4th.join(", ");
         el("player1st").textContent = player3rd.join(", ");
     } else if (winnersarr.length === 3) {

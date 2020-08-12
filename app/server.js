@@ -115,7 +115,8 @@ app.ws("/", function (ws, req) {
         "id": clients.length,
         "currentBoard": currentBoard, // updated as game goes on
         "gameStatus": "not playing", // "playing" or "not playing"
-        "hosting": false // true if they are the host
+        "hosting": false, // true if they are the host
+        "lives": 5
 
         // the following are added when a player is in a game
         // "gameCode": CODE1,
@@ -236,6 +237,7 @@ app.ws("/", function (ws, req) {
                     currentBoard = Array.from(H.startBoard());
                     // refreshes this web socket's starting board
                     ws.myprivatedata.currentBoard = Array.from(H.startBoard());
+                    ws.myprivatedata.lives = 5;
                 }
             } else {
                 // if the game code is not valid, sends a message to the client
@@ -338,6 +340,7 @@ app.ws("/", function (ws, req) {
                     currentBoard = Array.from(H.startBoard());
                     // refreshes this web socket's starting board
                     ws.myprivatedata.currentBoard = Array.from(H.startBoard());
+                    ws.myprivatedata.lives = 5;
                 });
                 // plays the computer players
             }
@@ -376,15 +379,38 @@ app.ws("/", function (ws, req) {
                     ws.myprivatedata.currentBoard,
                     ws.myprivatedata.playerNumber
                 );
+                // it will generate a new word for questioning
+                // ONLY for the player that won the tile
+                dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz.replace(/\s/g, "_"), function( obj ) {
+                    ws.myprivatedata.word = obj.word;
+                    ws.send(JSON.stringify({
+                        "word": obj.word.question
+                    }));
+                });
+            } else {
+                // if not correct, it will reduce the life count
+                ws.myprivatedata.lives -= 1;
+                // if the player is still in the game...
+                if (ws.myprivatedata.lives !== 0) {
+                    // it will send the correct answer to the player that got it wrong
+                    ws.send(JSON.stringify({
+                        "correctAnswer": ws.myprivatedata.word.answer.trim().toLowerCase()
+                    }));
+                } else {
+                    // it will stop the player from being able to play
+                    ws.send(JSON.stringify({
+                        "lostAllLives": true
+                    }));
+                }
+
+                // it will send the updated life count to all the players
+                games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
+                    thisws.send(JSON.stringify({
+                        "lives": ws.myprivatedata.lives,
+                        "playernumber": ws.myprivatedata.playerNumber
+                    }));
+                });
             }
-            // it will generate a new word for questioning
-            // ONLY for the player that won the tile
-            dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz.replace(/\s/g, "_"), function( obj ) {
-                ws.myprivatedata.word = obj.word;
-                ws.send(JSON.stringify({
-                    "word": obj.word.question
-                }));
-            });
         }
 
     });

@@ -450,6 +450,13 @@ textarea {
     display: inline;
 }
 
+#correctAnswer {
+    width: 50vh;
+    position: absolute;
+    top: calc(22.5vh - 35px);
+    left:37.5vw;
+}
+
 
 
 

@@ -9,6 +9,7 @@ const ClaN = (classname) => document.getElementsByClassName(classname);
 // if the variable gamePublic is false, the game is
 // not public but it is private
 let gamePublic = false;
+let lives = 5;
 
 ui.init = function () {
 
@@ -168,7 +169,9 @@ ui.init = function () {
             // it will update the timer if the game is being played
             if (requestObj.gameStatus === "playing") {
                 el("timer").textContent = requestObj.timer;
-                el("answer-pane").style.display = "block";
+                if (lives !== 0) {
+                    el("answer-pane").style.display = "block";
+                }
                 el("everyone-has-joined-button").style.display = "none";
                 el("make-this-game-public-button").style.display = "none";
             // it will update the timer during the countdown
@@ -188,6 +191,23 @@ ui.init = function () {
                 el("homepage-button").style.display = "block";
                 Board.findWinners(requestObj.places);
             }
+        }
+
+        // if the player has lost all their lives
+        if (requestObj.lostAllLives === true) {
+            lives = 0;
+            el("answer-pane").style.display = "none";
+            el("testingWord").textContent = "You've died!";
+        }
+
+        // receiving the correct answer...
+        if (requestObj.correctAnswer !== undefined) {
+            el("correctAnswer").textContent = requestObj.correctAnswer;
+        }
+
+        // a player has lost a life...
+        if (requestObj.lives !== undefined) {
+            // stuff here
         }
     };
 
