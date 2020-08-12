@@ -266,18 +266,23 @@ H.startGame = function (ws, games, computers) {
     H.countdown(ws, games);
 
     const playGame = function () {
-        // starts the timer
-        H.startTimer(ws, games, computers);
-        // sends the starting word
-        games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
+        // if the last player leaves during the countdown,
+        // games[ws.myprivatedata.gameCode].players will be undefined
+        if (games[ws.myprivatedata.gameCode].players !== undefined) {
+            // starts the timer
+            H.startTimer(ws, games, computers);
+            // sends the starting word
+            games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
 
-            dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz.replace(/\s/g, "_"), function( obj ) {
-                thisws.myprivatedata.word = obj.word;
-                thisws.send(JSON.stringify({
-                    "word": obj.word.question
-                }));
+                dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz.replace(/\s/g, "_"), function( obj ) {
+                    thisws.myprivatedata.word = obj.word;
+                    thisws.send(JSON.stringify({
+                        "word": obj.word.question
+                    }));
+                });
             });
-        });
+        }
+
     }
 
     // plays the game when the countdown ends

@@ -103,6 +103,11 @@ ui.init = function () {
             Board.listAllQuizzes(requestObj.listAllQuizzes);
         }
 
+        // making a list of all the QA in a quiz
+        if (requestObj.listAllQA !== undefined) {
+            Board.viewQuiz(requestObj.listAllQA);
+        }
+
         // when a receiving a list of the public games...
         if (requestObj.listPublicGames !== undefined) {
             // creates a list of all the public games on the join page
@@ -414,30 +419,35 @@ ui.init = function () {
 
     /*
 
-    Buttons on the browsing quizzes page.
+    Buttons on the browsing quizzes and viewing a quiz pages.
 
     */
 
-    // when player joins a game a message will be sent to the server and
-    // the game page will be displayed
+    // when player clicks a browsed game a message will be sent
+    // to the server and the view game page will be displayed
     function hostBrowsedQuiz (e) {
         el("browseQuizzesPage").style.display = "none";
-        el("gamePage").style.display = "block";
-        Board.buildGamePage();
+        el("viewQuizPage").style.display = "block";
+        // sends the name of the quiz they want to host
         ws.send(JSON.stringify(
             {"hostBrowsedQuiz": e.target.id}
         ));
     }
-        // e.target.id gets the id of what triggered the event
-        // in this case it is the name of the quiz
 
-    // buttons to join a public game
+    // buttons to host a browsed quiz
     // checks to see if the parent element has event listeners
     if (el("listOfQuizzes").addEventListener) {
         el("listOfQuizzes").addEventListener("click", hostBrowsedQuiz, false);
     } else if (el("listOfQuizzes").attachEvent) {
         el("listOfQuizzes").attachEvent("onclick", hostBrowsedQuiz);
     }
+
+    // clicking the "play" button which is on display when viewing a quiz
+    el("play-button").addEventListener("click", function (quizName) {
+        el("viewQuizPage").style.display = "none";
+        el("gamePage").style.display = "block";
+        Board.buildGamePage();
+    });
 
 };
 /*

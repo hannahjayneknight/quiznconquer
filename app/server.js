@@ -311,6 +311,11 @@ app.ws("/", function (ws, req) {
             // sets the quiz name to the games object
             // this will be saved to the game code of the player that clicked on it
             games[ws.myprivatedata.gameCode].quiz = clientObj.hostBrowsedQuiz.replace(/\s/g, "_");
+            dbH.getQA(clientObj.hostBrowsedQuiz, function( arr ) {
+                ws.send(JSON.stringify({
+                    "listAllQA": arr
+                }));
+            });
         }
 
         // this allows a player to manually start a game if there

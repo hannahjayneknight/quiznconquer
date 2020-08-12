@@ -536,14 +536,6 @@ textarea {
     width: calc(30vw - 5px);
 }
 
-.questions {
-    margin: 15px;
-}
-
-.answers {
-    margin: 15px;
-}
-
 #add-new-qa-button {
     width: 75px;
     height: 38px;
@@ -672,3 +664,81 @@ textarea {
     height: 10vh;
     justify-content: left;
 }
+
+
+
+
+/* This is for items on the page where you can view the contents of a quiz. */
+
+
+
+
+#viewQuizPage{
+    position: relative;
+}
+
+#play-button {
+    position: absolute;
+    top: 34vh;
+    left: calc(50vw - 68px);
+    width: 136px;
+    height: 53px;
+}
+
+#quizTitle {
+    position: absolute;
+    top: 49vh;
+    left: 20vw;
+    width: 60vw;
+    text-align: left;
+    font-weight: 900;
+}
+
+#view-questions-list {
+    position: absolute;
+    top: 49vh;
+    left: 30vw;
+    display: flex;
+    flex-direction: column;
+    height: 33px;
+    width: 20vw;
+    font-size: 1.25rem;
+    font-weight: 900;
+    text-align: center;
+    font-family: var(--font);
+    color: var(--lightGreen);
+    text-align: left;
+}
+
+#view-answers-list {
+    position: absolute;
+    top: 49vh;
+    left: 51vw;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 20vw;
+    height: 33px;
+    font-size: 1.25rem;
+    font-family: var(--font);
+    color: var(--nearBlack);
+}
+
+.viewQ {
+    border: solid;
+    color: var(--lightGreen);
+    border-radius: 5px;
+    padding: 1em;
+    margin: 2px;
+}
+
+.viewA {
+    border: solid;
+    color: var(--nearBlack);
+    border-radius: 5px;
+    padding: 1em;
+    margin: 2px;
+}
+
+
+

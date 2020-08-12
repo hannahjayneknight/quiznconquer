@@ -206,6 +206,28 @@ Board.findWinners = function (winnersarr) {
     el("winnersBox").style.display = "inline-block";
 };
 
+Board.viewQuiz = function (quizContents) {
+    F.sequence(quizContents.length).forEach(function (element) {
+        // question = quizContents[element].question
+        // answer = quizContents[element].question
+        // qa number = element
+
+        // lists questions
+        const Q = document.createElement("p");
+        Q.setAttribute("id", ("viewQ" + element));
+        Q.setAttribute("class", "viewQ");
+        Q.textContent = quizContents[element].question;
+        el("view-questions-list").appendChild(Q);
+
+        // lists answers
+        const A = document.createElement("p");
+        A.setAttribute("id", ("viewA" + element));
+        A.setAttribute("class", "viewA");
+        A.textContent = quizContents[element].answer;
+        el("view-answers-list").appendChild(A);
+    });
+};
+
 export default Object.freeze(Board);
 
 /*
