@@ -28,10 +28,19 @@ Board.changeTile = function (freetile, winningplayer) {
 Board.resetTileBoard = function () {
     el("answer-pane").value = "";
     el("winnersBox").style.display = "none";
+    // removes tiles
     F.sequence(36).forEach(function (element) {
         if (el(element) !== null) {
            el(element).remove();
         }
+    });
+    // removes lives
+    F.sequence(5).map((x) => x + 1).forEach(function (playerNumber) {
+        F.sequence(5).map((x) => x + 1).forEach(function (life) {
+            if (el("player" + playerNumber + "life" + life) !== null) {
+                el("player" + playerNumber + "life" + life).remove();
+            }
+        });
     });
     // rebuilds the board
     Board.buildGamePage();
@@ -46,6 +55,26 @@ Board.buildGamePage = function () {
         tile.setAttribute("class", ourclass + "tile");
         tileBoard.appendChild(tile);
     });
+    // adds each player's lives
+    // NB: player5lives is the lives for whatever player is seeing the screen
+    F.sequence(5).map((x) => x + 1).forEach(function (playerNumber) {
+        // creates 5 hearts for each player
+        F.sequence(5).map((x) => x + 1).forEach(function (life) {
+            const heart = document.createElement("img");
+            // id eg player1life4 is player 1's 1st heart
+            heart.setAttribute("id", "player" + playerNumber + "life" + life);
+            heart.setAttribute("class", "life");
+            heart.setAttribute("src", "images/heart.png");
+            heart.setAttribute("alt", "");
+            heart.setAttribute("aria-label", "player" + playerNumber + "life" + life);
+            el("player" + playerNumber + "lives").appendChild(heart);
+        });
+    });
+};
+
+Board.removeLife = function (playerNumber, livesLeft) {
+    let life = 5 - livesLeft;
+    el("player" + playerNumber + "life" + life).style.display = "none";
 };
 
 Board.submitAnswer = function (ws) {

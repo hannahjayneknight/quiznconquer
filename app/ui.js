@@ -6,9 +6,11 @@ import Board from "./board.js";
 const ui = Object.create(null);
 const el = (id) => document.getElementById(id);
 const ClaN = (classname) => document.getElementsByClassName(classname);
+const displayLives = Array.from(ClaN("allLives"));
 // if the variable gamePublic is false, the game is
 // not public but it is private
 let gamePublic = false;
+let thisPlayerNumber = 0;
 let lives = 5;
 
 ui.init = function () {
@@ -74,6 +76,7 @@ ui.init = function () {
         // if the message contains the player nummber,
         // it will display their arrow
         if (requestObj.playerNumber !== undefined) {
+            thisPlayerNumber = requestObj.playerNumber;
             const arrows = Array.from(ClaN("playerArrows"));
             arrows.forEach(function (element) {
                 element.style.display = "none";
@@ -174,6 +177,12 @@ ui.init = function () {
                 }
                 el("everyone-has-joined-button").style.display = "none";
                 el("make-this-game-public-button").style.display = "none";
+                displayLives.forEach(function (element) {
+                    element.style.display = "block";
+                });
+                el("player" +
+                thisPlayerNumber +
+                "lives").style.display = "none";
             // it will update the timer during the countdown
             } else if (requestObj.gameStatus === "countdown") {
                 el("timer").textContent = requestObj.timer;
@@ -184,9 +193,13 @@ ui.init = function () {
                 el("timer").textContent = "Go!";
             // otherwise the game is over
             } else {
+                displayLives.forEach(function (element) {
+                    element.style.display = "none";
+                });
                 el("timer").textContent = "";
                 el("testingWord").textContent = "Game Over!";
                 el("answer-pane").style.display = "none";
+                el("correctAnswer").textContent = "";
                 el("restart-game-button").style.display = "block";
                 el("homepage-button").style.display = "block";
                 Board.findWinners(requestObj.places);
@@ -207,7 +220,11 @@ ui.init = function () {
 
         // a player has lost a life...
         if (requestObj.lives !== undefined) {
+            Board.removeLife(requestObj.playernumber, requestObj.lives);
+            Board.removeLife(5, requestObj.lives);
             // stuff here
+            // requestObj.lives is the number of lives the player has left
+            // requestObj.playernumber is the player that lost a life
         }
     };
 

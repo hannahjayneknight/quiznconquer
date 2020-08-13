@@ -297,8 +297,8 @@ textarea {
     height: 50vh;
     /* Both these properties centre the element*/
     position: absolute;
-    left:37.5vw;
-    top:35vh;
+    left: 37.5vw;
+    top: 35vh;
     display: flex;
     flex-wrap: wrap;
 }
@@ -453,10 +453,48 @@ textarea {
 #correctAnswer {
     width: 50vh;
     position: absolute;
-    top: calc(22.5vh - 35px);
+    top:15vh;
     left:37.5vw;
 }
 
+.allLives {
+    display: none;
+}
+
+.life {
+    width: 25px;
+    height: 25px;
+}
+
+#player1lives {
+    left: calc(37vw - 125px);
+    top: 35.5vh;
+    position: absolute;
+}
+
+#player2lives {
+    left: calc(38vw + 50vh);
+    top: 35.5vh;
+    position: absolute;
+}
+
+#player3lives {
+    left: calc(37vw - 125px);
+    top: 60.5vh;
+    position: absolute;
+}
+
+#player4lives {
+    left: calc(38vw + 50vh);
+    top: 60.5vh;
+    position: absolute;
+}
+
+#player5lives {
+    left: calc(37.5vw + 45vh);
+    top: 10vh;
+    position: absolute;
+}
 
 
 
