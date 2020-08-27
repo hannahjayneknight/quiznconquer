@@ -15,7 +15,9 @@
                     "url": "http://localhost:1711/index.html",
                     "path": "${workspaceFolder}/app"
                 },
-            ]
+            ],
+            "keepProfileChanges": true,
+            "reAttach": true
         },
         {
             "name": "Node server",
