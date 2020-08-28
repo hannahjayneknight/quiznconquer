@@ -170,7 +170,7 @@ textarea {
 
 
 
-/* This is for the "how to play" button. */
+/* This is for the "how to play", "support us" and "back" buttons. */
 
 
 
@@ -178,7 +178,7 @@ textarea {
 #help-button
 {
     position: absolute;
-    top: 5vh;
+    top: 10.5vh;
     right: 5vw;
     width: 15vh;
     height: 5vh;
@@ -200,7 +200,7 @@ textarea {
     height: 21.5vh;
     /* Both these properties centre the element*/
     position: absolute;
-    top: 10.5vh;
+    top: 16vh;
     right: 5vw;
     border-radius: 10%;
     background-color: var(--grey);
@@ -219,6 +219,64 @@ textarea {
     font-weight: bold;
     color: var(--nearBlack);
 }
+
+#support-us-button
+{
+    position: absolute;
+    top: 5vh;
+    right: 5vw;
+    width: 15vh;
+    height: 5vh;
+}
+
+#back-button
+{
+    position: absolute;
+    top: 5vh;
+    left: 5vw;
+    width: 15vh;
+}
+
+
+
+
+/* This is for items on the game page. */
+
+
+
+
+.supportUsText
+{
+    width: 50vw;
+    height: 10vh;
+    font-size: 1.25rem;
+    font-family: var(--font);
+    text-align: center;
+    position: relative;
+    left: 25vw;
+    top: 28vh;
+    margin: 5px;
+}
+
+.supportUsButtons
+{
+    height: 5vh;
+    width: 185px;
+    position: relative;
+    left: calc(50vw - 91.5px) ;
+    top: 28vh;
+    margin: 10px;
+}
+
+.supportUsTitles
+{
+    margin: 20px;
+    width: 50vw;
+    position: relative;
+    left: 25vw;
+    top: 28vh;
+}
+
 
 
 

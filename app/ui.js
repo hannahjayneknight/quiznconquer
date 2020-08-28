@@ -12,6 +12,9 @@ const displayLives = Array.from(ClaN("allLives"));
 let gamePublic = false;
 let thisPlayerNumber = 0;
 let lives = 5;
+// automatically sets the current and previous pages to be the homepage
+let currentPage = "homePage";
+let previousPage = "homePage";
 
 ui.init = function () {
 
@@ -265,6 +268,30 @@ ui.init = function () {
             {"startGame": true}
         ));
     });
+
+    // if the "support us" button has been pressed it will show the support page
+    el("support-us-button").addEventListener("click", function () {
+        el("supportUsPage").style.display = "block";
+        el(currentPage).style.display = "none";
+        previousPage = currentPage;
+        currentPage = "supportUsPage";
+        if (el("back-button").style.display === "none" ) {
+            el("back-button").style.display = "block";
+        }
+    });
+
+    // if the back button is pressed it will go to the previous page
+    el("back-button").addEventListener("click", function () {
+        el(previousPage).style.display = "block";
+        el(currentPage).style.display = "none";
+        let tempVar = currentPage;
+        currentPage = previousPage;
+        previousPage = tempVar;
+        if (currentPage === "homePage") {
+            el("back-button").style.display = "none";
+        }
+    });
+
     // if the "make-this-game-public" button has pressed, it will send a message
     // to the server asking to add the game code to the list of public games
     el("make-this-game-public-button").addEventListener("click", function () {
@@ -362,6 +389,9 @@ ui.init = function () {
             "hosting": false,
             "listPublicGames": true
         }));
+        previousPage = currentPage;
+        currentPage = "joinPage";
+        el("back-button").style.display = "block";
     });
     // clicking on the host button
     // (this player is set to be the host)
@@ -376,6 +406,9 @@ ui.init = function () {
         ws.send(JSON.stringify(
             {"hosting": true}
         ));
+        previousPage = currentPage;
+        currentPage = "hostGamePage";
+        el("back-button").style.display = "block";
     });
 
 
