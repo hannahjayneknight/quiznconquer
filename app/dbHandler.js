@@ -109,14 +109,22 @@ dbH.createQuiz = function (tableName, ws, cb) {
         "answer" TEXT NOT NULL
     );`;
 
+    // "SQLITE_ERROR: near \".\": syntax error"
     db.serialize(function () {
         db.run(createTable, [], function (err, row) {
             if (err) {
                 let tableExists = `SQLITE_ERROR: table ${tableName.replace(/\s/g, "_")} already exists`;
+                let invalidName = `SQLITE_ERROR: near "${tableName.replace(/\s/g, "_")}": syntax error`;
                 if (err.message === tableExists) {
                     // tells client that quiz name already exists
                     F.wsSend(ws, {
                         "quizNameExists": true
+                    });
+                }
+                if (err.message === invalidName) {
+                    // tells client that table name is invalid
+                    F.wsSend(ws, {
+                        "quizNameInvalid": true
                     });
                 }
                 console.error(err.message);

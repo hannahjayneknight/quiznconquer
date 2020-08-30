@@ -154,6 +154,20 @@ ui.init = function () {
                 Board.buildGamePage();
             }
         }
+        // being told a quiz name is invalid...
+        if (requestObj.quizNameInvalid !== undefined) {
+            if (requestObj.quizNameInvalid === true) {
+                // display error message here
+                el("createQuizError").style.display = "none";
+                el("createQuizError").textContent = "The quiz title must be valid for a SQLite table";
+                el("createQuizError").style.display = "block";
+                el("setQuizTitle").value = "";
+            } else {
+                el("createQuizPage").style.display = "none";
+                el("gamePage").style.display = "block";
+                Board.buildGamePage();
+            }
+        }
 
         // if the message contains the word to be testing on,
         // it will change this in the DOM
@@ -435,8 +449,7 @@ ui.init = function () {
             // doesn't let you create a quiz with no questions and answers
             let tableContents = Board.getQA();
             if (F.arrEmpty(tableContents)) {
-                // returns true if array does not exist, is not an array, or is empty
-                // ⇒ do not attempt to process array
+                // returns true if user has not submitted any qa pairs
                 el("createQuizError").textContent = "Please enter at least one valid question and answer";
                 el("createQuizError").style.display = "block";
                 Array.from(ClaN("qa")).forEach(function (element) {
