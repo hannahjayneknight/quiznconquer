@@ -173,20 +173,20 @@ app.ws("/", function (ws, req) {
                 // sets the game to private by default
                 games[ws.myprivatedata.gameCode].public = false;
                 // sends the game code and their player number
-                ws.send(JSON.stringify({
+                F.wsSend(ws, {
                     "gameCode": ws.myprivatedata.gameCode,
                     "playerNumber": ws.myprivatedata.playerNumber,
                     "players2join": (4 - ws.myprivatedata.playerNumber)
-                }));
+                });
             }
         }
 
         // restarting a game...
         if (clientObj.restart !== undefined) {
             games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
-                thisws.send(JSON.stringify({
+                F.wsSend(thisws,{
                     "joinGameAccepted": "restart"
-                }));
+                });
             });
         }
 
@@ -210,16 +210,16 @@ app.ws("/", function (ws, req) {
                 // sends message to client to say they are joining game
                 // with the game code and their player number
                 // and whether the game is currently public or private
-                ws.send(JSON.stringify({
+                F.wsSend(ws, {
                     "joinGameAccepted": true,
                     "gameCode": ws.myprivatedata.gameCode,
                     "playerNumber": ws.myprivatedata.playerNumber,
                     "public": games[ws.myprivatedata.gameCode].public
-                }));
+                });
                 games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
-                    thisws.send(JSON.stringify({
+                    F.wsSend(thisws, {
                         "players2join": (4 - ws.myprivatedata.playerNumber)
-                    }));
+                    });
                 });
                 // if the game that the person has just joined has 4
                 // players in it, it will begin
@@ -228,9 +228,9 @@ app.ws("/", function (ws, req) {
                     games[ws.myprivatedata.gameCode].public = false;
                     // relists all the public games on the join page
                     clients.forEach(function (thisws) {
-                        thisws.send(JSON.stringify({
+                        F.wsSend(thisws, {
                             "listPublicGames": H.findPublicGames(games)
-                        }));
+                        });
                     });
                     H.startGame(ws, games, []);
                     // initializes the starting board
@@ -241,9 +241,9 @@ app.ws("/", function (ws, req) {
                 }
             } else {
                 // if the game code is not valid, sends a message to the client
-                ws.send(JSON.stringify({
+                F.wsSend(ws, {
                     "joinGameAccepted": false
-                }));
+                });
                 return;
             }
         }
@@ -251,9 +251,9 @@ app.ws("/", function (ws, req) {
         // receiving a request to list all the quizzes...
         if (clientObj.listQuizzesPlease !== undefined) {
             dbH.getInfoTables( function( obj ) {
-                ws.send(JSON.stringify({
+                F.wsSend(ws, {
                     "listAllQuizzes": obj
-                }));
+                });
             });
         }
 
@@ -263,40 +263,40 @@ app.ws("/", function (ws, req) {
             games[ws.myprivatedata.gameCode].public = true;
             // changes the state of the button for each player
             games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
-                thisws.send(JSON.stringify({
+                F.wsSend(thisws, {
                     "makeGamePublic": true
-                }));
+                });
             });
             // relists all the public games on the join page
             clients.forEach(function (thisws) {
-                thisws.send(JSON.stringify({
+                F.wsSend(thisws, {
                     "listPublicGames": H.findPublicGames(games)
-                }));
+                });
             });
         }
         if (clientObj.makeGamePrivate !== undefined) {
             games[ws.myprivatedata.gameCode].public = false;
             games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
-                thisws.send(JSON.stringify({
+                F.wsSend(thisws, {
                     "makeGamePrivate": true
-                }));
+                });
             });
             // relists all the public games on the join page
             clients.forEach(function (thisws) {
-                thisws.send(JSON.stringify({
+                F.wsSend(thisws, {
                     "listPublicGames": H.findPublicGames(games)
-                }));
+                });
             });
         }
 
         // sending a list of all the public games...
         if (clientObj.listPublicGames !== undefined) {
-            ws.send(JSON.stringify({
+            F.wsSend(ws, {
                 // this sends an array with all the public game codes
                 // need to make this send the name of the quiz being played too
                 // which will be achieved in the handler
                 "listPublicGames": H.findPublicGames(games)
-            }));
+            });
         }
 
         // after clicking "create and play" button...
@@ -314,9 +314,9 @@ app.ws("/", function (ws, req) {
             // this will be saved to the game code of the player that clicked on it
             games[ws.myprivatedata.gameCode].quiz = clientObj.hostBrowsedQuiz.replace(/\s/g, "_");
             dbH.getQA(clientObj.hostBrowsedQuiz, function( arr ) {
-                ws.send(JSON.stringify({
+                F.wsSend(ws, {
                     "listAllQA": arr
-                }));
+                });
             });
         }
 
@@ -329,9 +329,9 @@ app.ws("/", function (ws, req) {
                     games[ws.myprivatedata.gameCode].public = false;
                     // relists all the public games on the join page
                     clients.forEach(function (thisws) {
-                        thisws.send(JSON.stringify({
+                        F.wsSend(thisws, {
                             "listPublicGames": H.findPublicGames(games)
-                        }));
+                        });
                     });
                     // starts the game once the computer players have been added
                     let computers = H.startGameComputers(ws, games, currentBoard);
@@ -359,12 +359,12 @@ app.ws("/", function (ws, req) {
                 // tileStolen === undefined when the board is full
                 if (tileStolen !== undefined) {
                     games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
-                        thisws.send(JSON.stringify({
+                        F.wsSend(thisws, {
                             "tileStolen": {
                                 "winner": ws.myprivatedata.playerNumber,
                                 "tileNumber": tileStolen
                             }
-                        }));
+                        });
                     });
                 }
                 // and update the server's array of the current board
@@ -383,9 +383,9 @@ app.ws("/", function (ws, req) {
                 // ONLY for the player that won the tile
                 dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz.replace(/\s/g, "_"), function( obj ) {
                     ws.myprivatedata.word = obj.word;
-                    ws.send(JSON.stringify({
+                    F.wsSend(ws, {
                         "word": obj.word.question
-                    }));
+                    });
                 });
             } else {
                 // if not correct, it will reduce the life count
@@ -393,22 +393,20 @@ app.ws("/", function (ws, req) {
                 // if the player is still in the game...
                 if (ws.myprivatedata.lives !== 0) {
                     // it will send the correct answer to the player that got it wrong
-                    ws.send(JSON.stringify({
+                    F.wsSend(ws, {
                         "correctAnswer": ws.myprivatedata.word.answer.trim().toLowerCase()
-                    }));
+                    });
                 } else {
                     // it will stop the player from being able to play
-                    ws.send(JSON.stringify({
-                        "lostAllLives": true
-                    }));
+                    F.wsSend(ws, {"lostAllLives": true});
                 }
 
                 // it will send the updated life count to all the players
                 games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
-                    thisws.send(JSON.stringify({
+                    F.wsSend(thisws, {
                         "lives": ws.myprivatedata.lives,
                         "playernumber": ws.myprivatedata.playerNumber
-                    }));
+                    });
                 });
             }
         }

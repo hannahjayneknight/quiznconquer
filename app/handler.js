@@ -56,24 +56,20 @@ H.countdown = function (ws, games) {
 
             players.forEach(function (thisws) {
 
-                if (thisws.readystate !== 3) {
-                    thisws.send(JSON.stringify({
+                F.wsSend(thisws, {
                     "timer": "countdown ended",
                     "gameStatus": "go"
-                    }));
-                }
+                });
 
             });
 
         } else {
             players.forEach( function (thisws) {
 
-                if (thisws.readystate !== 3) {
-                    thisws.send(JSON.stringify({
-                        "timer": seconds,
-                        "gameStatus": "countdown"
-                    }));
-                }
+                F.wsSend(thisws, {
+                    "timer": seconds,
+                    "gameStatus": "countdown"
+                });
 
             });
         }
@@ -81,12 +77,11 @@ H.countdown = function (ws, games) {
     // JSON.stringify({"timer": seconds})
     }, 500);
     players.forEach(function (thisws) {
-        if (thisws.readystate !== 3) {
-            thisws.send(JSON.stringify({
+
+        F.wsSend(thisws, {
             "timer": 3,
             "gameStatus": "countdown"
-            }));
-        }
+        });
 
     });
 };
@@ -109,11 +104,11 @@ H.startTimer = function (ws, games, computers) {
 
             players.forEach(function (thisws) {
 
-                thisws.send(JSON.stringify({
-                "timer": "Game ended",
-                "gameStatus": "gameOver",
-                "places": H.findWinner(ws.myprivatedata.currentBoard)
-                }));
+                F.wsSend(thisws, {
+                    "timer": "Game ended",
+                    "gameStatus": "gameOver",
+                    "places": H.findWinner(ws.myprivatedata.currentBoard)
+                });
 
                 thisws.myprivatedata.gameStatus = "not playing";
             });
@@ -121,10 +116,10 @@ H.startTimer = function (ws, games, computers) {
         } else {
             players.forEach( function (thisws) {
 
-                thisws.send(JSON.stringify({
-                                "timer": seconds,
-                                "gameStatus": "playing"
-                }));
+                F.wsSend(thisws, {
+                    "timer": seconds,
+                    "gameStatus": "playing"
+                });
 
                 thisws.myprivatedata.gameStatus = "playing";
             });
@@ -132,10 +127,10 @@ H.startTimer = function (ws, games, computers) {
     // rather than change html, the server will send
     // JSON.stringify({"timer": seconds})
     }, 500);
-    players.forEach((thisws) => thisws.send(JSON.stringify({
+    players.forEach((thisws) => F.wsSend(thisws, {
         "timer": 30,
         "gameStatus": "playing"
-    })));
+    }));
 };
 
 // a function that finds a free tile to change the colour of
@@ -276,9 +271,9 @@ H.startGame = function (ws, games, computers) {
 
                 dbH.generateWordFromDB( games[ws.myprivatedata.gameCode].quiz.replace(/\s/g, "_"), function( obj ) {
                     thisws.myprivatedata.word = obj.word;
-                    thisws.send(JSON.stringify({
+                    F.wsSend(thisws, {
                         "word": obj.word.question
-                    }));
+                    });
                 });
             });
         }
@@ -336,12 +331,12 @@ H.winComputerTile = function (playerNumber, ws, games, currentBoard) {
     // tileStolen === undefined when the board is full
     if (tileStolen !== undefined && games[ws.myprivatedata.gameCode] !== undefined) {
         games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
-            thisws.send(JSON.stringify({
+            F.wsSend(thisws, {
                 "tileStolen": {
                     "winner": playerNumber,
                     "tileNumber": tileStolen
                 }
-            }));
+            });
         });
     }
     // and update the server's array of the current board
@@ -359,7 +354,7 @@ H.winComputerTile = function (playerNumber, ws, games, currentBoard) {
 };
 
 // starts the game for all the computer players
-// 1 argument = array of computer players
+// 1st argument = array of computer players
 H.startGameComputers = function (ws, games, currentBoard) {
     let computers = games[ws.myprivatedata.gameCode].computerPlayers;
     let currentComputers = [];
@@ -374,26 +369,26 @@ H.startGameComputers = function (ws, games, currentBoard) {
         if (computers.length == 1) {
             computer1 = setInterval( function () {
                 H.winComputerTile(4, ws, games, currentBoard);
-            }, F.getRandomInt(1500, 5000));
+            }, F.getRandomInt(1500, 5500));
             currentComputers.push(computer1);
         } else if (computers.length == 2) {
             computer1 = setInterval( function () {
                 H.winComputerTile(4, ws, games, currentBoard);
-            }, F.getRandomInt(1500, 5000));
+            }, F.getRandomInt(1500, 5500));
             computer2 = setInterval( function () {
                 H.winComputerTile(3, ws, games, currentBoard);
-            }, F.getRandomInt(1500, 5000));
+            }, F.getRandomInt(1500, 5500));
             currentComputers.push(computer1, computer2);
         } else if (computers.length == 3) {
             computer1 = setInterval( function () {
                 H.winComputerTile(4, ws, games, currentBoard);
-            }, F.getRandomInt(1500, 5000));
+            }, F.getRandomInt(1500, 5500));
             computer2 = setInterval( function () {
                 H.winComputerTile(3, ws, games, currentBoard);
-            }, F.getRandomInt(1500, 5000));
+            }, F.getRandomInt(1500, 5500));
             computer3 = setInterval( function () {
                 H.winComputerTile(2, ws, games, currentBoard);
-            }, F.getRandomInt(1500, 5000));
+            }, F.getRandomInt(1500, 5500));
             currentComputers.push(computer1, computer2, computer3);
         }
     }
@@ -434,12 +429,9 @@ H.leaveGame = function (clients, games, ws) {
                 games.removeGame = ws.myprivatedata.gameCode;
                 // relists all the public games on the join page
                 clients.forEach(function (thisws) {
-                    // checks the web socket is open
-                    if (thisws.readystate !== 3) {
-                        thisws.send(JSON.stringify({
+                    F.wsSend(thisws, {
                         "listPublicGames": H.findPublicGames(games)
-                        }));
-                    }
+                        });
                 });
             }
 
@@ -450,9 +442,9 @@ H.leaveGame = function (clients, games, ws) {
                 games[ws.myprivatedata.gameCode].players.forEach(function (thisws) {
                     thisws.myprivatedata.playerNumber = tempNumWS.length + 1;
                     tempNumWS.push(1);
-                    thisws.send(JSON.stringify({
+                    F.wsSend(thisws, {
                         "playerNumber": thisws.myprivatedata.playerNumber
-                    }));
+                    });
                 });
             }
         }

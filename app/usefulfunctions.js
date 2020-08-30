@@ -1,5 +1,11 @@
 const F = Object.create(null);
 
+F.wsSend = function (ws, obj) {
+    if (ws.readystate !== 3) {
+        ws.send(JSON.stringify(obj));
+    }
+};
+
 F.sequence = (n) => Array.from(new Array(n).keys());
 
 F.getRandomInt = function (min, max) {

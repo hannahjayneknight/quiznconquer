@@ -82,7 +82,7 @@ Board.submitAnswer = function (ws) {
         // and send it to the server
         const answer = JSON.stringify(
             { "answer": el("answer-pane").value.trim().toLowerCase() });
-        ws.send(answer);
+        F.wsSend(ws, answer);
         el("answer-pane").value = "";
         el("correctAnswer").textContent = "";
 };

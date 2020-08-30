@@ -1,5 +1,6 @@
 
 import sqlite3 from "sqlite3";
+import F from "./usefulfunctions.js";
 
 // NB: this object is only used on the server side
 const dbH = Object.create(null);
@@ -114,15 +115,15 @@ dbH.createQuiz = function (tableName, ws, cb) {
                 let tableExists = `SQLITE_ERROR: table ${tableName.replace(/\s/g, "_")} already exists`;
                 if (err.message === tableExists) {
                     // tells client that quiz name already exists
-                    ws.send(JSON.stringify({
+                    F.wsSend(ws, {
                         "quizNameExists": true
-                    }));
+                    });
                 }
                 console.error(err.message);
             } else {
-                ws.send(JSON.stringify({
+                F.wsSend(ws, {
                     "quizNameExists": false
-                }));
+                });
                 // runs the callback which is to add elements to
                 // the table that has just been created
                 cb();

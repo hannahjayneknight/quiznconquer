@@ -53,9 +53,7 @@ ui.init = function () {
                     el("make-this-game-public-button").style.background = "var(--grey)";
                     el("make-this-game-public-text").style.color = "var(--nearBlack)";
                     gamePublic = true;
-                    ws.send(JSON.stringify(
-                        {"makeGamePublic": true}
-                    ));
+                    F.wsSend(ws, {"makeGamePublic": true});
                 }
             // restarting a game
             } else if (requestObj.joinGameAccepted === "restart") {
@@ -264,9 +262,7 @@ ui.init = function () {
     // send a message to the server to start the game (it will do this by adding
     // computer players until it gets to 4)
     el("everyone-has-joined-button").addEventListener("click", function () {
-        ws.send(JSON.stringify(
-            {"startGame": true}
-        ));
+        F.wsSend(ws, {"startGame": true});
     });
 
     // if the "support us" button has been pressed it will show the support page
@@ -300,24 +296,19 @@ ui.init = function () {
             el("make-this-game-public-button").style.background = "var(--grey)";
             el("make-this-game-public-text").style.color = "var(--nearBlack)";
             gamePublic = true;
-            ws.send(JSON.stringify(
-                {"makeGamePublic": true}
-            ));
+            F.wsSend(ws, {"makeGamePublic": true});
+
         } else {
             el("make-this-game-public-text").textContent = "Make this game public";
             el("make-this-game-public-button").style.background = "var(--nearBlack)";
             el("make-this-game-public-text").style.color = "white";
             gamePublic = false;
-            ws.send(JSON.stringify(
-                {"makeGamePrivate": true}
-            ));
+            F.wsSend(ws, {"makeGamePrivate": true});
         }
     });
 
     el("restart-game-button").addEventListener("click", function () {
-        ws.send(JSON.stringify(
-            {"restart": el("gameCode").textContent}
-        ));
+        F.wsSend(ws, {"restart": el("gameCode").textContent});
         el("restart-game-button").style.display = "none";
         el("homepage-button").style.display = "none";
         el("testingWord").textContent = "Quiz & Conquer!";
@@ -328,9 +319,7 @@ ui.init = function () {
     el("homepage-button").addEventListener("click", function () {
         el("homePage").style.display = "block";
         el("gamePage").style.display = "none";
-        ws.send(JSON.stringify(
-            {"leftGame": true}
-        ));
+        F.wsSend(ws, {"leftGame": true});
     });
 
 
@@ -343,9 +332,7 @@ ui.init = function () {
 
     // button to join a game with a code
     el("joinGameCodeButton").addEventListener("click", function () {
-        ws.send(JSON.stringify(
-            {"joinGameCode": el("gameCodeInput").value}
-        ));
+        F.wsSend(ws, {"joinGameCode": el("gameCodeInput").value});
     });
 
     // when player joins a game a message will be sent to the server and
@@ -353,9 +340,7 @@ ui.init = function () {
     function joinPublicGame (e) {
         // e.target.id gets the id of what triggered the event
         // in this case it is the code id of the game
-        ws.send(JSON.stringify(
-            {"joinGameCode": e.target.id}
-        ));
+        F.wsSend(ws, {"joinGameCode": e.target.id});
     }
 
     // buttons to join a public game
@@ -385,10 +370,10 @@ ui.init = function () {
         el("everyone-has-joined-button").style.display = "none";
         el("make-this-game-public-button").style.display = "none";
         */
-        ws.send(JSON.stringify({
-            "hosting": false,
-            "listPublicGames": true
-        }));
+        F.wsSend(ws, {
+        "hosting": false,
+        "listPublicGames": true
+        });
         previousPage = currentPage;
         currentPage = "joinPage";
         el("back-button").style.display = "block";
@@ -403,9 +388,7 @@ ui.init = function () {
         el("everyone-has-joined-button").style.display = "block";
         el("make-this-game-public-button").style.display = "block";
         */
-        ws.send(JSON.stringify(
-            {"hosting": true}
-        ));
+       F.wsSend(ws, {"hosting": true});
         previousPage = currentPage;
         currentPage = "hostGamePage";
         el("back-button").style.display = "block";
@@ -434,9 +417,7 @@ ui.init = function () {
         el("hostGamePage").style.display = "none";
         el("browseQuizzesPage").style.display = "block";
         // send request to server for all the quizzes
-        ws.send(JSON.stringify(
-            {"listQuizzesPlease": true}
-        ));
+        F.wsSend(ws, {"listQuizzesPlease": true});
     });
 
 
@@ -463,12 +444,12 @@ ui.init = function () {
                 });
             } else {
                 // sends the details of the quiz to the server
-                ws.send(JSON.stringify({
+                F.wsSend(ws, {
                     "createTable": {
                         "tableName": el("setQuizTitle").value.replace(/\s/g, "_"),
                         "tableContents": Board.getQA()
                     }
-                }));
+                });
             }
         } else {
             // if user hasn't entered a valid title
@@ -499,9 +480,7 @@ ui.init = function () {
         el("browseQuizzesPage").style.display = "none";
         el("viewQuizPage").style.display = "block";
         // sends the name of the quiz they want to host
-        ws.send(JSON.stringify(
-            {"hostBrowsedQuiz": e.target.id}
-        ));
+        F.wsSend(ws, {"hostBrowsedQuiz": e.target.id});
     }
 
     // buttons to host a browsed quiz
