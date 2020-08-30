@@ -369,26 +369,26 @@ H.startGameComputers = function (ws, games, currentBoard) {
         if (computers.length == 1) {
             computer1 = setInterval( function () {
                 H.winComputerTile(4, ws, games, currentBoard);
-            }, F.getRandomInt(1500, 5500));
+            }, F.getRandomInt(1500, 6000));
             currentComputers.push(computer1);
         } else if (computers.length == 2) {
             computer1 = setInterval( function () {
                 H.winComputerTile(4, ws, games, currentBoard);
-            }, F.getRandomInt(1500, 5500));
+            }, F.getRandomInt(1500, 6000));
             computer2 = setInterval( function () {
                 H.winComputerTile(3, ws, games, currentBoard);
-            }, F.getRandomInt(1500, 5500));
+            }, F.getRandomInt(1500, 6000));
             currentComputers.push(computer1, computer2);
         } else if (computers.length == 3) {
             computer1 = setInterval( function () {
                 H.winComputerTile(4, ws, games, currentBoard);
-            }, F.getRandomInt(1500, 5500));
+            }, F.getRandomInt(1500, 6000));
             computer2 = setInterval( function () {
                 H.winComputerTile(3, ws, games, currentBoard);
-            }, F.getRandomInt(1500, 5500));
+            }, F.getRandomInt(1500, 6000));
             computer3 = setInterval( function () {
                 H.winComputerTile(2, ws, games, currentBoard);
-            }, F.getRandomInt(1500, 5500));
+            }, F.getRandomInt(1500, 6000));
             currentComputers.push(computer1, computer2, computer3);
         }
     }

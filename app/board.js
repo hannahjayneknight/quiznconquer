@@ -80,8 +80,7 @@ Board.removeLife = function (playerNumber, livesLeft) {
 Board.submitAnswer = function (ws) {
         // if key button is pressed, it will submit the answer
         // and send it to the server
-        const answer = JSON.stringify(
-            { "answer": el("answer-pane").value.trim().toLowerCase() });
+        const answer = { "answer": el("answer-pane").value.trim().toLowerCase() };
         F.wsSend(ws, answer);
         el("answer-pane").value = "";
         el("correctAnswer").textContent = "";
