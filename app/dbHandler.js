@@ -11,7 +11,6 @@ dbH.generateWordFromDB = function (quiz, cb) {
         if (err) {
             console.error(err.message);
         }
-        // console.log("Connected to the sample database.");
     });
 
     // finds a random word from the ones being tested
@@ -43,7 +42,6 @@ dbH.generateWordFromDB = function (quiz, cb) {
             // dbObj.word.name gives the word to be questioned
             // dbObj.word.answer gives the answer to that word
             dbObj.word = row;
-            // console.log(dbObj);
         });
     });
 
@@ -53,7 +51,6 @@ dbH.generateWordFromDB = function (quiz, cb) {
             console.error(err.message);
         }
         cb(dbObj);
-        // console.log("Close the database connection.");
     });
 };
 
@@ -65,7 +62,6 @@ dbH.getInfoTables = function (cb) {
         if (err) {
             console.error(err.message);
         }
-        // console.log("Connected to the sample database.");
     });
 
     const queryTables = `SELECT name FROM sqlite_master
@@ -88,7 +84,6 @@ dbH.getInfoTables = function (cb) {
             console.error(err.message);
         }
 
-        // console.log("Close the database connection.");
         cb(dbObj.quizzes);
     });
 

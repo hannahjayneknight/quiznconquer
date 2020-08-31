@@ -46,6 +46,7 @@ F.uniq = function (a) {
 }
 
 // checks if an object is empty
+// returns true for {}
 // returns false if the object contains an empty string,
 // a string containing only whitespace or any null/ undefined values
 F.objEmpty = function (obj) {

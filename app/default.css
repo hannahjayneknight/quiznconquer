@@ -143,6 +143,10 @@ textarea {
     position: absolute;
     top: 38vh;
     left: 25vw;
+    width: 50vw;
+    height: 10vh;
+    font-size: 1.75rem;
+    font-weight: 600;
 }
 
 #Host-button
@@ -150,6 +154,10 @@ textarea {
     position: absolute;
     top: 50vh;
     left: 25vw;
+    width: 50vw;
+    height: 10vh;
+    font-size: 1.75rem;
+    font-weight: 600;
 }
 
 #Leaderboard-button
@@ -157,10 +165,6 @@ textarea {
     position: absolute;
     top: 62vh;
     left: 25vw;
-}
-
-.navButtons
-{
     width: 50vw;
     height: 10vh;
     font-size: 1.75rem;
@@ -229,7 +233,7 @@ textarea {
     height: 5vh;
 }
 
-#back-button
+#home-button
 {
     position: absolute;
     top: 5vh;
@@ -565,12 +569,20 @@ textarea {
     position: absolute;
     top: 38vh;
     left: 25vw;
+    width: 50vw;
+    height: 10vh;
+    font-size: 1.75rem;
+    font-weight: 600;
 }
 
 #Create-button {
     position: absolute;
     top: 50vh;
     left: 25vw;
+    width: 50vw;
+    height: 10vh;
+    font-size: 1.75rem;
+    font-weight: 600;
 }
 
 

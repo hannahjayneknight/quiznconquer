@@ -1,7 +1,6 @@
-
-
 import F from "./usefulfunctions.js";
 import Board from "./board.js";
+import nav from "./navigate.js";
 
 const ui = Object.create(null);
 const el = (id) => document.getElementById(id);
@@ -21,6 +20,15 @@ ui.init = function () {
 
     /*
 
+    Switching between pages.
+
+    */
+
+    nav.listen();
+
+
+    /*
+
     Sending and receiving messages with the server.
 
     */
@@ -30,7 +38,6 @@ ui.init = function () {
     const ws = new WebSocket("ws://localhost:1711");
 
     ws.onclose = function (event) {
-        // console.log("Client notified socket has closed", event);
         ws.close();
     };
 
@@ -285,20 +292,20 @@ ui.init = function () {
         el(currentPage).style.display = "none";
         previousPage = currentPage;
         currentPage = "supportUsPage";
-        if (el("back-button").style.display === "none" ) {
-            el("back-button").style.display = "block";
+        if (el("home-button").style.display === "none" ) {
+            el("home-button").style.display = "block";
         }
     });
 
     // if the back button is pressed it will go to the previous page
-    el("back-button").addEventListener("click", function () {
-        el(previousPage).style.display = "block";
+    el("home-button").addEventListener("click", function () {
+        el("homePage").style.display = "block";
         el(currentPage).style.display = "none";
         let tempVar = currentPage;
         currentPage = previousPage;
         previousPage = tempVar;
         if (currentPage === "homePage") {
-            el("back-button").style.display = "none";
+            el("home-button").style.display = "none";
         }
     });
 
@@ -390,7 +397,7 @@ ui.init = function () {
         });
         previousPage = currentPage;
         currentPage = "joinPage";
-        el("back-button").style.display = "block";
+        el("home-button").style.display = "block";
     });
     // clicking on the host button
     // (this player is set to be the host)
@@ -405,7 +412,7 @@ ui.init = function () {
        F.wsSend(ws, {"hosting": true});
         previousPage = currentPage;
         currentPage = "hostGamePage";
-        el("back-button").style.display = "block";
+        el("home-button").style.display = "block";
     });
 
 

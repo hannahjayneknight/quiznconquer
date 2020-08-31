@@ -19,26 +19,28 @@
     -->
 
 
-    <label><button id="help-button" class="help" type="button" name="help-button" tabindex="0" aria-label="Press here for help">
-        <p id="help-button-text" class="help">How to play</p>
-    </button></label>
+    <div id="commonButtons" class="pages">
+        <label><button id="help-button" class="help" type="button" name="help-button" tabindex="0" aria-label="Press here for help">
+            <p id="help-button-text" class="help">How to play</p>
+        </button></label>
 
-    <div id="help-response-box" class="help" aria-label="A box to outline help text.">
-        <p id="help-response-text" class="help" aria-label="A description on how to play the game">
-            Win tiles from the other players by entering the correct answer. Be careful - an incorrect answer will cause you to lose a life. When the timer runs out, the player with the most tiles wins! 
-        </p>
-        <label><button id="OK-button" class="help" type="button" name="OK-button" tabindex="0" aria-label="Press here to remove help">
-            <p id="OK-button-text" class="help">OK</p>
+        <div id="help-response-box" class="help" aria-label="A box to outline help text.">
+            <p id="help-response-text" class="help" aria-label="A description on how to play the game">
+                Win tiles from the other players by entering the correct answer. Be careful - an incorrect answer will cause you to lose a life. When the timer runs out, the player with the most tiles wins! 
+            </p>
+            <label><button id="OK-button" class="help" type="button" name="OK-button" tabindex="0" aria-label="Press here to remove help">
+                <p id="OK-button-text" class="help">OK</p>
+            </button></label>
+        </div>
+
+        <label><button id="support-us-button" class="support" type="button" name="support-us-button" tabindex="0" aria-label="Press here for more information on how to support us">
+            <p id="support-us-button-text" class="support">Support us</p>
+        </button></label>
+
+        <label><button id="home-button" class="homePage" type="button" name="home-button" tabindex="0" aria-label="Click to go to the home page" style="display: none;">
+            <p id="home-button-text" class="home">Home page</p>
         </button></label>
     </div>
-
-    <label><button id="support-us-button" class="support" type="button" name="support-us-button" tabindex="0" aria-label="Press here for more information on how to support us">
-        <p id="support-us-button-text" class="support">Support us</p>
-    </button></label>
-
-    <label><button id="back-button" class="back" type="button" name="back-button" tabindex="0" aria-label="Click to go to the previous page" style="display: none;">
-        <p id="back-button-text" class="back">Go back</p>
-    </button></label>
 
 
     <!--
@@ -46,7 +48,7 @@
     -->
 
 
-    <div id="supportUsPage" style="display: none;">
+    <div id="supportUsPage" class="pages" style="display: none;">
 
         <h1 id="Title">Quiz & Conquer</h1>
 
@@ -78,13 +80,13 @@
         This is the homepage.
     -->
 
-    <div id="homePage">
+    <div id="homePage" class="pages">
 
         <h1 id="Title">Quiz & Conquer</h1>
 
-        <label><button id="Join-button" class ="navButtons" tabindex="0" aria-label="Press here to join a game" >Join</button></label>
-        <label><button id="Host-button" class ="navButtons" tabindex="0" aria-label="Press here to host a game">Start a game</button></label>
-        <label><button id="Leaderboard-button" class ="navButtons" tabindex="0" aria-label="Press here to view the leaderboard" style="display: none;">Leaderboard</button></label>
+        <label><button id="Join-button" class ="joinPage" tabindex="0" aria-label="Press here to join a game" >Join</button></label>
+        <label><button id="Host-button" class ="hostGamePage" tabindex="0" aria-label="Press here to host a game">Start a game</button></label>
+        <label><button id="Leaderboard-button" class ="leaderboardPage" tabindex="0" aria-label="Press here to view the leaderboard" style="display: none;">Leaderboard</button></label>
 
     </div>
 
@@ -94,7 +96,7 @@
         This is the page where you can join a game.
     -->
 
-    <div id="joinPage" style="display: none;">
+    <div id="joinPage" class="pages" style="display: none;">
 
         <h1 id="Title">Quiz & Conquer</h1>
 
@@ -104,7 +106,7 @@
 
         <label><textarea id="gameCodeInput" tabindex="0" aria-label="Type your game code here" rows="1" cols="50" maxlength="5" placeholder="CODE1" onfocus="this.placeholder = '' " onblur="this.placeholder = 'CODE1'"></textarea></label>
     
-        <button id="joinGameCodeButton" tabindex="0" aria-label="Click here to join the game">Join game</button>
+        <button id="joinGameCodeButton" class="gamePage" tabindex="0" aria-label="Click here to join the game">Join game</button>
 
         <h2 id="subTitle2">Or join a public game.</h2>
 
@@ -120,12 +122,12 @@
         This is the page where you can view the hosting options.
     -->
 
-    <div id="hostGamePage" style="display: none;">
+    <div id="hostGamePage" class="pages" style="display: none;">
 
         <h1 id="Title">Quiz & Conquer</h1>
 
-        <button id="Browse-button" class ="navButtons" tabindex="0" aria-label="Press here to browse the available quizzes to play" >Browse</button>
-        <button id="Create-button" class ="navButtons" tabindex="0" aria-label="Press here to create your own quiz">Create</button>
+        <button id="Browse-button" class ="browseQuizzesPage" tabindex="0" aria-label="Press here to browse the available quizzes to play" >Browse</button>
+        <button id="Create-button" class ="createQuizPage" tabindex="0" aria-label="Press here to create your own quiz">Create</button>
 
     </div>
 
@@ -133,7 +135,7 @@
         This is the page where you can browse all the quizzes.
     -->
 
-    <div id="browseQuizzesPage" style="display: none;">
+    <div id="browseQuizzesPage" class="pages" style="display: none;">
 
         <h1 id="Title">Quiz & Conquer</h1>
 
@@ -145,7 +147,7 @@
         This is the page where you can create a quiz.
     -->
 
-    <div id="createQuizPage" style="display: none;">
+    <div id="createQuizPage" class="pages" style="display: none;">
 
         <h1 id="Title">Quiz & Conquer</h1>
 
@@ -167,7 +169,7 @@
     This is the page where you view a quiz.
     -->
 
-    <div id="viewQuizPage" style="display: none;">
+    <div id="viewQuizPage" class="pages" style="display: none;">
 
         <h1 id="Title">Quiz & Conquer</h1>
 
@@ -185,7 +187,7 @@
         This is for when the player is playing a game.
     -->
 
-    <div id="gamePage" style="display: none;">
+    <div id="gamePage" class="pages" style="display: none;">
 
 
         <h1 id="testingWord">Quiz & Conquer!</h1>
