@@ -80,6 +80,7 @@ nav.listen = function () {
             // 2. reveals the one the user has clicked back to go to
             el("homePage").style.display = "block";
             // and the buttons
+            el("home-button").style.display = "none";
             el("commonButtons").style.display = "block";
         } else {
             // page returning to = e.target.replace("http://localhost:1711/", "")
