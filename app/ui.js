@@ -35,7 +35,7 @@ ui.init = function () {
 
 
     // this is the client side of the server
-    const ws = new WebSocket("ws://localhost:80");
+    const ws = new WebSocket("http://www.quiznconquer.com/");
 
     ws.onclose = function (event) {
         ws.close();
