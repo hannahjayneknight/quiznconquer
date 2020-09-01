@@ -258,7 +258,7 @@ Board.viewQuiz = function (quizContents) {
     });
 };
 
-export default Object.freeze(Board);
+exports.Board = Object.freeze(Board);
 
 /*
 

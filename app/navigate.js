@@ -101,4 +101,4 @@ nav.listen = function () {
     });
 };
 
-export default Object.freeze(nav);
+exports.nav = Object.freeze(nav);

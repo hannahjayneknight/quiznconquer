@@ -214,4 +214,4 @@ dbH.getQA = function (quiz, cb) {
     });
 };
 
-export default Object.freeze(dbH);
+exports.dbH = Object.freeze(dbH);

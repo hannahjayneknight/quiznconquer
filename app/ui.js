@@ -529,4 +529,4 @@ Board.buildGamePage();
 
 */
 
-export default Object.freeze(ui);
+exports.ui = Object.freeze(ui);
