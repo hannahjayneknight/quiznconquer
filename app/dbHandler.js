@@ -1,5 +1,5 @@
 
-import sqlite3 from "sqlite3";
+const sqlite3 = require("sqlite3");
 import F from "./usefulfunctions.js";
 
 // NB: this object is only used on the server side
