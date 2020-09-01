@@ -5,7 +5,7 @@ Acts as a handler for ui.js
 
 */
 
-import F from "./usefulfunctions.js";
+const F = require("./usefulfunctions.js");
 
 const Board = Object.create(null);
 

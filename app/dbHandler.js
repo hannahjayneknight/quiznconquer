@@ -1,6 +1,6 @@
 
 const sqlite3 = require("sqlite3");
-import F from "./usefulfunctions.js";
+const F = require("./usefulfunctions.js");
 
 // NB: this object is only used on the server side
 const dbH = Object.create(null);
