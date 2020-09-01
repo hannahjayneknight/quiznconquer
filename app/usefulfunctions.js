@@ -93,4 +93,4 @@ F.oneDArrEquals = (arr1, arr2) => arr1.every(
 );
 
 
-export default Object.freeze(F);
+exports.F = Object.freeze(F);
