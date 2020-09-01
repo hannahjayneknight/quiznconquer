@@ -1,5 +1,5 @@
 
-import express from "express";
+const express = require("express");
 import expressWS from "express-ws";
 import H from "./handler.js";
 import dbH from "./dbHandler.js";
