@@ -486,4 +486,4 @@ H.findWinner = function (currentBoard) {
 
 }
 
-export default Object.freeze(H);
+exports.H = Object.freeze(H);
