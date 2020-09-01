@@ -5,7 +5,7 @@ Acts as a handler for ui.js
 
 */
 
-const F = require("./usefulfunctions.js");
+import F from "./usefulfunctions.js";
 
 const Board = Object.create(null);
 
@@ -258,7 +258,7 @@ Board.viewQuiz = function (quizContents) {
     });
 };
 
-exports.Board = Object.freeze(Board);
+export default Object.freeze(Board);
 
 /*
 

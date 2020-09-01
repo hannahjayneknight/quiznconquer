@@ -1,6 +1,6 @@
 
-const sqlite3 = require("sqlite3");
-const F = require("./usefulfunctions.js");
+import sqlite3 from "sqlite3";
+import F from "./usefulfunctions.js";
 
 // NB: this object is only used on the server side
 const dbH = Object.create(null);
@@ -214,4 +214,4 @@ dbH.getQA = function (quiz, cb) {
     });
 };
 
-exports.dbH = Object.freeze(dbH);
+export default Object.freeze(dbH);

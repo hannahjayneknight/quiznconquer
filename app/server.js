@@ -1,9 +1,9 @@
 
-const express = require("express");
-const expressWS = require("express-ws");
-const H = require("./handler.js");
-const dbH = require("./dbHandler.js");
-const F = require("./usefulfunctions.js");
+import express from "express";
+import expressWS from "express-ws";
+import H from "./handler.js";
+import dbH from "./dbHandler.js";
+import F from "./usefulfunctions.js";
 function ignorparam() {}
 
 const port = 1711;

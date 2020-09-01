@@ -1,6 +1,6 @@
-const F = require("./usefulfunctions.js");
-const Board = require("./board.js");
-const nav = require("./navigate.js");
+import F from "./usefulfunctions.js";
+import Board from "./board.js";
+import nav from "./navigate.js";
 
 const ui = Object.create(null);
 const el = (id) => document.getElementById(id);
@@ -529,4 +529,4 @@ Board.buildGamePage();
 
 */
 
-exports.ui = Object.freeze(ui);
+export default Object.freeze(ui);

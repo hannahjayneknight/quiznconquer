@@ -1,6 +1,6 @@
 
-const F = require("./usefulfunctions.js");
-const dbH = require("./dbHandler.js");
+import F from "./usefulfunctions.js";
+import dbH from "./dbHandler.js";
 
 // NB: this object is only used on the server side
 const H = Object.create(null);
@@ -486,4 +486,4 @@ H.findWinner = function (currentBoard) {
 
 }
 
-exports.H = Object.freeze(H);
+export default Object.freeze(H);
