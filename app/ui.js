@@ -20,11 +20,12 @@ ui.init = function () {
 
     /*
 
-    Switching between pages.
+    Switching between pages and initializing the first page.
 
     */
 
     nav.listen();
+    nav.goToPage(window.location.pathname.replace("/", ""));
 
 
     /*

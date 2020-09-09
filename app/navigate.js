@@ -32,9 +32,11 @@ nav.selectPage = function (id) {
 };
 
 nav.goToPage = function (page) {
-    console.log(page);
-    console.log(window.location.pathname.replace("/", ""));
-    console.log(F.strEmpty(window.location.pathname));
+
+    // if an empty string has been parsed in, sends to the home page
+    if (F.strEmpty(page)) {
+        page = "homePage";
+    }
 
     // page = the page user wants to go to
     // window.location.pathname.replace("/", "") = page they were leaving
@@ -62,42 +64,9 @@ nav.goToPage = function (page) {
 };
 
 
-
-/*
-// when a button is clicked which causes the page to change...
-pages.forEach(function (b) {
-    // id is the page the user left
-    let id = b.id;
-    b.addEventListener("click", function (e) {
-        // finds the class name of the button that was clicked. The
-        // class name will be the id of the page that the user is now
-        // currently on
-        let clickedPage = e.target.className;
-        // history.pushState does the following:
-        // id is the page that was left
-        // clicked page is the page that was joined
-        if (id === "commonButtons") {
-            if (e.target.className === "homePage") {
-                history.pushState({id: "homePage"}, `${clickedPage}`, `./${clickedPage}`);
-            }
-        } else {
-            history.pushState({id: e.target.className}, `${clickedPage}`, `./${clickedPage}`);
-        }
-        //history.pushState({id: id}, `Selected: ${clickedPage}`, `./${clickedPage}`);
-        // this would add it to the url
-        // history.pushState({id}, `Selected: ${id}`, `./selected=${id}`);
-        // when a page has been clicked, it selects that page
-
-
-        //nav.selectPage(clickedPage);
-    });
-});
-*/
-
-
-
 // when the back button is clicked...
 nav.listen = function () {
+
     window.addEventListener("popstate", function (e) {
         // e.state is null if you are going back to the homepage
         if (e.state === null || e.state.id === "homePage") {
@@ -134,6 +103,7 @@ nav.listen = function () {
             el("commonButtons").style.display = "block";
         }
     });
+
 };
 
 export default Object.freeze(nav);
