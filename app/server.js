@@ -15,6 +15,10 @@ app.disable("x-powered-by");
 
 app.use("/", express.static("app"));
 
+// specify multiple subnets as an array
+//app.set("trust proxy", ["loopback", "linklocal", "uniquelocal"]);
+// app.enable("trust proxy");
+
 // THESE ARE FOR THE DYNAMIC SERVER
 app.use(function (req, res, next) {
     ignorparam(res);

@@ -1,3 +1,6 @@
+import F from "./usefulfunctions.js";
+import Board from "./board.js";
+
 const nav = Object.create(null);
 
 const ClaN = (classname) => document.getElementsByClassName(classname);
@@ -28,8 +31,39 @@ nav.selectPage = function (id) {
     });
 };
 
+nav.goToPage = function (page) {
+    console.log(page);
+    console.log(window.location.pathname.replace("/", ""));
+    console.log(F.strEmpty(window.location.pathname));
+
+    // page = the page user wants to go to
+    // window.location.pathname.replace("/", "") = page they were leaving
+
+    // UI
+    if (F.strEmpty(window.location.pathname.replace("/", ""))) {
+        el("homePage").style.display = "none";
+    } else {
+        el(window.location.pathname.replace("/", "")).style.display = "none";
+    }
+
+    el(page).style.display = "block";
+    if (page === "homePage") {
+        el("home-button").style.display = "none";
+    } else {
+        el("home-button").style.display = "block";
+    }
+
+    // change URL pathname and history obj
+    if (page === "gamePage") {
+        Board.resetTileBoard();
+        history.pushState({id: page}, `${page}`, `./${page}`);
+    }
+    history.pushState({id: page}, `${page}`, `./${page}`);
+};
 
 
+
+/*
 // when a button is clicked which causes the page to change...
 pages.forEach(function (b) {
     // id is the page the user left
@@ -58,6 +92,7 @@ pages.forEach(function (b) {
         //nav.selectPage(clickedPage);
     });
 });
+*/
 
 
 
@@ -71,7 +106,7 @@ nav.listen = function () {
 
             // history.replaceSate does the following:
             // adds id from history array
-            history.replaceState({id: "homePage"}, "Home", "");
+            history.replaceState({id: "homePage"}, "Home", "homePage");
             // nav to homepage here
             // 1. hides ALL visible elements
             pages.forEach(function (e) {

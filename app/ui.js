@@ -34,8 +34,13 @@ ui.init = function () {
     */
 
 
-    // this is the client side of the server
-    const ws = new WebSocket("ws://www.quiznconquer.com/");
+    let wsName = "";
+    if (window.location.host === "localhost") {
+        wsName = "ws://localhost:80";
+    } else {
+        wsName = "ws://www.quiznconquer.com/";
+    }
+    const ws = new WebSocket(wsName);
 
     ws.onclose = function (event) {
         ws.close();
@@ -51,9 +56,7 @@ ui.init = function () {
         if (requestObj.joinGameAccepted !== undefined) {
             if (requestObj.joinGameAccepted === true) {
                 // if the game code is valid
-                el("joinPage").style.display = "none";
-                el("gamePage").style.display = "block";
-                Board.resetTileBoard();
+                nav.goToPage("gamePage");
                 gamePublic = false;
                 if (requestObj.public === true) {
                     el("make-this-game-public-text").textContent = "Make this game private";
@@ -65,7 +68,6 @@ ui.init = function () {
             // restarting a game
             } else if (requestObj.joinGameAccepted === "restart") {
                 el("restart-game-button").style.display = "none";
-                el("homepage-button").style.display = "none";
                 el("testingWord").textContent = "Quiz & Conquer!";
                 el("gamePage").style.display = "block";
                 el("everyone-has-joined-button").style.display = "block";
@@ -126,10 +128,10 @@ ui.init = function () {
             if (F.arrEmpty(requestObj.listPublicGames)) {
                 // if there are no public games...
                 el("publicGameError").style.display = "block";
-                Board.RElistPublicGames(requestObj.listPublicGames);
+                Board.reListPublicGames(requestObj.listPublicGames);
             } else {
                 el("publicGameError").style.display = "none";
-                Board.RElistPublicGames(requestObj.listPublicGames);
+                Board.reListPublicGames(requestObj.listPublicGames);
             }
         }
 
@@ -156,9 +158,7 @@ ui.init = function () {
                 el("createQuizError").style.display = "block";
                 el("setQuizTitle").value = "";
             } else {
-                el("createQuizPage").style.display = "none";
-                el("gamePage").style.display = "block";
-                Board.buildGamePage();
+                nav.goToPage("gamePage");
             }
         }
         // being told a quiz name is invalid...
@@ -170,9 +170,7 @@ ui.init = function () {
                 el("createQuizError").style.display = "block";
                 el("setQuizTitle").value = "";
             } else {
-                el("createQuizPage").style.display = "none";
-                el("gamePage").style.display = "block";
-                Board.buildGamePage();
+                nav.goToPage("gamePage");
             }
         }
 
@@ -223,7 +221,6 @@ ui.init = function () {
                 el("answer-pane").style.display = "none";
                 el("correctAnswer").textContent = "";
                 el("restart-game-button").style.display = "block";
-                el("homepage-button").style.display = "block";
                 Board.findWinners(requestObj.places);
             }
         }
@@ -249,6 +246,20 @@ ui.init = function () {
             // requestObj.playernumber is the player that lost a life
         }
     };
+
+
+    /*
+
+    Home page button.
+
+    */
+
+
+    // if the home button is pressed it will go to the home page
+    el("home-button").addEventListener("click", function () {
+        nav.goToPage("homePage");
+        F.wsSend(ws, {"leftGame": true});
+    });
 
 
     /*
@@ -286,29 +297,6 @@ ui.init = function () {
         F.wsSend(ws, {"startGame": true});
     });
 
-    // if the "support us" button has been pressed it will show the support page
-    el("support-us-button").addEventListener("click", function () {
-        el("supportUsPage").style.display = "block";
-        el(currentPage).style.display = "none";
-        previousPage = currentPage;
-        currentPage = "supportUsPage";
-        if (el("home-button").style.display === "none" ) {
-            el("home-button").style.display = "block";
-        }
-    });
-
-    // if the back button is pressed it will go to the previous page
-    el("home-button").addEventListener("click", function () {
-        el("homePage").style.display = "block";
-        el(currentPage).style.display = "none";
-        let tempVar = currentPage;
-        currentPage = previousPage;
-        previousPage = tempVar;
-        if (currentPage === "homePage") {
-            el("home-button").style.display = "none";
-        }
-    });
-
     // if the "make-this-game-public" button has pressed, it will send a message
     // to the server asking to add the game code to the list of public games
     el("make-this-game-public-button").addEventListener("click", function () {
@@ -331,16 +319,9 @@ ui.init = function () {
     el("restart-game-button").addEventListener("click", function () {
         F.wsSend(ws, {"restart": el("gameCode").textContent});
         el("restart-game-button").style.display = "none";
-        el("homepage-button").style.display = "none";
         el("testingWord").textContent = "Quiz & Conquer!";
         el("gamePage").style.display = "block";
         Board.resetTileBoard();
-    });
-
-    el("homepage-button").addEventListener("click", function () {
-        el("homePage").style.display = "block";
-        el("gamePage").style.display = "none";
-        F.wsSend(ws, {"leftGame": true});
     });
 
 
@@ -380,39 +361,26 @@ ui.init = function () {
     */
 
 
+    // if the "support us" button has been pressed it will show the support page
+    el("support-us-button").addEventListener("click", function () {
+        nav.goToPage("supportUsPage");
+    });
+
     // clicking on the join button
     // (this player is set to not be a host)
     el("Join-button").addEventListener("click", function () {
-        el("homePage").style.display = "none";
-        el("joinPage").style.display = "block";
+        nav.goToPage("joinPage");
         el("gameCodeInput").value = "";
-        // hides the “make this game public” and “everyone has joined” buttons
-        /*
-        el("everyone-has-joined-button").style.display = "none";
-        el("make-this-game-public-button").style.display = "none";
-        */
         F.wsSend(ws, {
-        "hosting": false,
-        "listPublicGames": true
+            "hosting": false,
+            "listPublicGames": true
         });
-        previousPage = currentPage;
-        currentPage = "joinPage";
-        el("home-button").style.display = "block";
     });
     // clicking on the host button
     // (this player is set to be the host)
     el("Host-button").addEventListener("click", function () {
-        el("homePage").style.display = "none";
-        el("hostGamePage").style.display = "block";
-        // reveals the “make this hame public” and “everyone has joined” buttons
-        /*
-        el("everyone-has-joined-button").style.display = "block";
-        el("make-this-game-public-button").style.display = "block";
-        */
+        nav.goToPage("hostGamePage");
        F.wsSend(ws, {"hosting": true});
-        previousPage = currentPage;
-        currentPage = "hostGamePage";
-        el("home-button").style.display = "block";
     });
 
 
@@ -425,8 +393,7 @@ ui.init = function () {
 
     // clicking on the "Create" button
     el("Create-button").addEventListener("click", function () {
-        el("hostGamePage").style.display = "none";
-        el("createQuizPage").style.display = "block";
+        nav.goToPage("createQuizPage");
         el("setQuizTitle").value = "";
         F.sequence(6).forEach( function (element) {
             Board.createQA(element + 1);
@@ -435,8 +402,7 @@ ui.init = function () {
 
     // clicking on the "Browse" button
     el("Browse-button").addEventListener("click", function () {
-        el("hostGamePage").style.display = "none";
-        el("browseQuizzesPage").style.display = "block";
+        nav.goToPage("browseQuizzesPage");
         // send request to server for all the quizzes
         F.wsSend(ws, {"listQuizzesPlease": true});
     });
@@ -497,8 +463,7 @@ ui.init = function () {
     // when player clicks a browsed game a message will be sent
     // to the server and the view game page will be displayed
     function hostBrowsedQuiz (e) {
-        el("browseQuizzesPage").style.display = "none";
-        el("viewQuizPage").style.display = "block";
+        nav.goToPage("viewQuizPage");
         // sends the name of the quiz they want to host
         F.wsSend(ws, {"hostBrowsedQuiz": e.target.id});
     }
@@ -513,20 +478,9 @@ ui.init = function () {
 
     // clicking the "play" button which is on display when viewing a quiz
     el("play-button").addEventListener("click", function (quizName) {
-        el("viewQuizPage").style.display = "none";
-        el("gamePage").style.display = "block";
-        Board.buildGamePage();
+        nav.goToPage("gamePage");
     });
 
 };
-/*
-
-Code to open and build game playing page.
-
-el("hostGamePage").style.display = "none"; // page you want to block goes here
-el("gamePage").style.display = "block";
-Board.buildGamePage();
-
-*/
 
 export default Object.freeze(ui);

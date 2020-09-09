@@ -5,13 +5,13 @@
 <html lang="en-gb"></html>
 <script type="module" src="./main.js"></script>
 <link rel="stylesheet" href="./default.css">
-<!--Responsive style sheets -->
+<!--Responsive style sheets 
 <link rel="stylesheet" media="all and (max-width: 599px)" href="mobile.css">
 <link rel="stylesheet" media="all and (min-width: 600px)" href="tabletP.css">
 <link rel="stylesheet" media="all and (min-width: 900px)" href="tabletL.css">
 <link rel="stylesheet" media="all and (min-width: 1200px)" href="desktop.css">
 <link rel="stylesheet" media="all and (min-width: 1800px)" href="bigdesktop.css">
-
+-->
 
 <head>
     <title>Quiz & Conquer</title>
@@ -38,10 +38,6 @@
                 <p id="OK-button-text" class="help">OK</p>
             </button></label>
         </div>
-
-        <label><button id="support-us-button" class="support" type="button" name="support-us-button" tabindex="0" aria-label="Press here for more information on how to support us">
-            <p id="support-us-button-text" class="support">Support us</p>
-        </button></label>
 
         <label><button id="home-button" class="homePage" type="button" name="home-button" tabindex="0" aria-label="Click to go to the home page" style="display: none;">
             <p id="home-button-text" class="home">Home page</p>
@@ -93,6 +89,10 @@
         <label><button id="Join-button" class ="joinPage" tabindex="0" aria-label="Press here to join a game" >Join</button></label>
         <label><button id="Host-button" class ="hostGamePage" tabindex="0" aria-label="Press here to host a game">Start a game</button></label>
         <label><button id="Leaderboard-button" class ="leaderboardPage" tabindex="0" aria-label="Press here to view the leaderboard" style="display: none;">Leaderboard</button></label>
+
+        <label><button id="support-us-button" class="support" type="button" name="support-us-button" tabindex="0" aria-label="Press here for more information on how to support us">
+            <p id="support-us-button-text" class="support">Support us</p>
+        </button></label>
 
     </div>
 
@@ -163,7 +163,7 @@
         <div id="new-questions-list"></div>
         <div id="new-answers-list"></div>
 
-        <label><button id="create-and-play-button" type="button" tabindex="0" aria-label="Press here to save and play the game you have created">
+        <label><button id="create-and-play-button" class="gamePage" type="button" tabindex="0" aria-label="Press here to save and play the game you have created">
             <p id="create-and-play-button-text">Create and play</p>
         </button></label>
 
@@ -183,7 +183,7 @@
         <div id="view-questions-list"></div>
         <div id="view-answers-list"></div>
 
-        <label><button id="play-button" type="button" tabindex="0" aria-label="Press here to play a game using this quiz">
+        <label><button id="play-button" class="gamePage" type="button" tabindex="0" aria-label="Press here to play a game using this quiz">
             <p id="play-button-text">Play</p>
         </button></label>
 
@@ -227,10 +227,6 @@
 
         <label><button id="restart-game-button" type="button" tabindex="0" aria-label="Press here to restart the game">
             <p id="restart-game-text">Restart</p>
-        </button></label>
-
-        <label><button id="homepage-button" type="button" tabindex="0" aria-label="Press here if you want to go back to the homepage">
-            <p id="homepage-button-text">Go back to the homepage</p>
         </button></label>
 
         <div id="winnersBox">

@@ -86,7 +86,8 @@ Board.submitAnswer = function (ws) {
         el("correctAnswer").textContent = "";
 };
 
-Board.RElistPublicGames = function (pubGameArr) {
+// IS THIS NEEDED?
+Board.reListPublicGames = function (pubGameArr) {
     Array.from(ClaN("publicGame")).forEach(function (element) {
         if (el(element.id) !== null) {
             el(element.id).remove();
@@ -96,6 +97,14 @@ Board.RElistPublicGames = function (pubGameArr) {
 };
 
 Board.listPublicGames = function (pubGameArr) {
+    // remove the public games they may have been viewing previously
+    let publicGames = Array.from(ClaN("publicGame"));
+    publicGames.forEach(function (el) {
+        if (el(el.id) !== null) {
+            el(el.id).remove();
+        }
+    });
+
     F.sequence(pubGameArr.length).forEach( function (element) {
         // makes a button element for each public game
         const publicGame = document.createElement("button");
@@ -113,6 +122,14 @@ Board.listPublicGames = function (pubGameArr) {
 };
 
 Board.listAllQuizzes = function (listAllQuizzesArr) {
+    // remove the quizzes they may have been viewing previously
+    let quizzes = Array.from(ClaN("quiz"));
+    quizzes.forEach(function (el) {
+        if (el(el.id) !== null) {
+            el(el.id).remove();
+        }
+    });
+
     F.sequence(listAllQuizzesArr.length).forEach(function (element) {
         // makes a p element which will represent each quiz
         const quiz = document.createElement("button");
@@ -237,6 +254,21 @@ Board.findWinners = function (winnersarr) {
 };
 
 Board.viewQuiz = function (quizContents) {
+    // remove the questions they may have been viewing previously
+    let questions = Array.from(ClaN("viewQ"));
+    questions.forEach(function (el) {
+        if (el(el.id) !== null) {
+            el(el.id).remove();
+        }
+    });
+    // remove the answers they may have been viewing previously
+    let answers = Array.from(ClaN("viewA"));
+    answers.forEach(function (el) {
+        if (el(el.id) !== null) {
+            el(el.id).remove();
+        }
+    });
+
     F.sequence(quizContents.length).forEach(function (element) {
         // question = quizContents[element].question
         // answer = quizContents[element].question
