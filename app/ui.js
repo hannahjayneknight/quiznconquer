@@ -11,9 +11,6 @@ const displayLives = Array.from(ClaN("allLives"));
 let gamePublic = false;
 let thisPlayerNumber = 0;
 let lives = 5;
-// automatically sets the current and previous pages to be the homepage
-let currentPage = "homePage";
-let previousPage = "homePage";
 
 ui.init = function () {
 
