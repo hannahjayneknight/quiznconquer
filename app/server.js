@@ -306,8 +306,11 @@ app.ws("/", function (ws, req) {
         // after clicking "create and play" button...
         if (clientObj.createTable !== undefined) {
             // now, rather than creating a table then adding to it, you can simply add to the db straight away
-            dbH.addToQuiz(clientObj.createTable, function () {
+            dbH.addToDB(clientObj.createTable, function () {
                 games[ws.myprivatedata.gameCode].quiz = clientObj.createTable.quizName.replace(/\s/g, "_");
+                F.wsSend(ws, {
+                    "quizNameExists": false
+                });
             });
 
         }

@@ -152,7 +152,7 @@ dbH.addToDB = function (obj, cb) {
         let row = [
             obj.quizContents[element].question,
             obj.quizContents[element].answer,
-            element, // this is the ID
+            ( element + 1 ), // this is the ID
             obj.quizName.replace(/\s/g, "_")
         ];
 
