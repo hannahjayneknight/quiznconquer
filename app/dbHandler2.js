@@ -17,7 +17,7 @@ dbH.generateWordFromDB = function (quiz, cb) {
     // finds a random word from the ones being tested
     // THIS RETURNS NOTHING IF QUIZ DOES NOT EXIST - DO I NEED TO FIX THIS ERROR?
     const queryWord = `SELECT question, answer FROM quiz_data WHERE quiz_name =
-    "Beginner_French" ORDER BY RANDOM() LIMIT 1;`;
+    ? ORDER BY RANDOM() LIMIT 1;`;
 
     // adds the random word to the database object
     // eg dbObj.word = { word: { name: 'ham', langID:4,answer:'jambon'}}

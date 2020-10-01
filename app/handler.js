@@ -1,6 +1,6 @@
 
 import F from "./usefulfunctions.js";
-import dbH from "./dbHandler.js";
+import dbH from "./dbHandler2.js";
 
 // NB: this object is only used on the server side
 const H = Object.create(null);
