@@ -75,43 +75,57 @@ dbH.listQuizzes = function (cb) {
 
 };
 
-// creating a quiz as a table in the database
-dbH.createQuiz = function (tableName, ws, cb) {
+/*
+Uses API to check if any bad language is being used.
+                F.wsSend(ws, {
+                    "quizInvalid": true
+                });
+*/
+
+
+/*
+
+Finds out if a quiz name already exists
+
+When a quiz exists, row looks like this:
+    {
+        quiz_name: "Beginner_French",
+    }
+
+Otherwise row is undefined
+
+*/
+dbH.checkQuizName = function (quizName, ws, cb) {
     const db = new sqlite3.Database("./quiznconquerDB.db", function (err) {
         if (err) {
             console.error(err.message);
         }
     });
 
-    // NB
-    let newQuizName = tableName.replace(/\s/g, "_");
+    const findQuizName = `SELECT DISTINCT quiz_name FROM quiz_data
+     WHERE quiz_name = ?`;
 
     // "SQLITE_ERROR: near \".\": syntax error"
-    db.run(createTable, [], function (err, row) {
+    db.get(findQuizName, [quizName.replace(/\s/g, "_")], function (err, row) {
         if (err) {
-            let tableExists = `SQLITE_ERROR: table ${tableName.replace(/\s/g, "_")} already exists`;
-            let invalidName = `SQLITE_ERROR: near "${tableName.replace(/\s/g, "_")}": syntax error`;
-            if (err.message === tableExists) {
-                // tells client that quiz name already exists
-                F.wsSend(ws, {
-                    "quizNameExists": true
-                });
-            }
-            if (err.message === invalidName) {
-                // tells client that table name is invalid
-                F.wsSend(ws, {
-                    "quizNameInvalid": true
-                });
-            }
-            console.error(err.message);
-        } else {
-            F.wsSend(ws, {
-                "quizNameExists": false
-            });
-            // runs the callback which is to add elements to
-            // the table that has just been created
-            cb();
+            return console.error(err.message);
         }
+
+        // quiz name does exist
+        if (row !== undefined) {
+
+            F.wsSend(ws, {
+                "quizNameExists": true
+            });
+
+
+        } else {
+
+            // quiz name doesn't already exist
+            cb();
+
+        }
+
     });
 
     db.close(function (err) {
