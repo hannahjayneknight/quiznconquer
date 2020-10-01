@@ -8,16 +8,17 @@
             "name": "Firefox Debugger",
             "type": "firefox",
             "request": "launch",
-            "webRoot": "${workspaceFolder}/app",
+            "webRoot": "${workspaceFolder}",
             "url": "http://localhost:80/index.html",
             "pathMappings": [
                 {
                     "url": "http://localhost:80/index.html",
-                    "path": "${workspaceFolder}/app"
+                    "path": "${workspaceFolder}"
                 },
             ],
             "keepProfileChanges": true,
-            "reAttach": true
+            "reAttach": true,
+            "firefoxExecutable": "C:/Program Files/Firefox Developer Edition/firefox.exe"
         },
         {
             "name": "Node server",
