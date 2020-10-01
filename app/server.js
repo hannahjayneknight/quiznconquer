@@ -2,7 +2,7 @@
 import express from "express";
 import expressWS from "express-ws";
 import H from "./handler.js";
-import dbH from "./dbHandler.js";
+import dbH from "./dbHandler2.js";
 import F from "./usefulfunctions.js";
 function ignorparam() {}
 
@@ -254,9 +254,9 @@ app.ws("/", function (ws, req) {
 
         // receiving a request to list all the quizzes...
         if (clientObj.listQuizzesPlease !== undefined) {
-            dbH.getInfoTables( function( obj ) {
+            dbH.listQuizzes( function( arr ) {
                 F.wsSend(ws, {
-                    "listAllQuizzes": obj
+                    "listAllQuizzes": arr
                 });
             });
         }

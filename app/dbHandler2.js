@@ -8,42 +8,27 @@ const dbH = Object.create(null);
 // used to generate a testing word
 // parameter quiz is the quizname
 dbH.generateWordFromDB = function (quiz, cb) {
-    const db = new sqlite3.Database("./sample3.db", function (err) {
+    const db = new sqlite3.Database("./quiznconquerDB.db", function (err) {
         if (err) {
             console.error(err.message);
         }
     });
 
     // finds a random word from the ones being tested
-    // (depends on level - NEED TO CHANGE LEVEL FOR THIS)
+    // THIS RETURNS NOTHING IF QUIZ DOES NOT EXIST - DO I NEED TO FIX THIS ERROR?
+    const queryWord = `SELECT question, answer FROM quiz_data WHERE quiz_name =
+    "Beginner_French" ORDER BY RANDOM() LIMIT 1;`;
 
-    const queryWord = `SELECT * FROM (
-        SELECT * FROM :quiz ORDER BY ROWID
-        ) ORDER BY RANDOM() LIMIT 1;`;
-
-    /*
-
-    if you want to limit by level:
-
-    let level = 6;
-    const queryWord = `SELECT * FROM (
-        SELECT * FROM ${quiz} ORDER BY ROWID LIMIT ${level}
-        ) ORDER BY RANDOM() LIMIT 1;`;
-
-    */
-
+    // adds the random word to the database object
+    // eg dbObj.word = { word: { name: 'ham', langID:4,answer:'jambon'}}
     const dbObj = {};
-    db.serialize(function () {
-        db.get(queryWord, [], function (err, row) {
-            if (err) {
-                return console.error(err.message);
-            }
-            // adds the random word to the database object
-            // eg dbObj.word = { word: { name: 'ham', langID:4,answer:'jambon'}}
-            // dbObj.word.name gives the word to be questioned
-            // dbObj.word.answer gives the answer to that word
-            dbObj.word = row;
-        });
+
+    db.get(queryWord, [quiz], function (err, row) {
+        if (err) {
+            return console.error(err.message);
+        }
+
+        dbObj.word = row;
     });
 
 
@@ -57,27 +42,27 @@ dbH.generateWordFromDB = function (quiz, cb) {
 
 
 // lists all the available quizzes
-dbH.getInfoTables = function (cb) {
+dbH.listQuizzes = function (cb) {
 
-    const db = new sqlite3.Database("./sample3.db", function (err) {
+    const db = new sqlite3.Database("./quiznconquerDB.db", function (err) {
         if (err) {
             console.error(err.message);
         }
     });
 
-    const queryTables = `SELECT name FROM sqlite_master
-    WHERE type='table'
-    ORDER BY name;`;
+    const queryQuizzes = `SELECT DISTINCT quiz_name FROM quiz_data;`;
 
     const dbObj = {};
-    db.serialize(function () {
-        db.all(queryTables, [], function (err, row) {
-            if (err) {
-                return console.error(err.message);
-            }
-            // saves the array of all the tables to dbObj.quizzes
-            dbObj.quizzes = row;
-        });
+    db.all(queryQuizzes, [], function (err, rows) {
+        if (err) {
+            return console.error(err.message);
+        }
+        // pushes each quiz to the array and saves to dbObj
+        let quizzes = [];
+        rows.forEach((element) => {
+            quizzes.push(element.quiz_name);
+            });
+        dbObj.quizzes = quizzes;
     });
 
     db.close(function (err) {
@@ -92,7 +77,7 @@ dbH.getInfoTables = function (cb) {
 
 // creating a quiz as a table in the database
 dbH.createQuiz = function (tableName, ws, cb) {
-    const db = new sqlite3.Database("./sample3.db", function (err) {
+    const db = new sqlite3.Database("./quiznconquerDB.db", function (err) {
         if (err) {
             console.error(err.message);
         }
@@ -146,7 +131,7 @@ dbH.createQuiz = function (tableName, ws, cb) {
 // adding tableContents to the database
 // please see board.js to see the format of tableContents
 dbH.addToQuiz = function (tableName, tableContents, cb) {
-    const db = new sqlite3.Database("./sample3.db", function (err) {
+    const db = new sqlite3.Database("./quiznconquerDB.db", function (err) {
         if (err) {
             console.error(err.message);
         }
@@ -179,31 +164,29 @@ returns dbArr which is an array with all the questions
 and answers in a quiz. It looks like this:
 
 [
-    {question: 'salt', answer: 'sel'},
-    {question: 'bed', answer: 'lit'},
-    {question: 'ham', answer: 'jambon'},
+    { question: 'salt', answer: 'sel', ID: 1 },
+    { question: 'bed', answer: 'lit' ID: 2 },
+    { question: 'ham', answer: 'jambon' ID: 3 },
     ...
 ]
 */
 dbH.getQA = function (quiz, cb) {
 
-    const db = new sqlite3.Database("./sample3.db", function (err) {
+    const db = new sqlite3.Database("./quiznconquerDB.db", function (err) {
         if (err) {
             console.error(err.message);
         }
     });
 
-    const getQA = `SELECT question, answer
-    FROM ${quiz};`;
+    const getQA = `SELECT question, answer, id FROM quiz_data
+                    WHERE quiz_name = ?;`;
 
     const dbArr = [];
-    db.serialize(function () {
-        db.all(getQA, [], function (err, row) {
-            if (err) {
-                return console.error(err.message);
-            }
-            row.forEach((element) => dbArr.push(element));
-        });
+    db.all(getQA, [quiz], function (err, row) {
+        if (err) {
+            return console.error(err.message);
+        }
+        row.forEach((element) => dbArr.push(element));
     });
 
     db.close(function (err) {

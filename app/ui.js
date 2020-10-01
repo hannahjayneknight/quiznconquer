@@ -110,7 +110,6 @@ ui.init = function () {
 
         // making a list of all the quizzes on the browsing page
         if (requestObj.listAllQuizzes !== undefined) {
-            let quizzessArr = requestObj.listAllQuizzes;
             // requestObj.listAllQuizzes
             Board.listAllQuizzes(requestObj.listAllQuizzes);
         }

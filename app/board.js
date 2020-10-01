@@ -133,11 +133,11 @@ Board.listAllQuizzes = function (listAllQuizzesArr) {
     F.sequence(listAllQuizzesArr.length).forEach(function (element) {
         // makes a p element which will represent each quiz
         const quiz = document.createElement("button");
-        quiz.setAttribute("id", listAllQuizzesArr[element].name);
+        quiz.setAttribute("id", listAllQuizzesArr[element]);
         quiz.setAttribute("class", "quiz");
         quiz.setAttribute("tabindex", 0);
         quiz.setAttribute("aria-label", "Click here to play this quiz");
-        quiz.innerHTML = listAllQuizzesArr[element].name.replace(/_/g, " ");
+        quiz.innerHTML = listAllQuizzesArr[element].replace(/_/g, " ");
         el("listOfQuizzes").append(quiz);
     });
 
@@ -253,6 +253,16 @@ Board.findWinners = function (winnersarr) {
     el("winnersBox").style.display = "inline-block";
 };
 
+
+/*
+quizContents looks like this:
+[
+    {question: 'salt', answer: 'sel'},
+    {question: 'bed', answer: 'lit'},
+    {question: 'ham', answer: 'jambon'},
+    ...
+]
+*/
 Board.viewQuiz = function (quizContents) {
     // remove the questions they may have been viewing previously
     let questions = Array.from(ClaN("viewQ"));
@@ -271,7 +281,7 @@ Board.viewQuiz = function (quizContents) {
 
     F.sequence(quizContents.length).forEach(function (element) {
         // question = quizContents[element].question
-        // answer = quizContents[element].question
+        // answer = quizContents[element].answer
         // qa number = element
 
         // lists questions

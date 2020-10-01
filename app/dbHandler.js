@@ -6,7 +6,7 @@ import F from "./usefulfunctions.js";
 const dbH = Object.create(null);
 
 // used to generate a testing word
-dbH.generateWordFromDB = function (quiz, cb) {
+dbH.generateWordFromDBOLD = function (quiz, cb) {
     const db = new sqlite3.Database("./sample2.db", function (err) {
         if (err) {
             console.error(err.message);
