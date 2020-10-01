@@ -83,41 +83,35 @@ dbH.createQuiz = function (tableName, ws, cb) {
         }
     });
 
-    // replaces any spaces with _ since sqlite does not like spaces for
-    // column titles
-    const createTable = `CREATE TABLE ${tableName.replace(/\s/g, "_")} (
-        "question" TEXT NOT NULL,
-        "answer" TEXT NOT NULL
-    );`;
+    // NB
+    let newQuizName = tableName.replace(/\s/g, "_");
 
     // "SQLITE_ERROR: near \".\": syntax error"
-    db.serialize(function () {
-        db.run(createTable, [], function (err, row) {
-            if (err) {
-                let tableExists = `SQLITE_ERROR: table ${tableName.replace(/\s/g, "_")} already exists`;
-                let invalidName = `SQLITE_ERROR: near "${tableName.replace(/\s/g, "_")}": syntax error`;
-                if (err.message === tableExists) {
-                    // tells client that quiz name already exists
-                    F.wsSend(ws, {
-                        "quizNameExists": true
-                    });
-                }
-                if (err.message === invalidName) {
-                    // tells client that table name is invalid
-                    F.wsSend(ws, {
-                        "quizNameInvalid": true
-                    });
-                }
-                console.error(err.message);
-            } else {
+    db.run(createTable, [], function (err, row) {
+        if (err) {
+            let tableExists = `SQLITE_ERROR: table ${tableName.replace(/\s/g, "_")} already exists`;
+            let invalidName = `SQLITE_ERROR: near "${tableName.replace(/\s/g, "_")}": syntax error`;
+            if (err.message === tableExists) {
+                // tells client that quiz name already exists
                 F.wsSend(ws, {
-                    "quizNameExists": false
+                    "quizNameExists": true
                 });
-                // runs the callback which is to add elements to
-                // the table that has just been created
-                cb();
             }
-        });
+            if (err.message === invalidName) {
+                // tells client that table name is invalid
+                F.wsSend(ws, {
+                    "quizNameInvalid": true
+                });
+            }
+            console.error(err.message);
+        } else {
+            F.wsSend(ws, {
+                "quizNameExists": false
+            });
+            // runs the callback which is to add elements to
+            // the table that has just been created
+            cb();
+        }
     });
 
     db.close(function (err) {
@@ -128,22 +122,46 @@ dbH.createQuiz = function (tableName, ws, cb) {
 
 };
 
-// adding tableContents to the database
-// please see board.js to see the format of tableContents
-dbH.addToQuiz = function (tableName, tableContents, cb) {
+/*
+To add a quiz, an object of the following form is parsed as a parameter:
+    {
+        "quizName": Hannah's_Quiz,
+
+        "quizContents":
+
+        [
+            { question: q1, answer: a1 },
+            { question: q2, answer: a2 },
+            { question: q3, answer: a3 },
+            ...
+        ]
+
+    }
+
+*/
+dbH.addToDB = function (obj, cb) {
     const db = new sqlite3.Database("./quiznconquerDB.db", function (err) {
         if (err) {
             console.error(err.message);
         }
     });
 
-    // adds each qa pair to the table in the database
-    tableContents.forEach(function (element) {
-        let QA = [element.question, element.answer];
-        let placeholders = QA.map((i) => "?").join(",");
-        let insertQA = `INSERT INTO ${tableName.replace(/\s/g, "_")} (question, answer)
+    // for each qa pair, adds a row to the database, sets the ID and
+    // the quiz_name
+    F.sequence(obj.quizContents).forEach(function (element) {
+        let row = [
+            obj.quizContents[element].question,
+            obj.quizContents[element].answer,
+            element, // this is the ID
+            obj.quizName.replace(/\s/g, "_")
+        ];
+
+        let placeholders = row.map((i) => "?").join(",");
+
+        let insertQA = `INSERT INTO quiz_data(question, answer, ID, quiz_name)
         VALUES (` + placeholders + `)`;
-        db.run(insertQA, QA, function (err, row) {
+
+        db.run(insertQA, row, function (err, row) {
             if (err) {
                 return console.error(err.message);
             }

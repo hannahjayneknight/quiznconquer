@@ -305,11 +305,11 @@ app.ws("/", function (ws, req) {
 
         // after clicking "create and play" button...
         if (clientObj.createTable !== undefined) {
-            dbH.createQuiz(clientObj.createTable.tableName, ws, function () {
-                dbH.addToQuiz(clientObj.createTable.tableName, clientObj.createTable.tableContents, function () {
-                    games[ws.myprivatedata.gameCode].quiz = clientObj.createTable.tableName.replace(/\s/g, "_");
-                });
+            // now, rather than creating a table then adding to it, you can simply add to the db straight away
+            dbH.addToQuiz(clientObj.createTable, function () {
+                games[ws.myprivatedata.gameCode].quiz = clientObj.createTable.quizName.replace(/\s/g, "_");
             });
+
         }
 
         // receiving a request to host a quiz that has been found from browsing...

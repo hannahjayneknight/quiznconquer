@@ -429,8 +429,8 @@ ui.init = function () {
                 // sends the details of the quiz to the server
                 F.wsSend(ws, {
                     "createTable": {
-                        "tableName": el("setQuizTitle").value.replace(/\s/g, "_"),
-                        "tableContents": Board.getQA()
+                        "quizName": el("setQuizTitle").value.replace(/\s/g, "_"),
+                        "quizContents": Board.getQA()
                     }
                 });
             }
