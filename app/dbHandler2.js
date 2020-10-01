@@ -6,8 +6,9 @@ import F from "./usefulfunctions.js";
 const dbH = Object.create(null);
 
 // used to generate a testing word
+// parameter quiz is the quizname
 dbH.generateWordFromDB = function (quiz, cb) {
-    const db = new sqlite3.Database("./sample2.db", function (err) {
+    const db = new sqlite3.Database("./sample3.db", function (err) {
         if (err) {
             console.error(err.message);
         }
@@ -17,21 +18,30 @@ dbH.generateWordFromDB = function (quiz, cb) {
     // (depends on level - NEED TO CHANGE LEVEL FOR THIS)
 
     const queryWord = `SELECT * FROM (
-        SELECT * FROM (?) ORDER BY ROWID
+        SELECT * FROM :quiz ORDER BY ROWID
         ) ORDER BY RANDOM() LIMIT 1;`;
 
-    // the random word will be added to the database object
-     // eg dbObj.word = { word: { name: 'ham', langID:4,answer:'jambon'}}
-    const dbObj = {};
-    let quizname = quiz;
+    /*
 
+    if you want to limit by level:
+
+    let level = 6;
+    const queryWord = `SELECT * FROM (
+        SELECT * FROM ${quiz} ORDER BY ROWID LIMIT ${level}
+        ) ORDER BY RANDOM() LIMIT 1;`;
+
+    */
+
+    const dbObj = {};
     db.serialize(function () {
-        // passes the quiz paramter to the query
-        db.get(queryWord, [quizname], function (err, row) {
+        db.get(queryWord, [], function (err, row) {
             if (err) {
                 return console.error(err.message);
             }
-
+            // adds the random word to the database object
+            // eg dbObj.word = { word: { name: 'ham', langID:4,answer:'jambon'}}
+            // dbObj.word.name gives the word to be questioned
+            // dbObj.word.answer gives the answer to that word
             dbObj.word = row;
         });
     });
@@ -49,7 +59,7 @@ dbH.generateWordFromDB = function (quiz, cb) {
 // lists all the available quizzes
 dbH.getInfoTables = function (cb) {
 
-    const db = new sqlite3.Database("./sample2.db", function (err) {
+    const db = new sqlite3.Database("./sample3.db", function (err) {
         if (err) {
             console.error(err.message);
         }
@@ -82,7 +92,7 @@ dbH.getInfoTables = function (cb) {
 
 // creating a quiz as a table in the database
 dbH.createQuiz = function (tableName, ws, cb) {
-    const db = new sqlite3.Database("./sample2.db", function (err) {
+    const db = new sqlite3.Database("./sample3.db", function (err) {
         if (err) {
             console.error(err.message);
         }
@@ -136,7 +146,7 @@ dbH.createQuiz = function (tableName, ws, cb) {
 // adding tableContents to the database
 // please see board.js to see the format of tableContents
 dbH.addToQuiz = function (tableName, tableContents, cb) {
-    const db = new sqlite3.Database("./sample2.db", function (err) {
+    const db = new sqlite3.Database("./sample3.db", function (err) {
         if (err) {
             console.error(err.message);
         }
@@ -177,7 +187,7 @@ and answers in a quiz. It looks like this:
 */
 dbH.getQA = function (quiz, cb) {
 
-    const db = new sqlite3.Database("./sample2.db", function (err) {
+    const db = new sqlite3.Database("./sample3.db", function (err) {
         if (err) {
             console.error(err.message);
         }
