@@ -2,7 +2,7 @@
 import express from "express";
 import expressWS from "express-ws";
 import H from "./handler.js";
-import dbH from "./dbHandler2.js";
+import dbH from "./dbHandler.js";
 import F from "./usefulfunctions.js";
 function ignorparam() {}
 
