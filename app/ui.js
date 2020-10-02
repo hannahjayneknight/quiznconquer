@@ -22,7 +22,7 @@ ui.init = function () {
     */
 
     nav.listen();
-    nav.goToPage(window.location.pathname.replace("/", ""));
+    nav.goToPage("homePage");
 
 
     /*
