@@ -467,12 +467,10 @@ H.findWinner = function (currentBoard) {
         }
     });
 
-    // orders the scores from lowest to highest
+    // creates a new array with the order of scores from lowest to highest
     let ordered = scores.concat().sort((a, b) => a - b);
 
     // places is an array containing the player numbers in ascending order
-    // of placing. If there was a draw, it will be a nested array.
-    // element 0 corresponds to fourth place, element 3 is 1st
     let places = [];
 
     F.sequence(4).forEach(function (element) {
@@ -482,6 +480,9 @@ H.findWinner = function (currentBoard) {
     });
 
     // removes any duplicates
+    // returns an array like the following: [ 2, 1, 3, 4 ]
+    // which is where player 4 came first and player 2 last
+    // If there was a draw, it will be a nested array.
     return F.uniq(places);
 
 }

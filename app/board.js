@@ -86,7 +86,6 @@ Board.submitAnswer = function (ws) {
         el("correctAnswer").textContent = "";
 };
 
-// IS THIS NEEDED?
 Board.reListPublicGames = function (pubGameArr) {
     Array.from(ClaN("publicGame")).forEach(function (element) {
         if (el(element.id) !== null) {
@@ -196,6 +195,9 @@ Board.getQA = function () {
     return tableContents;
 };
 
+// receives an array like the following: [ 2, 1, 3, 4 ]
+// which is where player 4 came first and player 2 last
+// if there was a draw, it will be a nested array.
 Board.findWinners = function (winnersarr) {
     el("1st").style.display = "block";
     el("2nd").style.display = "block";
@@ -231,18 +233,22 @@ Board.findWinners = function (winnersarr) {
             player1st.push(names[element - 1]);
         });
     }
+    // 2 draws
     if (winnersarr.length === 2) {
         el("3rd").style.display = "none";
         el("player2nd").textContent = player4th.join(", ");
         el("player1st").textContent = player3rd.join(", ");
+    // 1 draw
     } else if (winnersarr.length === 3) {
-        el("player3rd").textContent = names[winnersarr[0].map((x) => x - 1)];
+        el("player3rd").textContent = player4th.join(", ");
         el("player2nd").textContent = player3rd.join(", ");
         el("player1st").textContent = player2nd.join(", ");
+    // no draws
     } else if (winnersarr.length === 4) {
         el("player3rd").textContent = player3rd.join(", ");
         el("player2nd").textContent = player2nd.join(", ");
         el("player1st").textContent = player1st.join(", ");
+    // everyone drew
     } else {
         el("1st").style.display = "none";
         el("2nd").style.display = "none";
