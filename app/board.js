@@ -272,16 +272,16 @@ quizContents looks like this:
 Board.viewQuiz = function (quizContents) {
     // remove the questions they may have been viewing previously
     let questions = Array.from(ClaN("viewQ"));
-    questions.forEach(function (el) {
-        if (el(el.id) !== null) {
-            el(el.id).remove();
+    questions.forEach(function (element) {
+        if (el(element.id) !== null) {
+            el(element.id).remove();
         }
     });
     // remove the answers they may have been viewing previously
     let answers = Array.from(ClaN("viewA"));
-    answers.forEach(function (el) {
-        if (el(el.id) !== null) {
-            el(el.id).remove();
+    answers.forEach(function (element) {
+        if (el(element.id) !== null) {
+            el(element.id).remove();
         }
     });
 
