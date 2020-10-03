@@ -14,9 +14,7 @@
     --green: #2c5f2d;
     --nearBlack: #101820;
     --errorColour: #B00020;
-    --screenheight: 100vh;
-    --screenwidth: 100vw;
-    --font: "Clear Sans", "Helvetica Neue", Arial, sans-serif;;
+    --font: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
 }
 
 body
@@ -36,7 +34,7 @@ main
 button {
     display: inline-block;
     border: none;
-    margin: 0;
+    margin: 0px;
     text-decoration: none;
     background: var(--nearBlack);
     display: flex;
@@ -48,10 +46,8 @@ button {
                 transform 150ms ease;
     -webkit-appearance: none;
     -moz-appearance: none;
-    margin: 0;
     color: #ffffff;
     font-family: var(--font);
-    font-size: 1rem;
     font-weight: 600;
 }
 
@@ -71,40 +67,25 @@ img
     max-height: 100%;
 }
 
-#accessbility-feedback-email
-{
-    top: 0.5rem;
-    width: 75vh;
-    position: absolute;
-    margin: 0;
-    right: 5vw;
-    font-family: var(--font);
-    font-size: 1rem;
-    text-align: right;
-    font-style: italic;
-    color: var(--nearBlack);
-}
-
 #Title
 {
     top: 20vh;
     left: 25vw;
     width: 50vw;
-    height: 10vh;
+    height: var(--large-font-size);
     position: absolute;
-    font-size: 2.5rem;
-    font-weight: 900;
+    font-size: var(--large-font-size);
     text-align: center;
     font-family: var(--font);
     color: var(--green);
-    margin: 0;
+    margin: 5px;
     border: 0vh;
 }
 
 h2
 {
-    font-size: 1.5rem;
-    font-weight: 900;
+    font-size: var(--medium-font-size);
+    font-weight: 500;
     text-align: center;
     font-family: var(--font);
     color: var(--lightGreen);
@@ -114,10 +95,10 @@ h2
 
 textarea {
     resize: none;
-    height: 33px;
+    height: calc(var(--medium-font-size) + 0.5 vw);
     border-radius: 5px;
     border: 1px solid #ccc;
-    font-size: 1.75rem;
+    font-size: var(--medium-font-size);
     font-family: var(--font);
     overflow: hidden;
 }
@@ -142,39 +123,39 @@ textarea {
 {
     position: absolute;
     top: 38vh;
-    left: 25vw;
-    width: 50vw;
-    height: 10vh;
-    font-size: 1.75rem;
+    left: calc((100vw - var(--big-button-width))/2);
+    width: var(--big-button-width);
+    height: var(--big-button-height);
+    font-size: var(--medium-font-size);
     font-weight: 600;
 }
 
 #Host-button
 {
     position: absolute;
-    top: 50vh;
-    left: 25vw;
-    width: 50vw;
-    height: 10vh;
-    font-size: 1.75rem;
+    top: calc(38vh + var(--divider) + var(--big-button-height));
+    left: calc((100vw - var(--big-button-width))/2);
+    width: var(--big-button-width);
+    height: var(--big-button-height);
+    font-size: var(--medium-font-size);
     font-weight: 600;
 }
 
 #Leaderboard-button
 {
     position: absolute;
-    top: 62vh;
-    left: 25vw;
-    width: 50vw;
-    height: 10vh;
-    font-size: 1.75rem;
+    top: calc(38vh + + var(--divider) + (2 * var(--big-button-height)));
+    left: calc((100vw - var(--big-button-width))/2);
+    width: var(--big-button-width);
+    height: var(--big-button-height);
+    font-size: var(--medium-font-size);
     font-weight: 600;
 }
 
 
 
 
-/* This is for the "how to play", "support us" and "back" buttons. */
+/* This is for the "how to play", "support us" and "home" buttons. */
 
 
 
@@ -184,23 +165,26 @@ textarea {
     position: absolute;
     top: 5vh;
     right: 5vw;
-    width: 15vh;
-    height: 5vh;
+    width: var(--small-button-width);
+    height: var(--small-button-height);
+    font-size: var(--small-font-size);
 }
 
 #OK-button
 {
-    width: 15vh;
-    height: 5vh;
+    width: var(--small-button-width);
+    height: var(--small-button-height);
     position: absolute;
+    display: block;
     left: 50%;
     margin-right: -50%;
-    transform: translate(-50%)
+    transform: translate(-50%);
+    font-size: var(--small-font-size);
 }
 
 #help-response-box
 {
-    width: 30vh;
+    width: calc( 2* var(--small-button-width));
     height: 21.5vh;
     /* Both these properties centre the element*/
     position: absolute;
@@ -208,7 +192,7 @@ textarea {
     right: 5vw;
     border-radius: 10%;
     background-color: var(--grey);
-    display: flex;
+    display: block;
     align-items: center;
     justify-content: center;
     display: none;
@@ -217,7 +201,7 @@ textarea {
 #help-response-text
 {
     font-family: var(--font);
-    font-size: 1rem;
+    font-size: var(--small-font-size);
     margin: 0;
     text-align: center;
     font-weight: bold;
@@ -227,10 +211,11 @@ textarea {
 #support-us-button
 {
     position: absolute;
-    top: 10.5vh;
-    right: 5vw;
-    width: 15vh;
-    height: 5vh;
+    top: 5vh;
+    left: 5vw;
+    width: var(--small-button-width);
+    height: var(--small-button-height);
+    font-size: var(--small-font-size);
 }
 
 #home-button
@@ -238,7 +223,9 @@ textarea {
     position: absolute;
     top: 5vh;
     left: 5vw;
-    width: 15vh;
+    width: var(--small-button-width);
+    height: var(--small-button-height);
+    font-size: var(--small-font-size);
 }
 
 
@@ -252,7 +239,7 @@ textarea {
 .supportUsText
 {
     width: 50vw;
-    font-size: 1.25rem;
+    font-size: 2.5vw;
     font-family: var(--font);
     text-align: center;
     position: relative;
@@ -462,16 +449,6 @@ textarea {
     display: none;
 }
 
-#homepage-button
-{
-    position: fixed;
-    top:20vh;
-    left: calc(37.5vw + 26vh);
-    width: 24vh;
-    height: 10vh;
-    display: none;
-}
-
 #winnersBox
 {
     position: fixed;
@@ -564,20 +541,20 @@ textarea {
 #Browse-button {
     position: absolute;
     top: 38vh;
-    left: 25vw;
-    width: 50vw;
-    height: 10vh;
-    font-size: 1.75rem;
+    left: calc((100vw - var(--big-button-width))/2);
+    width: var(--big-button-width);
+    height: var(--big-button-height);
+    font-size: var(--medium-font-size);
     font-weight: 600;
 }
 
 #Create-button {
     position: absolute;
-    top: 50vh;
-    left: 25vw;
-    width: 50vw;
-    height: 10vh;
-    font-size: 1.75rem;
+    top: calc(38vh + var(--divider) + var(--big-button-height));
+    left: calc((100vw - var(--big-button-width))/2);
+    width: var(--big-button-width);
+    height: var(--big-button-height);
+    font-size: var(--medium-font-size);
     font-weight: 600;
 }
 
@@ -596,9 +573,10 @@ textarea {
 #create-and-play-button {
     position: absolute;
     top: 34vh;
-    left: calc(50vw - 68px);
-    width: 136px;
-    height: 53px;
+    left: calc(50vw + var(--divider));
+    width: var(--small-button-width);
+    height: var(--small-button-height);
+    font-size: var(--small-font-size);
 }
 
 #setQuizTitle {
@@ -607,7 +585,7 @@ textarea {
     left: 20vw;
     width: 60vw;
     text-align: left;
-    font-weight: 900;
+    font-weight: 600;
 }
 
 #createQuizError {
@@ -617,7 +595,7 @@ textarea {
     width: 60vw;
     height: 2rem;
     text-align: center;
-    font-weight: 900;
+    font-weight: 600;
     font-size: 1.25rem;
     font-family: var(--font);
     color: var(--errorColour);
@@ -647,12 +625,25 @@ textarea {
     width: calc(30vw - 5px);
 }
 
+#new-questions-list > * {
+    height: calc(var(--medium-font-size) + var(--divider));
+    font-size: var(--medium-font-size);
+    overflow: auto;
+}
+
+#new-answers-list > * {
+    height: calc(var(--medium-font-size) + var(--divider));
+    font-size: var(--medium-font-size);
+    overflow: auto;
+}
+
 #add-new-qa-button {
-    width: 75px;
-    height: 38px;
-    left: calc(50vw - 37.5px);
+    width: var(--small-button-width);
+    height: var(--small-button-height);
+    font-size: var(--small-font-size);
+    left: calc(50vw - var(--divider) - (var(--small-button-width)));
     position: absolute;
-    top: 90vh;
+    top: 34vh;
 }
 
 
@@ -670,7 +661,7 @@ textarea {
     width: 60vw;
     height: 2rem;
     text-align: center;
-    font-weight: 900;
+    font-weight: 600;
     font-size: 1.25rem;
     font-family: var(--font);
     color: var(--errorColour);
@@ -686,7 +677,7 @@ textarea {
     width: 60vw;
     height: 2rem;
     text-align: center;
-    font-weight: 900;
+    font-weight: 600;
     font-size: 1.25rem;
     font-family: var(--font);
     color: var(--errorColour);
@@ -699,30 +690,28 @@ textarea {
 {
     position: absolute;
     top: calc(50vh - 4.5rem);
-    left: 37.5vw;
-    width: 25vw;
-    height: 2.25rem;
+    left: 25vw;
+    width: var(--medium-button-width);
 
-    font-weight: 900;
+    font-weight: 600;
     text-align: center;
 }
 
 #joinGameCodeButton {
     position: absolute;
     top: 50vh;
-    left: 37.5vw;
-    width: 25vw;
-    height: 10vh;
-    font-size: 1.75rem;
-    font-weight: 600;
+    left: 25vw;
+    width: var(--medium-button-width);
+    height: var(--medium-button-height);
+    font-size: var(--medium-font-size);
 }
 
 #subTitle1
 {
     position: absolute;
     top: 32.5vh;
-    left: 37.5vw;
-    width: 25vw;
+    left: 25vw;
+    width: 50vw;
     height: 2.25rem;
 }
 
@@ -730,8 +719,8 @@ textarea {
 {
     position: absolute;
     top: 70vh;
-    left: 37.5vw;
-    width: 25vw;
+    left: 25vw;
+    width: 50vw;
     height: 2.25rem;
 }
 
@@ -764,16 +753,17 @@ textarea {
     position: absolute;
     display: flex;
     flex-direction: column;
-    width: 50vw;
+    width: var(--medium-button-width);
     top: 35vh;
     left: 25vw;
 }
 
 .quiz {
-    margin: 5px;
-    width: 50vw;
-    height: 10vh;
+    margin: var(--divider);
+    height: var(--medium-button-height);
     justify-content: left;
+    font-size: var(--small-font-size);
+    
 }
 
 
@@ -794,6 +784,7 @@ textarea {
     left: calc(50vw - 68px);
     width: 136px;
     height: 53px;
+    font-size: var(--small-font-size);
 }
 
 #quizTitle {
@@ -802,15 +793,15 @@ textarea {
     left: 20vw;
     width: 60vw;
     text-align: left;
-    font-weight: 900;
+    font-weight: 600;
 }
 
 #QAlist {
     position: absolute;
     top: 49vh;
-    left: 30vw;
+    left: 10vw;
     display: grid;
-    grid-template-columns: repeat(2, 20vw[col-start]);
+    grid-template-columns: repeat(2, 40vw[col-start]);
 
     font-size: 1.25rem;
     font-family: var(--font);
@@ -818,7 +809,7 @@ textarea {
 }
 
 #view-questions-list {
-    font-weight: 900;
+    font-weight: 600;
     color: var(--lightGreen);
 
 }
@@ -854,6 +845,39 @@ textarea {
 
 
 
+
+/* PORTRAIT */
+@media (orientation: PORTRAIT) {
+    :root {
+        --small-font-size: 2.5vw;
+        --medium-font-size: 4vw;
+        --large-font-size: 6vw;
+        --small-button-width: 30vw;
+        --small-button-height: 10vw;
+        --medium-button-width: 50vw;
+        --medium-button-height: 10vw;
+        --big-button-width: 80vw;
+        --big-button-height: 10vw;
+        --divider: 0.5vw;
+    }
+
+}
+
+/* LANDSCAPE */
+@media (orientation: LANDSCAPE) {
+    :root {
+        --small-font-size: 1.25vw;
+        --medium-font-size: 2.75vw;
+        --large-font-size: 4vw;
+        --small-button-width: 15vh;
+        --small-button-height: 5vh;
+        --medium-button-width: 50vw;
+        --medium-button-height: 7.5vh;
+        --big-button-width: 50vw;
+        --big-button-height: 10vh;
+        --divider: 0.5vh;
+    }
+}
 
 /* mobile devices */
 @media (max-width: 480px) {

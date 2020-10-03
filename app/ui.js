@@ -392,7 +392,7 @@ ui.init = function () {
     el("Create-button").addEventListener("click", function () {
         nav.goToPage("createQuizPage");
         el("setQuizTitle").value = "";
-        F.sequence(6).forEach( function (element) {
+        F.sequence(5).forEach( function (element) {
             Board.createQA(element + 1);
         });
     });
@@ -445,9 +445,6 @@ ui.init = function () {
     el("add-new-qa-button").addEventListener("click", function () {
         let qaNum = (Array.from(ClaN("qa")).length / 2) + 1;
         Board.createQA(qaNum);
-        let currTop = window.getComputedStyle(document.querySelector("#add-new-qa-button")).getPropertyValue("top");
-        let newTop = parseFloat(currTop, 10) + parseFloat("38px", 10) + "px";
-        el("add-new-qa-button").style.top = newTop;
     });
 
 

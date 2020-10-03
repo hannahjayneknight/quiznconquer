@@ -40,7 +40,7 @@ nav.goToPage = function (page) {
     if (page === "homePage") {
         el("home-button").style.display = "none";
     } else {
-        el("home-button").style.display = "block";
+        el("home-button").style.display = "flex";
     }
 
     // change history obj
