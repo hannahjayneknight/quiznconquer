@@ -806,37 +806,31 @@ textarea {
     font-weight: 900;
 }
 
-#view-questions-list {
+#QAlist {
     position: absolute;
     top: 49vh;
     left: 30vw;
-    display: flex;
-    flex-direction: column;
-    height: 33px;
-    width: 20vw;
+    display: grid;
+    grid-template-columns: repeat(2, 20vw[col-start]);
+
     font-size: 1.25rem;
-    font-weight: 900;
-    text-align: center;
     font-family: var(--font);
-    color: var(--lightGreen);
     text-align: left;
 }
 
+#view-questions-list {
+    font-weight: 900;
+    color: var(--lightGreen);
+
+}
+
 #view-answers-list {
-    position: absolute;
-    top: 49vh;
-    left: 51vw;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    width: 20vw;
-    height: 33px;
-    font-size: 1.25rem;
-    font-family: var(--font);
     color: var(--nearBlack);
 }
 
 .viewQ {
+    height: 20px;
+    overflow: auto;
     border: solid;
     color: var(--lightGreen);
     border-radius: 5px;
@@ -845,6 +839,8 @@ textarea {
 }
 
 .viewA {
+    height: 20px;
+    overflow: auto;
     border: solid;
     color: var(--nearBlack);
     border-radius: 5px;
