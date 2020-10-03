@@ -361,12 +361,9 @@ textarea {
     position: absolute;
     left: 37.5vw;
     top: 35vh;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-#tileBoard>* {
-    flex: 1 1 14%;
+    display: grid;
+    grid-template-columns: repeat(6, auto[col-start]);
+    grid-template-rows: repeat(6, auto[row-start]);
 }
 
 .player1tile {
@@ -865,35 +862,20 @@ textarea {
 
 /* mobile devices */
 @media (max-width: 480px) {
-    #tileBoard>* {
-        flex: 1 1 14%;
-    }
 }
 
 /* tablets */
 @media (min-width: 481px) and (max-width: 768px) {
-    #tileBoard>* {
-        flex: 1 1 14%;
-    }
 }
 
 /* small screens, laptops */
 @media (min-width: 769px) and (max-width: 1024px) {
-    #tileBoard>* {
-        flex: 1 1 14%;
-    }
 }
 
 /* desktops, large screens */
 @media (min-width: 1025px) and (max-width: 1200px) {
-    #tileBoard>* {
-        flex: 1 1 14%;
-    }
 }
 
 /* extra large screens */
 @media (min-width: 1201px) {
-    #tileBoard>* {
-        flex: 1 1 14%;
-    }
 }
