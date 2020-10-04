@@ -186,7 +186,6 @@ textarea {
 {
     height: var(--medium-button-width);
     width: var(--medium-button-width);
-    /* Both these properties centre the element*/
     top: calc(50vh - var(--medium-button-width)/2);
     right: calc(50vw - var(--medium-button-width)/2);;
     border-radius: 10%;
@@ -459,11 +458,13 @@ textarea {
 #winnersBox
 {
     position: fixed;
-    top: 5vh;
-    right: 15vw;
     border-radius: 5px;
     background-color: var(--grey);
     display: none;
+    width: var(--big-button-width);
+    /* Both these properties centre the element*/
+    bottom: calc(var(--tileboard)/2);
+    right: calc(50vw - var(--big-button-width)/2);;
 }
 
 #draw {
@@ -474,7 +475,7 @@ textarea {
 .winnersBoxHeaders
 {
     font-family: var(--font);
-    font-size: 1.5rem;
+    font-size: var(--medium-font-size);
     margin: 3px;
     text-align: left;
     font-weight: bold;
@@ -484,7 +485,7 @@ textarea {
 .winnersBoxPlayers
 {
     font-family: var(--font);
-    font-size: 1.5rem;
+    font-size: var(--medium-font-size);
     margin: 3px;
     text-align: left;
     font-weight: bold;
