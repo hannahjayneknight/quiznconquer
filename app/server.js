@@ -319,13 +319,13 @@ app.ws("/", function (ws, req) {
         if (clientObj.createTable !== undefined) {
 
             // 1. checks if quiz has a title
-            if (F.strEmpty(clientObj.createTable.quizName) === false) {
+            if (F.strEmpty(clientObj.createTable.quizName) === true) {
                 F.wsSend(ws, {
                     "createQuizError": "noTitle"
                 });
             }
             // 2. checks if the quiz has at least one QA pair
-            else if (F.arrEmpty(clientObj.createTable.quizContents.length)) {
+            else if (F.arrEmpty(clientObj.createTable.quizContents) === true) {
                 F.wsSend(ws, {
                     "createQuizError": "noQA"
                 });
