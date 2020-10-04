@@ -50,6 +50,12 @@ ui.init = function () {
         // parses the message received
         const requestObj = JSON.parse(e.data);
 
+
+
+        /* STARTING A GAME */
+
+
+
         // if the message says the player is requesting to join a game...
         if (requestObj.joinGameAccepted !== undefined) {
             if (requestObj.joinGameAccepted === true) {
@@ -81,6 +87,42 @@ ui.init = function () {
             }
         }
 
+
+        /* BROWSING FOR A QUIZ */
+
+
+        // making a list of all the quizzes on the browsing page
+        if (requestObj.listAllQuizzes !== undefined) {
+            // requestObj.listAllQuizzes
+            Board.listAllQuizzes(requestObj.listAllQuizzes);
+        }
+
+        // making a list of all the QA in a quiz
+        if (requestObj.listAllQA !== undefined) {
+            Board.viewQuiz(requestObj.listAllQA, requestObj.quizTitle);
+        }
+
+
+        /* JOINING A GAME */
+
+
+        // when a receiving a list of the public games...
+        if (requestObj.listPublicGames !== undefined) {
+            // creates a list of all the public games on the join page
+            if (F.arrEmpty(requestObj.listPublicGames)) {
+                // if there are no public games...
+                el("publicGameError").style.display = "block";
+                Board.reListPublicGames(requestObj.listPublicGames);
+            } else {
+                el("publicGameError").style.display = "none";
+                Board.reListPublicGames(requestObj.listPublicGames);
+            }
+        }
+
+
+        /* WAITING FOR A GAME TO START */
+
+
         // if the message contains the player nummber,
         // it will display their arrow
         if (requestObj.playerNumber !== undefined) {
@@ -108,30 +150,6 @@ ui.init = function () {
             }
         }
 
-        // making a list of all the quizzes on the browsing page
-        if (requestObj.listAllQuizzes !== undefined) {
-            // requestObj.listAllQuizzes
-            Board.listAllQuizzes(requestObj.listAllQuizzes);
-        }
-
-        // making a list of all the QA in a quiz
-        if (requestObj.listAllQA !== undefined) {
-            Board.viewQuiz(requestObj.listAllQA);
-        }
-
-        // when a receiving a list of the public games...
-        if (requestObj.listPublicGames !== undefined) {
-            // creates a list of all the public games on the join page
-            if (F.arrEmpty(requestObj.listPublicGames)) {
-                // if there are no public games...
-                el("publicGameError").style.display = "block";
-                Board.reListPublicGames(requestObj.listPublicGames);
-            } else {
-                el("publicGameError").style.display = "none";
-                Board.reListPublicGames(requestObj.listPublicGames);
-            }
-        }
-
         // a game is being made public/ private by another player
         if (requestObj.makeGamePublic !== undefined) {
             el("make-this-game-public-text").textContent = "Make this game private";
@@ -146,30 +164,39 @@ ui.init = function () {
             gamePublic = false;
         }
 
-        // being told a quiz name already exists...
-        if (requestObj.quizNameExists !== undefined) {
-            if (requestObj.quizNameExists === true) {
-                // display error message here
+
+        /* CREATING A QUIZ ERRORS */
+
+
+        if (requestObj.createQuizError !== undefined) {
+            if (requestObj.createQuizError === "noTitle") {
+                el("createQuizError").textContent = "Please enter a title";
+                el("createQuizError").style.display = "block";
+                el("setQuizTitle").value = "";
+            } else if (requestObj.createQuizError === "noQA") {
+                el("createQuizError").textContent = "Please enter at least one valid question and answer";
+                el("createQuizError").style.display = "block";
+            } else if (requestObj.createQuizError === "quizTitleExists") {
                 el("createQuizError").style.display = "none";
                 el("createQuizError").textContent = "This quiz title already exists";
                 el("createQuizError").style.display = "block";
                 el("setQuizTitle").value = "";
-            } else {
-                nav.goToPage("gamePage");
             }
         }
-        // being told a quiz name is invalid...
-        if (requestObj.quizNameInvalid !== undefined) {
-            if (requestObj.quizNameInvalid === true) {
-                // display error message here
+        /*
+        MIGHT NEED THIS IN FUTURE
+            else if (requestObj.createQuizError === "badWordsUsed") {
                 el("createQuizError").style.display = "none";
-                el("createQuizError").textContent = "The quiz title must be valid for a SQLite table";
+                el("createQuizError").textContent = "Please do not use inappropriate language";
                 el("createQuizError").style.display = "block";
                 el("setQuizTitle").value = "";
-            } else {
-                nav.goToPage("gamePage");
+                Array.from(ClaN("qa")).forEach(function (element) {
+                     el(element.id).value = "";
+                });
             }
-        }
+
+
+        /* DURING THE GAME */
 
         // if the message contains the word to be testing on,
         // it will change this in the DOM
@@ -413,33 +440,14 @@ ui.init = function () {
 
 
     el("create-and-play-button").addEventListener("click", function () {
-        // doesn't let you to create a quiz with no title
-        if (F.strEmpty(el("setQuizTitle").value) === false) {
-            // if user has entered a title
-            // doesn't let you create a quiz with no questions and answers
-            let tableContents = Board.getQA();
-            if (F.arrEmpty(tableContents)) {
-                // returns true if user has not submitted any qa pairs
-                el("createQuizError").textContent = "Please enter at least one valid question and answer";
-                el("createQuizError").style.display = "block";
-                Array.from(ClaN("qa")).forEach(function (element) {
-                    el(element.id).value = "";
-                });
-            } else {
-                // sends the details of the quiz to the server
-                F.wsSend(ws, {
-                    "createTable": {
-                        "quizName": el("setQuizTitle").value.replace(/\s/g, "_"),
-                        "quizContents": Board.getQA()
-                    }
-                });
+
+        // sends the details of the quiz to the server
+        F.wsSend(ws, {
+            "createTable": {
+                "quizName": el("setQuizTitle").value.replace(/\s/g, "_"),
+                "quizContents": Board.getQA()
             }
-        } else {
-            // if user hasn't entered a valid title
-            el("createQuizError").textContent = "Please enter a title";
-            el("createQuizError").style.display = "block";
-            el("setQuizTitle").value = "";
-        }
+        });
     });
 
     el("add-new-qa-button").addEventListener("click", function () {

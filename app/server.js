@@ -304,19 +304,47 @@ app.ws("/", function (ws, req) {
         }
 
         // after clicking "create and play" button...
+        /*
+        Receives the following obj:
+        {
+            "quizName": el("setQuizTitle").value.replace(/\s/g, "_"),
+            "quizContents": [
+                { question: q1, answer: a1 },
+                { question: q2, answer: a2 },
+                { question: q3, answer: a3 },
+                ...
+            ]
+        }
+        */
         if (clientObj.createTable !== undefined) {
-            dbH.checkQuizName(clientObj.createTable.quizName.replace(/\s/g, "_"), ws, function () {
-                // if the quiz name is available it creates the quiz
+
+            // 1. checks if quiz has a title
+            if (F.strEmpty(clientObj.createTable.quizName) === false) {
+                F.wsSend(ws, {
+                    "createQuizError": "noTitle"
+                });
+            }
+            // 2. checks if the quiz has at least one QA pair
+            else if (F.arrEmpty(clientObj.createTable.quizContents.length)) {
+                F.wsSend(ws, {
+                    "createQuizError": "noQA"
+                });
+            }
+
+            // 3. checks if the quiz has a title that has already been taken
+            else {
+                dbH.checkQuizName(clientObj.createTable.quizName.replace(/\s/g, "_"), ws, function () {
+
+                // 4. if the quiz name is available it creates the quiz
                 dbH.addToDB(clientObj.createTable, function () {
                     games[ws.myprivatedata.gameCode].quiz = clientObj.createTable.quizName.replace(/\s/g, "_");
                     F.wsSend(ws, {
-                        "quizNameExists": false
+                        "joinGameAccepted": true,
+                        "public": false
                     });
                 });
-            });
-
-
-
+                });
+            }
         }
 
         // receiving a request to host a quiz that has been found from browsing...
@@ -326,7 +354,8 @@ app.ws("/", function (ws, req) {
             games[ws.myprivatedata.gameCode].quiz = clientObj.hostBrowsedQuiz.replace(/\s/g, "_");
             dbH.getQA(clientObj.hostBrowsedQuiz, function( arr ) {
                 F.wsSend(ws, {
-                    "listAllQA": arr
+                    "listAllQA": arr,
+                    "quizTitle": clientObj.hostBrowsedQuiz.replace(/\s/g, "_")
                 });
             });
         }

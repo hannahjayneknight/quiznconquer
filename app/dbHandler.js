@@ -115,7 +115,7 @@ dbH.checkQuizName = function (quizName, ws, cb) {
         if (row !== undefined) {
 
             F.wsSend(ws, {
-                "quizNameExists": true
+                "createQuizError": "quizTitleExists"
             });
 
 

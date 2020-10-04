@@ -269,7 +269,7 @@ quizContents looks like this:
     ...
 ]
 */
-Board.viewQuiz = function (quizContents) {
+Board.viewQuiz = function (quizContents, quizTitle) {
     // remove the questions they may have been viewing previously
     let questions = Array.from(ClaN("viewQ"));
     questions.forEach(function (element) {
@@ -304,6 +304,10 @@ Board.viewQuiz = function (quizContents) {
         A.textContent = quizContents[element].answer;
         el("view-answers-list").appendChild(A);
     });
+
+    // sets the quiz title
+    el("viewQATitle").textContent = quizTitle.replace(/_/g, " ");
+
 };
 
 export default Object.freeze(Board);
