@@ -172,40 +172,42 @@ textarea {
 
 #OK-button
 {
-    width: var(--small-button-width);
-    height: var(--small-button-height);
-    position: absolute;
     display: block;
+    top: 90%;
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%);
     font-size: var(--small-font-size);
+    position: relative;
+    z-index: 100;
 }
 
 #help-response-box
 {
-    width: calc( 2* var(--small-button-width));
-    height: 21.5vh;
+    height: var(--medium-button-width);
+    width: var(--medium-button-width);
     /* Both these properties centre the element*/
-    position: absolute;
-    top: 16vh;
-    right: 5vw;
+    top: calc(50vh - var(--medium-button-width)/2);
+    right: calc(50vw - var(--medium-button-width)/2);;
     border-radius: 10%;
     background-color: var(--grey);
-    display: block;
     align-items: center;
     justify-content: center;
     display: none;
+    position: absolute;
+    z-index: 100;
 }
 
 #help-response-text
 {
     font-family: var(--font);
-    font-size: var(--small-font-size);
-    margin: 0;
+    font-size: var(--extra-small-font-size);
+    margin: calc(var(--divider)*2);
+    padding: calc(var(--divider)*2);
     text-align: center;
-    font-weight: bold;
     color: var(--nearBlack);
+    position: absolute;
+    z-index: 100;
 }
 
 #support-us-button
@@ -284,7 +286,7 @@ textarea {
     background-color: var(--grey);
     display: inline-block;
     height: var(--medium-button-height);
-    width: var(--small-button-width);
+    width: var(--medium-button-width);
 }
 
 #gameCodeBoxHeader
@@ -295,7 +297,7 @@ textarea {
     text-align: center;
     font-weight: bold;
     color: var(--nearBlack);
-    width: var(--small-button-width);
+    width: var(--medium-button-width);
 }
 
 #gameCode
@@ -307,7 +309,7 @@ textarea {
     text-align: center;
     font-weight: bold;
     color: var(--green);
-    width: var(--small-button-width);
+    width: var(--medium-button-width);
 }
 
 #everyone-has-joined-button
@@ -854,6 +856,7 @@ textarea {
 /* PORTRAIT */
 @media (orientation: PORTRAIT) {
     :root {
+        --extra-small-font-size: 1.75vw;
         --small-font-size: 2.5vw;
         --medium-font-size: 4vw;
         --large-font-size: 6vw;
@@ -874,6 +877,7 @@ textarea {
 /* LANDSCAPE */
 @media (orientation: LANDSCAPE) {
     :root {
+        --extra-small-font-size: 1.75vh;
         --small-font-size: 1.25vw;
         --medium-font-size: 2.75vw;
         --large-font-size: 4vw;
