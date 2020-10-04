@@ -231,7 +231,7 @@ textarea {
 
 
 
-/* This is for items on the game page. */
+/* This is for items on the "support us" page. */
 
 
 
@@ -278,75 +278,80 @@ textarea {
 #gameCodeBox
 {
     position: fixed;
-    top: 5vh;
-    left: 15vw;
+    top: calc(5vh + var(--small-button-height) + (var(--divider)*2));
+    left: 5vw;
     border-radius: 5px;
     background-color: var(--grey);
     display: inline-block;
+    height: var(--medium-button-height);
+    width: var(--small-button-width);
 }
 
 #gameCodeBoxHeader
 {
     font-family: var(--font);
-    font-size: 1.5rem;
+    font-size: var(--small-font-size);
     margin: 3px;
     text-align: center;
     font-weight: bold;
     color: var(--nearBlack);
+    width: var(--small-button-width);
 }
 
 #gameCode
 {
+    position: fixed;
     font-family: var(--font);
-    font-size: 2.75rem;
+    font-size: var(--medium-font-size);
     margin: 3px;
     text-align: center;
     font-weight: bold;
     color: var(--green);
+    width: var(--small-button-width);
 }
 
 #everyone-has-joined-button
 {
-    position: fixed;
-    top:20vh;
-    left:37.5vw;
-    width: 24vh;
-    height: 10vh;
+    position: absolute;
+    bottom: calc(var(--divider)*12 + var(--tileboard));
+    left: calc(50vw - (var(--tileboard)/2));
+    width: var(--medium-button-width);
+    height: var(--medium-button-height);
 }
 
 #make-this-game-public-button
 {
-    position: fixed;
-    top:20vh;
-    left: calc(37.5vw + 26vh);
-    width: 24vh;
-    height: 10vh;
+    position: absolute;
+    bottom: calc(var(--divider)*12 + var(--tileboard));
+    left: calc(50vw + var(--divider));
+    width: var(--medium-button-width);
+    height: var(--medium-button-height);
 }
 
 #testingWord
 {
-    top: 10vh;
     position: absolute;
-    width: 50vh;
-    left:37.5vw;
-    font-size: 1.75rem;
+    width: var(--tileboard);
+    left: calc(50vw - (var(--tileboard)/2));
+    font-size: var(--medium-font-size);
     font-weight: 900;
     text-align: center;
     font-family: var(--font);
     color: var(--green);
     margin: 0;
+    top: calc(5vh + var(--small-button-height)*1.5 + (var(--divider)*4) + var(--medium-button-height));
 }
 
 
 #tileBoard
 {
-    width: 50vh;
+    width: var(--tileboard);
     margin: 0;
-    height: 50vh;
+    height: var(--tileboard);
     /* Both these properties centre the element*/
     position: absolute;
-    left: 37.5vw;
-    top: 35vh;
+    left: calc(50vw - (var(--tileboard)/2));
+    bottom: calc(var(--divider)*4);
     display: grid;
     grid-template-columns: repeat(6, auto[col-start]);
     grid-template-rows: repeat(6, auto[row-start]);
@@ -387,9 +392,9 @@ textarea {
 #answer-pane
 {
     position: absolute;
-    top: 22.5vh;
-    left:37.5vw;
-    width: 50vh;
+    bottom: calc(var(--divider)*8 + var(--tileboard));
+    left: calc(50vw - (var(--tileboard)/2));
+    width: var(--tileboard);
     text-align: center;
     display: none;
 }
@@ -397,56 +402,56 @@ textarea {
 #timer
 {
     position: absolute;
-    top:5vh;
-    left:37.5vw;
-    width: 50vh;
+    bottom: calc(var(--divider)*18 + var(--tileboard) + (var(--medium-button-height)*2));
+    left: calc(50vw - (var(--tileboard)/2));
+    width: var(--tileboard);
     text-align: center;
-    font-size: 1.25rem;
+    font-size: var(--small-font-size);
     font-family: var(--font);
 }
 
 .playerArrows {
-    width: 12vh;
-    height: 12vh;
+    width: var(--arrows);
+    height: var(--arrows);
     display: none;
 }
 
 #player1-arrow
 {
-    left: calc(37vw - 12vh);
-    top: 35.5vh;
     position: absolute;
+    left: calc(50vw - (var(--tileboard)/2) - var(--arrows) - var(--divider));
+    bottom: calc(var(--divider)*4 + var(--tileboard) - var(--arrows));
 }
 
 #player2-arrow
 {
-    left: calc(38vw + 50vh);
-    top: 35.5vh;
+    right: calc(50vw - (var(--tileboard)/2) - var(--arrows) - var(--divider));
+    bottom: calc(var(--divider)*4 + var(--tileboard) - var(--arrows));
     position: absolute;
 }
 
 #player3-arrow
 {
-    left: calc(37vw - 12vh);
-    top: 60.5vh;
+    left: calc(50vw - (var(--tileboard)/2) - var(--arrows) - var(--divider));
+    bottom: calc(var(--divider)*4);
     position: absolute;
 }
 
 #player4-arrow
 {
-    left: calc(38vw + 50vh);
-    top: 60.5vh;
+    right: calc(50vw - (var(--tileboard)/2) - var(--arrows) - var(--divider));
+    bottom: calc(var(--divider)*4);
     position: absolute;
 }
 
 #restart-game-button
 {
     position: fixed;
-    top: 20vh;
-    left: calc(37.5vw + 12vh);
-    width: 24vh;
-    height: 10vh;
     display: none;
+    bottom: calc(var(--divider)*12 + var(--tileboard));
+    left: calc(50vw - (var(--medium-button-width)/2));
+    width: var(--medium-button-width);
+    height: var(--medium-button-height);
 }
 
 #winnersBox
@@ -486,10 +491,10 @@ textarea {
 }
 
 #correctAnswer {
-    width: 50vh;
     position: absolute;
-    top:15vh;
-    left:37.5vw;
+    bottom: calc(var(--divider)*10 + var(--tileboard) + var(--medium-font-size));
+    left: calc(50vw - (var(--tileboard)/2));
+    width: var(--tileboard);
 }
 
 .allLives {
@@ -497,38 +502,39 @@ textarea {
 }
 
 .life {
-    width: 25px;
-    height: 25px;
+    width: var(--life);
+    height: var(--life);
 }
 
 #player1lives {
-    left: calc(37vw - 125px);
-    top: 35.5vh;
+    left: calc(50vw - (var(--tileboard)/2) - (var(--life)*5) - var(--divider));
+    bottom: calc(var(--divider)*4 + var(--tileboard) - var(--life));
     position: absolute;
 }
 
 #player2lives {
-    left: calc(38vw + 50vh);
-    top: 35.5vh;
+    right: calc(50vw - (var(--tileboard)/2) - (var(--life)*5) - var(--divider));
+    bottom: calc(var(--divider)*4 + var(--tileboard) - var(--life));
     position: absolute;
 }
 
 #player3lives {
-    left: calc(37vw - 125px);
-    top: 60.5vh;
+    left: calc(50vw - (var(--tileboard)/2) - (var(--life)*5) - var(--divider));
+    bottom: calc(var(--divider)*4);
     position: absolute;
 }
 
 #player4lives {
-    left: calc(38vw + 50vh);
-    top: 60.5vh;
+    right: calc(50vw - (var(--tileboard)/2) - (var(--life)*5) - var(--divider));
+    bottom: calc(var(--divider)*4);
     position: absolute;
 }
 
 #player5lives {
-    left: calc(37.5vw + 45vh);
-    top: 10vh;
+
+    left: calc(50vw - (var(--life)*5/2));
     position: absolute;
+    top: calc(5vh + var(--small-button-height)*2.5 + (var(--divider)*4) + var(--medium-button-height));
 }
 
 
@@ -858,6 +864,9 @@ textarea {
         --big-button-width: 80vw;
         --big-button-height: 10vw;
         --divider: 0.5vw;
+        --tileboard: 50vw;
+        --arrows: 12vw;
+        --life: 25px;
     }
 
 }
@@ -874,7 +883,10 @@ textarea {
         --medium-button-height: 10vh;
         --big-button-width: 50vw;
         --big-button-height: 10vh;
-        --divider: 0.5vh; 
+        --divider: 0.5vh;
+        --tileboard: 50vh;
+        --arrows: 12vh;
+        --life: 25px;
     }
 }
 
