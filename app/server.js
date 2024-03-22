@@ -6,7 +6,7 @@ import dbH from "./dbHandler.js";
 import F from "./usefulfunctions.js";
 function ignorparam() {}
 
-const port = 80;
+const port = 8080;
 
 const app = express();
 expressWS(app);
