@@ -424,10 +424,12 @@ ui.init = function () {
     // clicking on the "Create" button
     el("Create-button").addEventListener("click", function () {
         nav.goToPage("createQuizPage");
-        el("setQuizTitle").value = "";
-        F.sequence(5).forEach( function (element) {
-            Board.createQA(element + 1);
-        });
+        //el("setQuizTitle").value = "";
+        if ( el("new-questions-list").children.length!==5 ) {
+            F.sequence(5).forEach( function (element) {
+                Board.createQA(element + 1);
+            });
+        }
     });
 
     // clicking on the "Browse" button

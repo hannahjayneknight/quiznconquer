@@ -162,7 +162,7 @@ dbH.addToDB = function (obj, cb) {
 
     // for each qa pair, adds a row to the database, sets the ID and
     // the quiz_name
-    F.sequence(obj.quizContents).forEach(function (element) {
+    F.sequence(Object.keys(obj.quizContents).length).forEach(function (element) {
         let row = [
             obj.quizContents[element].question,
             obj.quizContents[element].answer,
