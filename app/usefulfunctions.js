@@ -1,7 +1,11 @@
 const F = Object.create(null);
 
 F.wsSend = function (ws, obj) {
-    if (ws.readystate == ws.OPEN) {
+    //NB: web socket states can be found here: https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState
+    // if open, send message immediately
+    // else queue the message
+    
+    if (ws.readystate !== 3) {
         ws.send(JSON.stringify(obj));
     }
 };

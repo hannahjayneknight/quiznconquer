@@ -20,7 +20,8 @@
                     "path": "${workspaceFolder}"
                 }
             ],
-            "keepProfileChanges": true,
+            // "profile": "",
+            // "keepProfileChanges": true,
             "reAttach": true,
             "firefoxExecutable": "C:/Program Files/Firefox Developer Edition/firefox.exe"
         },

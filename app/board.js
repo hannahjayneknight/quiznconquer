@@ -98,9 +98,9 @@ Board.reListPublicGames = function (pubGameArr) {
 Board.listPublicGames = function (pubGameArr) {
     // remove the public games they may have been viewing previously
     let publicGames = Array.from(ClaN("publicGame"));
-    publicGames.forEach(function (el) {
-        if (el(el.id) !== null) {
-            el(el.id).remove();
+    publicGames.forEach(function (element) {
+        if (el(element.id) !== null) {
+            el(element.id).remove();
         }
     });
 
@@ -123,9 +123,9 @@ Board.listPublicGames = function (pubGameArr) {
 Board.listAllQuizzes = function (listAllQuizzesArr) {
     // remove the quizzes they may have been viewing previously
     let quizzes = Array.from(ClaN("quiz"));
-    quizzes.forEach(function (el) {
-        if (el(el.id) !== null) {
-            el(el.id).remove();
+    quizzes.forEach(function (element) {
+        if (el(element.id) !== null) {
+            el(element.id).remove();
         }
     });
 
