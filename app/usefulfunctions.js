@@ -1,7 +1,7 @@
 const F = Object.create(null);
 
 F.wsSend = function (ws, obj) {
-    if (ws.readystate !== 3) {
+    if (ws.readystate == ws.OPEN) {
         ws.send(JSON.stringify(obj));
     }
 };
