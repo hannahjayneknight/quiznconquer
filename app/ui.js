@@ -36,7 +36,7 @@ ui.init = function () {
     if (window.location.host === "localhost") {
         wsName = "ws://localhost:80";
     } else {
-        wsName = "ws://www.quiznconquer.com/";
+        wsName = "wss://www.quiznconquer.com/";
     }
     const ws = new WebSocket(wsName);
 
