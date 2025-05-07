@@ -33,6 +33,9 @@ ui.init = function () {
 
 
     let wsName = "";
+    let reconnectAttempts = 0;
+    const maxReconnectAttempts = 5; // Try 5 times before giving up
+    const reconnectDelay = 3000;    // 3 seconds between each attempt
     if (window.location.host === "localhost") {
         wsName = "ws://localhost:80";
     } else {
@@ -46,7 +49,49 @@ ui.init = function () {
         } else {
           // e.g. server process killed or network down
           // event.code is usually 1006 in this case
-          console.log("[close] Connection died");
+          console.log(`[close] Connection died unexpectedly, code=${event.code}`);
+
+            if (reconnectAttempts < maxReconnectAttempts) {
+                console.log(`Attempting to reconnect in 3 seconds... (Attempt ${reconnectAttempts + 1}/${maxReconnectAttempts})`);
+                
+                setTimeout(function() {
+                    console.log("Reconnecting now...");
+                    
+                    // Create a new WebSocket connection directly here
+                    let wsName = "";
+                    if (window.location.host === "localhost") {
+                        wsName = "ws://localhost:80";
+                    } else {
+                        wsName = "wss://www.quiznconquer.com/ws";
+                    }
+                    
+                    ws = new WebSocket(wsName);
+                    
+                    // Re-attach event handlers
+                    ws.onopen = function() {
+                        console.log("Connection established");
+                        reconnectAttempts = 0;
+                    };
+                    
+                    // Recursively define the onclose handler
+                    ws.onclose = arguments.callee;
+                    
+                    // Make sure to re-attach any other event handlers you have
+                    // For example:
+                    ws.onmessage = function(event) {
+                        // Your message handling code
+                    };
+                    
+                    ws.onerror = function(error) {
+                        console.log(`[error] ${error.message}`);
+                    };
+                    
+                }, reconnectDelay);
+                
+                reconnectAttempts++;
+            } else {
+                console.log("Maximum reconnection attempts reached. Please refresh the page to try again.");
+            }
         }
       };
 
